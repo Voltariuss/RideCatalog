@@ -23,7 +23,7 @@ enum typeTransport { AUTO, AVION, BATEAU, TRAIN };
 //
 //------------------------------------------------------------------------
 
-class TrajetSimple : public Ancetre
+class TrajetSimple : public Trajet
 {
 //----------------------------------------------------------------- PUBLIC
 

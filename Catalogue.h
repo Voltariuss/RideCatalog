@@ -11,7 +11,7 @@
 #define CATALOGUE_H
 
 //--------------------------------------------------- Interfaces utilisées
-#include "TableauTrajets"
+#include "TableauTrajets.h"
 
 //------------------------------------------------------------- Constantes
 
@@ -23,7 +23,7 @@
 //
 //------------------------------------------------------------------------
 
-class Catalogue : public Ancetre
+class Catalogue
 {
 //----------------------------------------------------------------- PUBLIC
 
@@ -41,7 +41,7 @@ public:
     // Contrat :
     //
 
-    int RechercherParcours ( char *depart, char *arrivee, TableauTrajets trajets );
+    TableauTrajets RechercherParcours ( char *depart, char *arrivee );
     // Mode d'emploi :
     //
     // Contrat :

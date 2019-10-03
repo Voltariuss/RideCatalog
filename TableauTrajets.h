@@ -1,12 +1,12 @@
 /*************************************************************************
-                           TaleauTrajets  -  description
+                           TableauTrajets  -  description
                              -------------------
     début                : $DATE$
     copyright            : (C) $YEAR$ par $AUTHOR$
     e-mail               : $EMAIL$
 *************************************************************************/
 
-//---------- Interface de la classe <TaleauTrajets> (fichier TaleauTrajets.h) ----------------
+//---------- Interface de la classe <TableauTrajets> (fichier TableauTrajets.h) ----------------
 #if ! defined ( TABLEAUTRAJETS_H )
 #define TABLEAUTRAJETS_H
 
@@ -14,23 +14,22 @@
 #include "Trajet.h"
 
 //------------------------------------------------------------- Constantes
-#define TAILLE_INIT 100
 
 //------------------------------------------------------------------ Types
 
 //------------------------------------------------------------------------
-// Rôle de la classe <TaleauTrajets>
+// Rôle de la classe <TableauTrajets>
 //
 //
 //------------------------------------------------------------------------
 
-class TaleauTrajets : public Ancetre
+class TableauTrajets
 {
 //----------------------------------------------------------------- PUBLIC
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    void AjouterTrajet ( Trajet trajet );
+    int AjouterTrajet ( Trajet * trajet );
     // Mode d'emploi :
     //
     // Contrat :
@@ -42,7 +41,7 @@ public:
     // Contrat :
     //
 
-    Trajet * GetLesTrajets ( ) { return lesTrajets; };
+    Trajet ** GetLesTrajets ( ) { return lesTrajets; };
     // Mode d'emploi :
     //
     // Contrat :
@@ -50,7 +49,7 @@ public:
 
 
 //------------------------------------------------- Surcharge d'opérateurs
-    TaleauTrajets & operator = ( const TaleauTrajets & unTaleauTrajets );
+    TableauTrajets & operator = ( const TableauTrajets & unTableauTrajets );
     // Mode d'emploi :
     //
     // Contrat :
@@ -58,22 +57,19 @@ public:
 
 
 //-------------------------------------------- Constructeurs - destructeur
-    TaleauTrajets ( const TaleauTrajets & unTaleauTrajets );
+    TableauTrajets ( const TableauTrajets & unTableauTrajets );
     // Mode d'emploi (constructeur de copie) :
     //
     // Contrat :
     //
 
-    TaleauTrajets ( ),
-        nbTrajets ( 0 ),
-        taille ( TAILLE_INIT ),
-        lesTrajets ( malloc(sizeof(Trajet) * TAILLE_INIT) );
+    TableauTrajets ( );
     // Mode d'emploi :
     //
     // Contrat :
     //
 
-    virtual ~TaleauTrajets ( );
+    virtual ~TableauTrajets ( );
     // Mode d'emploi :
     //
     // Contrat :
@@ -83,14 +79,25 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
+    bool reallocaction ( );
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
+
+    bool contient ( Trajet * trajet ) const;
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
 
 //----------------------------------------------------- Attributs protégés
-unsigned int nbTrajets;
-unsigned int taille;
-Trajet *lesTrajets;
+    unsigned int nbTrajets;
+    unsigned int taille;
+    Trajet **lesTrajets;
 
 };
 
-//-------------------------------- Autres définitions dépendantes de <TaleauTrajets>
+//-------------------------------- Autres définitions dépendantes de <TableauTrajets>
 
 #endif // TABLEAUTRAJETS_H
