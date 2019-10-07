@@ -9,7 +9,7 @@
 *************************************************************************/
 
 //----- Interface de la classe <Collection> (fichier Collection.h)
-#if ! defined ( TABLEAUTRAJETS_H )
+#if !defined(TABLEAUTRAJETS_H)
 #define TABLEAUTRAJETS_H
 
 //--------------------------------------------------- Interfaces utilisées
@@ -28,58 +28,87 @@
 class Collection
 {
 //----------------------------------------------------------------- PUBLIC
-
 public:
-//----------------------------------------------------- Méthodes publiques
-    int AjouterTrajet ( Trajet * trajet );
+    //------------------------------------------------- Méthodes publiques
+    int AjouterTrajet(Trajet *trajet);
     // Mode d'emploi :
     //
     // Contrat :
     //
 
-    int AjouterTrajet ( Collection * trajets );
+    int AjouterTrajet(Collection *trajets);
     // Mode d'emploi :
     //
     // Contrat :
     //
 
-    bool Contient ( Trajet * trajet ) const;
+    bool Contient(Trajet *trajet) const;
     // Mode d'emploi :
     //
     // Contrat :
     //
 
-    unsigned int GetNbTrajets ( ) const
-    { return nbTrajets; };
+    Trajet *GetPremierTrajet() const
+    {
+        if (nbTrajets > 0)
+        {
+            return lesTrajets[0];
+        }
+        else
+        {
+            return nullptr;
+        }
+        
+    }
 
-    unsigned int GetNbMaxTrajets ( ) const
-    { return taille; };
+    Trajet *GetDernierTrajet() const
+    {
+        if (nbTrajets > 0)
+        {
+            return lesTrajets[nbTrajets - 1];
+        }
+        else
+        {
+            return nullptr;
+        }
+        
+    }
 
-    Trajet ** GetLesTrajets ( ) const
-    { return lesTrajets; };
+    unsigned int GetNbTrajets() const
+    {
+        return nbTrajets;
+    };
 
-//------------------------------------------------- Surcharge d'opérateurs
+    unsigned int GetNbMaxTrajets() const
+    {
+        return taille;
+    };
 
-//-------------------------------------------- Constructeurs - destructeur
-    Collection ( );
+    Trajet **GetLesTrajets() const
+    {
+        return lesTrajets;
+    };
 
-    virtual ~Collection ( );
+    //-------------------------------------------- Surcharge d'opérateurs
 
-//------------------------------------------------------------------ PRIVE
+    //--------------------------------------- Constructeurs - destructeur
+    Collection();
 
+    virtual ~Collection();
+
+//-------------------------------------------------------------- PROTECTED
 protected:
-//----------------------------------------------------- Méthodes protégées
-    bool reallocaction ( );
+    //------------------------------------------------- Méthodes protégées
+    bool reallocaction();
     // Mode d'emploi :
     //
     // Contrat :
     //
 
-//----------------------------------------------------- Attributs protégés
+    //------------------------------------------------- Attributs protégés
     unsigned int nbTrajets;
     unsigned int taille;
-    Trajet ** lesTrajets;
-
+    Trajet **lesTrajets;
 };
 
 //--------------------- Autres définitions dépendantes de <Collection>

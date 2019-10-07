@@ -56,6 +56,8 @@ public:
 //-------------------------------------------- Constructeurs - destructeur
     TrajetCompose ( Trajet * t1, Trajet * t2 );
 
+    TrajetCompose (Collection laCollection);
+
     virtual ~TrajetCompose ( );
 
 //------------------------------------------------------------------ PRIVE
@@ -64,7 +66,7 @@ protected:
 //----------------------------------------------------- Méthodes protégées
 
 //----------------------------------------------------- Attributs protégés
-    Collection tableauTrajets;
+    Collection collection;
 
 };
 

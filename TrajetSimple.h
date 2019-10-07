@@ -19,7 +19,7 @@
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
-enum typeTransport { AUTO, AVION, BATEAU, TRAIN };
+enum TypeTransport { AUTO, AVION, BATEAU, TRAIN };
 
 //------------------------------------------------------------------------
 // Rôle de la classe <TrajetSimple>
@@ -46,7 +46,7 @@ public:
     virtual char * GetVilleArrivee ( ) const
     { return villeArrivee; }
 
-    typeTransport GetMoyenTransport ( ) const
+    TypeTransport GetMoyenTransport ( ) const
     { return moyenTransport; }
 
 //------------------------------------------------- Surcharge d'opérateurs
@@ -56,7 +56,7 @@ public:
     { return !(*this == trajet); }
 
 //-------------------------------------------- Constructeurs - destructeur
-    TrajetSimple ( char *depart, char *arrivee, typeTransport transport );
+    TrajetSimple ( char *depart, char *arrivee, TypeTransport transport );
     // Mode d'emploi :
     //
     // Contrat :
@@ -76,7 +76,7 @@ protected:
 //----------------------------------------------------- Attributs protégés
     char *villeDepart;
     char *villeArrivee;
-    typeTransport moyenTransport;
+    TypeTransport moyenTransport;
 
 };
 

@@ -35,7 +35,7 @@ bool TrajetSimple::operator == ( TrajetSimple & trajet )
 } //----- Fin de operator ==
 
 //-------------------------------------------- Constructeurs - destructeur
-TrajetSimple::TrajetSimple ( char *depart, char *arrivee, typeTransport transport ):
+TrajetSimple::TrajetSimple ( char *depart, char *arrivee, TypeTransport transport ):
     moyenTransport ( transport )
 // Algorithme :
 //

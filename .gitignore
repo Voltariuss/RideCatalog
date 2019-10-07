@@ -1,3 +1,4 @@
 *.o
 voyage
 vgcore.*
+settings.json

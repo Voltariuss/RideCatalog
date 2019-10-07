@@ -25,25 +25,25 @@ using namespace std;
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
-void TrajetCompose::Afficher ( ) const
+void TrajetCompose::Afficher() const
 // Algorithme :
 //
 {
-  for(int i=0; i<tableauTrajets.GetNbTrajets(); i++) {
+  for (int i = 0; i < collection.GetNbTrajets(); i++)
+  {
     cout << (i ? " - " : "");
-    tableauTrajets.GetLesTrajets()[i]->Afficher();
+    collection.GetLesTrajets()[i]->Afficher();
   }
   cout << endl;
 } //----- Fin de Afficher
 
-
 //------------------------------------------------- Surcharge d'opérateurs
-bool TrajetCompose::operator == ( const TrajetCompose & trajet ) const
+bool TrajetCompose::operator==(const TrajetCompose &trajet) const
 // Algorithme :
 //
 {
   Trajet *t1, *t2;
-cout << (trajet.GetLesTrajets()->GetLesTrajets()[0]->GetVilleDepart()) << endl;
+  cout << (trajet.GetLesTrajets()->GetLesTrajets()[0]->GetVilleDepart()) << endl;
   // if(trajet.tableauTrajets.GetNbTrajets() != tableauTrajets.GetNbTrajets())
   //   return false;
   //
@@ -63,29 +63,33 @@ cout << (trajet.GetLesTrajets()->GetLesTrajets()[0]->GetVilleDepart()) << endl;
 } //----- Fin de operator ==
 
 //-------------------------------------------- Constructeurs - destructeur
-TrajetCompose::TrajetCompose ( Trajet * t1, Trajet * t2 ) :
-    tableauTrajets ( )
+TrajetCompose::TrajetCompose(Trajet *t1, Trajet *t2) : collection()
 // Algorithme :
 //
 {
-  #ifdef MAP
-      cout << "Appel au constructeur de <TrajetCompose>" << endl;
-  #endif
+#ifdef MAP
+  cout << "Appel au constructeur de <TrajetCompose>" << endl;
+#endif
 
-  tableauTrajets.AjouterTrajet(t1);
-  tableauTrajets.AjouterTrajet(t2);
+  collection.AjouterTrajet(t1);
+  collection.AjouterTrajet(t2);
 } //----- Fin de TrajetCompose
 
+TrajetCompose::TrajetCompose(Collection laCollection) : collection(laCollection)
+{
+#ifdef MAP
+  cout << "Appel au constructeur de <TrajetCompose>" << endl;
+#endif
+}
 
-TrajetCompose::~TrajetCompose ( )
+TrajetCompose::~TrajetCompose()
 // Algorithme :
 //
 {
-  #ifdef MAP
-      cout << "Appel au destructeur de <TrajetCompose>" << endl;
-  #endif
+#ifdef MAP
+  cout << "Appel au destructeur de <TrajetCompose>" << endl;
+#endif
 } //----- Fin de ~TrajetCompose
-
 
 //------------------------------------------------------------------ PRIVE
 

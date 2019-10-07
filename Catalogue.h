@@ -9,7 +9,7 @@
 *************************************************************************/
 
 //--------------- Interface de la classe <Catalogue> (fichier Catalogue.h)
-#if ! defined ( CATALOGUE_H )
+#if !defined(CATALOGUE_H)
 #define CATALOGUE_H
 
 //--------------------------------------------------- Interfaces utilisées
@@ -27,43 +27,53 @@
 
 class Catalogue
 {
-//----------------------------------------------------------------- PUBLIC
+    //----------------------------------------------------------------- PUBLIC
 
 public:
-//----------------------------------------------------- Méthodes publiques
-    void Afficher ( ) const
-    { Afficher(tableauTrajets); }
+    //----------------------------------------------------- Méthodes publiques
+    void SaisirTrajet();
 
-    void Afficher ( const Collection & trajets ) const;
+    void Afficher() const
+    {
+        Afficher(collectionTrajets);
+    }
+
+    void Afficher(const Collection &trajets) const;
     // Mode d'emploi :
     //
     // Contrat :
     //
 
-    int AjouterTrajet ( Trajet * trajet )
-    { return tableauTrajets.AjouterTrajet(trajet); }
+    int AjouterTrajet(Trajet *trajet)
+    {
+        return collectionTrajets.AjouterTrajet(trajet);
+    }
 
-    Collection RechercherParcours ( char *depart, char *arrivee ) const;
+    Collection RechercherParcours(char *depart, char *arrivee) const;
     // Mode d'emploi :
     //
     // Contrat :
     //
 
-//------------------------------------------------- Surcharge d'opérateurs
+    //------------------------------------------------- Surcharge d'opérateurs
 
-//-------------------------------------------- Constructeurs - destructeur
-    Catalogue ( );
+    //-------------------------------------------- Constructeurs - destructeur
+    Catalogue();
 
-    virtual ~Catalogue ( );
+    virtual ~Catalogue();
 
-//------------------------------------------------------------------ PRIVE
+    //-------------------------------------------------------------- PROTECTED
 
 protected:
-//----------------------------------------------------- Méthodes protégées
+    //----------------------------------------------------- Méthodes protégées
 
-//----------------------------------------------------- Attributs protégés
-    Collection tableauTrajets;
+    //----------------------------------------------------- Attributs protégés
+    Collection collectionTrajets;
 
+    //------------------------------------------------------------------ PRIVE
+private:
+    TrajetSimple *saisirTrajetSimple();
+    TrajetCompose *saisirTrajetCompose();
 };
 
 //-------------------------- Autres définitions dépendantes de <Catalogue>
