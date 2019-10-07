@@ -9,7 +9,7 @@
 *************************************************************************/
 
 //------- Interface de la classe <TrajetCompose> (fichier TrajetCompose.h)
-#if ! defined ( TRAJETCOMPOSE_H )
+#if !defined(TRAJETCOMPOSE_H)
 #define TRAJETCOMPOSE_H
 
 //--------------------------------------------------- Interfaces utilisées
@@ -28,46 +28,53 @@
 
 class TrajetCompose : public Trajet
 {
-//----------------------------------------------------------------- PUBLIC
+    //----------------------------------------------------------------- PUBLIC
 
 public:
-//----------------------------------------------------- Méthodes publiques
-    int AjouterTrajet ( Trajet * trajet )
-    { return tableauTrajets.AjouterTrajet(trajet); }
+    //----------------------------------------------------- Méthodes publiques
+    int AjouterTrajet(Trajet *trajet)
+    {
+        return collection.AjouterTrajet(trajet);
+    }
 
-    virtual void Afficher ( ) const;
+    virtual void Afficher() const;
     // Mode d'emploi :
     //
     // Contrat :
     //
 
-    virtual char * GetVilleDepart ( ) const
-    { return tableauTrajets.GetLesTrajets()[0]->GetVilleDepart(); }
+    virtual char *GetVilleDepart() const
+    {
+        return collection.GetLesTrajets()[0]->GetVilleDepart();
+    }
 
-    virtual char * GetVilleArrivee ( ) const
-    { return tableauTrajets.GetLesTrajets()[tableauTrajets.GetNbTrajets()-1]->GetVilleArrivee(); }
+    virtual char *GetVilleArrivee() const
+    {
+        return collection.GetLesTrajets()[collection.GetNbTrajets() - 1]->GetVilleArrivee();
+    }
 
-    Collection * GetLesTrajets ( )
-    { return &tableauTrajets; }
+    Collection *GetLesTrajets()
+    {
+        return &collection;
+    }
 
-//------------------------------------------------- Surcharge d'opérateurs
+    //------------------------------------------------- Surcharge d'opérateurs
     // bool operator == ( const TrajetCompose & trajet ) const;
 
-//-------------------------------------------- Constructeurs - destructeur
-    TrajetCompose ( Trajet * t1, Trajet * t2 );
+    //-------------------------------------------- Constructeurs - destructeur
+    TrajetCompose(Trajet *t1, Trajet *t2);
 
-    TrajetCompose (Collection laCollection);
+    TrajetCompose(Collection laCollection);
 
-    virtual ~TrajetCompose ( );
+    virtual ~TrajetCompose();
 
-//------------------------------------------------------------------ PRIVE
+    //------------------------------------------------------------------ PRIVE
 
 protected:
-//----------------------------------------------------- Méthodes protégées
+    //----------------------------------------------------- Méthodes protégées
 
-//----------------------------------------------------- Attributs protégés
+    //----------------------------------------------------- Attributs protégés
     Collection collection;
-
 };
 
 //---------------------- Autres définitions dépendantes de <TrajetCompose>

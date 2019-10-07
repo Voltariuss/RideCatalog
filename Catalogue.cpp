@@ -89,8 +89,8 @@ Collection Catalogue::RechercherParcoursSimple ( char * depart, char * arrivee )
 // Algorithme :
 //
 {
-  int nbTrajets = tableauTrajets.GetNbTrajets();
-  Trajet ** lesTrajets = tableauTrajets.GetLesTrajets();
+  int nbTrajets = collectionTrajets.GetNbTrajets();
+  Trajet ** lesTrajets = collectionTrajets.GetLesTrajets();
   Collection lesTrajetsFinaux;
 
   for (int i = 0; i < nbTrajets; i++)
@@ -110,9 +110,9 @@ Collection Catalogue::RechercherParcoursComplexe ( char * depart, char * arrivee
 // Algorithme :
 //
 {
-  int nbTrajets = tableauTrajets.GetNbTrajets(), nbDeparts;
+  int nbTrajets = collectionTrajets.GetNbTrajets(), nbDeparts;
   int iPointe, prochainIDispo, iMax;//, ajout;
-  Trajet ** lesTrajets = tableauTrajets.GetLesTrajets();
+  Trajet ** lesTrajets = collectionTrajets.GetLesTrajets();
   Collection * lesTrajetsPossibles, * tmpLesTrajetsPossibles, lesTrajetsFinaux;
 
   nbDeparts = 0;
