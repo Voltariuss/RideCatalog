@@ -41,7 +41,7 @@ bool TrajetCompose::operator == ( const TrajetCompose & trajet ) const
 //
 {
   Trajet *t1, *t2;
-cout << (trajet.tableauTrajets.GetNbTrajets());
+cout << (trajet.GetLesTrajets()->GetLesTrajets()[0]->GetVilleDepart()) << endl;
   // if(trajet.tableauTrajets.GetNbTrajets() != tableauTrajets.GetNbTrajets())
   //   return false;
   //

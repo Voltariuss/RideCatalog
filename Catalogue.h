@@ -11,7 +11,7 @@
 #define CATALOGUE_H
 
 //--------------------------------------------------- Interfaces utilisées
-#include "TableauTrajets.h"
+#include "Collection.h"
 
 //------------------------------------------------------------- Constantes
 
@@ -32,7 +32,7 @@ public:
     void Afficher ( ) const
     { Afficher(tableauTrajets); }
 
-    void Afficher ( const TableauTrajets & trajets ) const;
+    void Afficher ( const Collection & trajets ) const;
     // Mode d'emploi :
     //
     // Contrat :
@@ -41,7 +41,7 @@ public:
     int AjouterTrajet ( Trajet * trajet )
     { return tableauTrajets.AjouterTrajet(trajet); }
 
-    TableauTrajets RechercherParcours ( char *depart, char *arrivee ) const;
+    Collection RechercherParcours ( char *depart, char *arrivee ) const;
     // Mode d'emploi :
     //
     // Contrat :
@@ -60,7 +60,7 @@ protected:
 //----------------------------------------------------- Méthodes protégées
 
 //----------------------------------------------------- Attributs protégés
-    TableauTrajets tableauTrajets;
+    Collection tableauTrajets;
 
 };
 

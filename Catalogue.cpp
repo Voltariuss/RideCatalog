@@ -22,7 +22,7 @@ using namespace std;
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
-void Catalogue::Afficher ( const TableauTrajets & trajets ) const
+void Catalogue::Afficher ( const Collection & trajets ) const
 // Algorithme :
 //
 {
@@ -35,26 +35,26 @@ void Catalogue::Afficher ( const TableauTrajets & trajets ) const
 } //----- Fin de Afficher
 
 
-TableauTrajets Catalogue::RechercherParcours ( char * depart, char * arrivee ) const
+Collection Catalogue::RechercherParcours ( char * depart, char * arrivee ) const
 // Algorithme :
 //
 {
   int nbTrajets = tableauTrajets.GetNbTrajets();//, ajout;
   Trajet ** lesTrajets = tableauTrajets.GetLesTrajets();
-  TableauTrajets /* * lesTrajetsPossibles, */lesTrajetsFinaux;
+  Collection /* * lesTrajetsPossibles, */lesTrajetsFinaux;
   //
-  // lesTrajetsPossibles = new TableauTrajets[sizeof(TableauTrajets)*(pow(2, nbTrajets+1)-1)];
-  // lesTrajetsPossibles[0] = new TableauTrajets;
+  // lesTrajetsPossibles = new Collection[sizeof(Collection)*(pow(2, nbTrajets+1)-1)];
+  // lesTrajetsPossibles[0] = new Collection;
   // lesTrajetsPossibles[0].Ajouter(lesTrajets[0]);
   //
-  // lesTrajetsFinaux = new TableauTrajets;
+  // lesTrajetsFinaux = new Collection;
   // if(!strcmp(lesTrajets[0].GetVilleDepart(), depart) &&
   //    !strcmp(lesTrajets[0].GetVilleArrivee(), arrivee))
   // { lesTrajetsFinaux.Ajouter(lesTrajets[0]); }
   //
   // for(int i=1; i<nbTrajets; i++) {
   //   for(int j=pow(2, i)-1; j<pow(2, i+1)-1; j++) {
-  //     lesTrajetsPossibles[i] = new TableauTrajets;
+  //     lesTrajetsPossibles[i] = new Collection;
   //     lesTrajetsPossibles[i].Ajouter(lesTrajetsPossibles[(i-1)/2]);
   //     if(j%2 == 0 &&
   //        lesTrajetsPossibles[(i-1)/2].GetLesTrajets()[lesTrajetsPossibles[(i-1)/2]

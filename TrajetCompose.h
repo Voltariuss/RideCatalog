@@ -12,7 +12,7 @@
 
 //--------------------------------------------------- Interfaces utilisées
 #include "Trajet.h"
-#include "TableauTrajets.h"
+#include "Collection.h"
 
 //------------------------------------------------------------- Constantes
 
@@ -45,8 +45,8 @@ public:
     virtual char * GetVilleArrivee ( ) const
     { return tableauTrajets.GetLesTrajets()[tableauTrajets.GetNbTrajets()-1]->GetVilleArrivee(); }
 
-    TableauTrajets * GetLesTrajets ( )
-    { return &tableauTrajets; }
+    Collection * GetLesTrajets ( ) const
+    { return const_cast<Collection*>(&tableauTrajets); }
 
 //------------------------------------------------- Surcharge d'opérateurs
     bool operator == ( const TrajetCompose & trajet ) const;
@@ -62,7 +62,7 @@ protected:
 //----------------------------------------------------- Méthodes protégées
 
 //----------------------------------------------------- Attributs protégés
-    TableauTrajets tableauTrajets;
+    Collection tableauTrajets;
 
 };
 
