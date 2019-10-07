@@ -1,5 +1,5 @@
 /*************************************************************************
-    TrajetCompose  -  Classe représentant un trajet composé caractérisé 
+    TrajetCompose  -  Classe représentant un trajet composé caractérisé
       par une collection ordonnée de trajets (simples et/ou composés)
                              -------------------
     début                : 3/10/2019

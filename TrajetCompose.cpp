@@ -45,12 +45,12 @@ void TrajetCompose::Afficher() const
 //   unsigned int test = trajet.GetLesTrajets()->GetNbTrajets();
 //   cout << test << endl;
 // // cout << (trajet.GetLesTrajets()->GetNbTrajets()) << endl;
-//   // if(trajet.tableauTrajets.GetNbTrajets() != tableauTrajets.GetNbTrajets())
+//   // if(trajet.collectionTrajets.GetNbTrajets() != collectionTrajets.GetNbTrajets())
 //   //   return false;
 //   //
-//   // for(int i=0; i<tableauTrajets.GetNbTrajets(); i++) {
-//   //   t1 = trajet.tableauTrajets.GetLesTrajets()[i];
-//   //   t2 = tableauTrajets.GetLesTrajets()[i];
+//   // for(int i=0; i<collectionTrajets.GetNbTrajets(); i++) {
+//   //   t1 = trajet.collectionTrajets.GetLesTrajets()[i];
+//   //   t2 = collectionTrajets.GetLesTrajets()[i];
 //   //
 //   //   // Faire le second test (avec dynamic_cast) selon le type de t1 et t2
 //   //   // pour faciliter le tp, les trajets d'un trajet composé seront forcement

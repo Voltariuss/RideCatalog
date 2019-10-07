@@ -13,6 +13,8 @@
 #define CATALOGUE_H
 
 //--------------------------------------------------- Interfaces utilisées
+#include "TrajetSimple.h"
+#include "TrajetCompose.h"
 #include "Collection.h"
 
 //------------------------------------------------------------- Constantes

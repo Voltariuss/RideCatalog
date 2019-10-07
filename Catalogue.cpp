@@ -240,11 +240,11 @@ TrajetCompose *Catalogue::saisirTrajetCompose()
   {
     TrajetSimple *trajetSimple = saisirTrajetSimple();
 
-    if (strcmp(collection.GetDernierTrajet()->GetVilleArrivee, trajetSimple->GetVilleDepart))
+    if (strcmp(collection.GetDernierTrajet()->GetVilleArrivee(), trajetSimple->GetVilleDepart()))
     {
       collection.AjouterTrajet(trajetSimple);
 
-      if (collection.GetNbTrajets >= 2)
+      if (collection.GetNbTrajets() >= 2)
       {
         char reponse;
         cout << "Continuer la saisir ? (O/N) : ";
