@@ -1,5 +1,5 @@
 CCPP=g++
-CPPFLAGS=-Werror -Wall -DMAP
+CPPFLAGS=-ansi -pedantic -Wall -std=c++11 -DMAP
 LDFLAGS=
 EXEC=voyage
 SRC=Main.cpp Catalogue.cpp Collection.cpp Trajet.cpp TrajetSimple.cpp TrajetCompose.cpp
