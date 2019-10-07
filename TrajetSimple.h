@@ -6,11 +6,13 @@
     e-mail               : $EMAIL$
 *************************************************************************/
 
-//---------- Interface de la classe <TrajetSimple> (fichier TrajetSimple.h) ----------------
+//--------- Interface de la classe <TrajetSimple> (fichier TrajetSimple.h)
 #if ! defined ( TRAJETSIMPLE_H )
 #define TRAJETSIMPLE_H
 
 //--------------------------------------------------- Interfaces utilisées
+#include <iostream>
+#include "Trajet.h"
 
 //------------------------------------------------------------- Constantes
 
@@ -29,42 +31,30 @@ class TrajetSimple : public Trajet
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    char * GetVilleDepart ( ) { return villeDepart; };
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
+    virtual void Afficher ( ) const
+    {
+      cout << "Départ : " << villeDepart
+           << " Arrivée : " << villeArrivee
+           << " Moyen de Transport : " << moyenTransport;
+    }
 
-    char * GetVilleArrivee ( ) { return villeArrivee; };
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
+    virtual char * GetVilleDepart ( ) const
+    { return villeDepart; }
 
-    char * GetMoyenTransport ( ) { return moyenTransport; };
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
+    virtual char * GetVilleArrivee ( ) const
+    { return villeArrivee; }
 
+    typeTransport GetMoyenTransport ( ) const
+    { return moyenTransport; }
 
 //------------------------------------------------- Surcharge d'opérateurs
-    TrajetSimple & operator = ( const TrajetSimple & unTrajetSimple );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
+    bool operator == ( TrajetSimple & trajet );
 
+    bool operator != ( TrajetSimple & trajet )
+    { return !(*this == trajet); }
 
 //-------------------------------------------- Constructeurs - destructeur
-    TrajetSimple ( const TrajetSimple & unTrajetSimple );
-    // Mode d'emploi (constructeur de copie) :
-    //
-    // Contrat :
-    //
-
-    TrajetSimple ( char *depart, char *arrivee, typeTransport transport ),
-    villeDepart ( depart ), villeArrivee ( arrivee ), moyenTransport ( transport);
+    TrajetSimple ( char *depart, char *arrivee, typeTransport transport );
     // Mode d'emploi :
     //
     // Contrat :
@@ -82,12 +72,12 @@ protected:
 //----------------------------------------------------- Méthodes protégées
 
 //----------------------------------------------------- Attributs protégés
-char *villeDepart;
-char *villeArrivee;
-typeTransport moyenTransport = nullptr;
+    char *villeDepart;
+    char *villeArrivee;
+    typeTransport moyenTransport;
 
 };
 
-//-------------------------------- Autres définitions dépendantes de <TrajetSimple>
+//----------------------- Autres définitions dépendantes de <TrajetSimple>
 
 #endif // TRAJETSIMPLE_H

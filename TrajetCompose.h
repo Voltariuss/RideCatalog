@@ -6,11 +6,12 @@
     e-mail               : $EMAIL$
 *************************************************************************/
 
-//---------- Interface de la classe <TrajetCompose> (fichier TrajetCompose.h) ----------------
+//------- Interface de la classe <TrajetCompose> (fichier TrajetCompose.h)
 #if ! defined ( TRAJETCOMPOSE_H )
 #define TRAJETCOMPOSE_H
 
 //--------------------------------------------------- Interfaces utilisées
+#include "Trajet.h"
 #include "TableauTrajets.h"
 
 //------------------------------------------------------------- Constantes
@@ -29,39 +30,31 @@ class TrajetCompose : public Trajet
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    TableauTrajets GetLesTrajets ( ) { return tableauTrajets; };
+    int AjouterTrajet ( Trajet * trajet )
+    { return tableauTrajets.AjouterTrajet(trajet); }
+
+    virtual void Afficher ( ) const;
     // Mode d'emploi :
     //
     // Contrat :
     //
 
+    virtual char * GetVilleDepart ( ) const
+    { return tableauTrajets.GetLesTrajets()[0]->GetVilleDepart(); }
+
+    virtual char * GetVilleArrivee ( ) const
+    { return tableauTrajets.GetLesTrajets()[tableauTrajets.GetNbTrajets()-1]->GetVilleArrivee(); }
+
+    TableauTrajets * GetLesTrajets ( )
+    { return &tableauTrajets; }
 
 //------------------------------------------------- Surcharge d'opérateurs
-    TrajetCompose & operator = ( const TrajetCompose & unTrajetCompose );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
-
+    bool operator == ( const TrajetCompose & trajet ) const;
 
 //-------------------------------------------- Constructeurs - destructeur
-    TrajetCompose ( const TrajetCompose & unTrajetCompose );
-    // Mode d'emploi (constructeur de copie) :
-    //
-    // Contrat :
-    //
-
-    TrajetCompose ( ), tableauTrajets ( );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
+    TrajetCompose ( Trajet * t1, Trajet * t2 );
 
     virtual ~TrajetCompose ( );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
 
 //------------------------------------------------------------------ PRIVE
 
@@ -69,10 +62,10 @@ protected:
 //----------------------------------------------------- Méthodes protégées
 
 //----------------------------------------------------- Attributs protégés
-TableauTrajets tableauTrajets;
+    TableauTrajets tableauTrajets;
 
 };
 
-//-------------------------------- Autres définitions dépendantes de <TrajetCompose>
+//---------------------- Autres définitions dépendantes de <TrajetCompose>
 
 #endif // TRAJETCOMPOSE_H

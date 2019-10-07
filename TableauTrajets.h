@@ -6,7 +6,7 @@
     e-mail               : $EMAIL$
 *************************************************************************/
 
-//---------- Interface de la classe <TableauTrajets> (fichier TableauTrajets.h) ----------------
+//----- Interface de la classe <TableauTrajets> (fichier TableauTrajets.h)
 #if ! defined ( TABLEAUTRAJETS_H )
 #define TABLEAUTRAJETS_H
 
@@ -35,45 +35,33 @@ public:
     // Contrat :
     //
 
-    unsigned int GetNbTrajets ( ) { return nbTrajets; };
+    int AjouterTrajet ( TableauTrajets * trajets );
     // Mode d'emploi :
     //
     // Contrat :
     //
 
-    Trajet ** GetLesTrajets ( ) { return lesTrajets; };
+    bool Contient ( Trajet * trajet ) const;
     // Mode d'emploi :
     //
     // Contrat :
     //
 
+    unsigned int GetNbTrajets ( ) const
+    { return nbTrajets; };
+
+    unsigned int GetNbMaxTrajets ( ) const
+    { return taille; };
+
+    Trajet ** GetLesTrajets ( ) const
+    { return lesTrajets; };
 
 //------------------------------------------------- Surcharge d'opérateurs
-    TableauTrajets & operator = ( const TableauTrajets & unTableauTrajets );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
-
 
 //-------------------------------------------- Constructeurs - destructeur
-    TableauTrajets ( const TableauTrajets & unTableauTrajets );
-    // Mode d'emploi (constructeur de copie) :
-    //
-    // Contrat :
-    //
-
     TableauTrajets ( );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
 
     virtual ~TableauTrajets ( );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
 
 //------------------------------------------------------------------ PRIVE
 
@@ -85,19 +73,13 @@ protected:
     // Contrat :
     //
 
-    bool contient ( Trajet * trajet ) const;
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
-
 //----------------------------------------------------- Attributs protégés
     unsigned int nbTrajets;
     unsigned int taille;
-    Trajet **lesTrajets;
+    Trajet ** lesTrajets;
 
 };
 
-//-------------------------------- Autres définitions dépendantes de <TableauTrajets>
+//--------------------- Autres définitions dépendantes de <TableauTrajets>
 
 #endif // TABLEAUTRAJETS_H

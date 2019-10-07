@@ -6,7 +6,7 @@
     e-mail               : $EMAIL$
 *************************************************************************/
 
-//---------- Réalisation de la classe <TableauTrajets> (fichier TableauTrajets.cpp) ------------
+//- Réalisation de la classe <TableauTrajets> (fichier TableauTrajets.cpp)
 
 //---------------------------------------------------------------- INCLUDE
 
@@ -16,6 +16,8 @@ using namespace std;
 
 //------------------------------------------------------ Include personnel
 #include "TableauTrajets.h"
+#include "TrajetSimple.h"
+#include "TrajetCompose.h"
 
 //------------------------------------------------------------- Constantes
 #define TAILLE_INIT 100
@@ -29,6 +31,7 @@ int TableauTrajets::AjouterTrajet ( Trajet * trajet )
 {
   bool realloc = false;
 
+  if(Contient(trajet)) return 0;
   if(nbTrajets >= taille) realloc = reallocaction();
 
   lesTrajets[nbTrajets++] = trajet;
@@ -37,27 +40,52 @@ int TableauTrajets::AjouterTrajet ( Trajet * trajet )
 } //----- Fin de AjouterTrajet
 
 
-//------------------------------------------------- Surcharge d'opérateurs
-TableauTrajets & TableauTrajets::operator = ( const TableauTrajets & unTableauTrajets )
+int TableauTrajets::AjouterTrajet ( TableauTrajets * trajets )
 // Algorithme :
 //
 {
-} //----- Fin de operator =
+  bool realloc = false;
+  int nbTrajetsAjoutes = 0;
 
+  for(int i=0; i<trajets->GetNbTrajets(); i++) {
+    if(!Contient(trajets->GetLesTrajets()[i])) {
+      if(nbTrajets >= taille) realloc = reallocaction();
+
+      lesTrajets[nbTrajets++] = trajets->GetLesTrajets()[i];
+      nbTrajetsAjoutes++;
+    }
+  }
+
+  return realloc ? nbTrajetsAjoutes * -1 : nbTrajetsAjoutes;
+} //----- Fin de AjouterTrajet
+
+
+bool TableauTrajets::Contient ( Trajet * trajet ) const
+// Algorithme :
+//
+{
+  if(dynamic_cast<TrajetCompose*>(trajet)) cout << dynamic_cast<TrajetCompose*>(trajet)->GetLesTrajets()->GetNbTrajets();
+
+  for(int i=0; i<nbTrajets; i++) {
+    if(typeid(trajet) == typeid(lesTrajets[i])) {
+      if(dynamic_cast<TrajetSimple*>(trajet) &&
+         *dynamic_cast<TrajetSimple*>(trajet) == *dynamic_cast<TrajetSimple*>(lesTrajets[i]))
+      { return true; }
+      else if(dynamic_cast<TrajetCompose*>(trajet))// &&
+              //*dynamic_cast<TrajetCompose*>(trajet) == *dynamic_cast<TrajetCompose*>(lesTrajets[i]))
+      { return true; }
+    }
+  }
+
+  return false;
+} //----- Fin de Contient
+
+
+//------------------------------------------------- Surcharge d'opérateurs
 
 //-------------------------------------------- Constructeurs - destructeur
-TableauTrajets::TableauTrajets ( const TableauTrajets & unTableauTrajets )
-// Algorithme :
-//
-{
-  #ifdef MAP
-      cout << "Appel au constructeur de copie de <TableauTrajets>" << endl;
-  #endif
-} //----- Fin de TableauTrajets (constructeur de copie)
-
-
 TableauTrajets::TableauTrajets ( ) :
-    nbTrajets ( 0 ),
+    nbTrajets ( 0u ),
     taille ( TAILLE_INIT ),
     lesTrajets ( new Trajet * [TAILLE_INIT] )
 // Algorithme :
@@ -97,17 +125,5 @@ bool TableauTrajets::reallocaction ( )
 
   return true;
 } //----- Fin de reallocaction
-
-
-bool TableauTrajets::contient ( Trajet * trajet ) const
-// Algorithme :
-//
-{
-  for(int i=0; i<nbTrajets; i++)
-    // if(trajet == lesTrajets[i])
-      return true;
-
-  return false;
-} //----- Fin de contient
 
 //----------------------------------------------------- Méthodes protégées

@@ -11,6 +11,7 @@
 #define Trajet_H
 
 //--------------------------------------------------- Interfaces utilisées
+#include <cstring>
 
 //------------------------------------------------------------- Constantes
 
@@ -28,39 +29,21 @@ class Trajet
 
 public:
 //----------------------------------------------------- Méthodes publiques
-    // type Méthode ( liste des paramètres );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
+    virtual void Afficher ( ) const = 0;
 
+    virtual bool ArriveeEgalDepart ( const Trajet & trajet ) const
+    { return !strcmp(GetVilleArrivee(), trajet.GetVilleDepart()); }
+
+    virtual char * GetVilleDepart ( ) const = 0;
+
+    virtual char * GetVilleArrivee ( ) const = 0;
 
 //------------------------------------------------- Surcharge d'opérateurs
-    Trajet & operator = ( const Trajet & unTrajet );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
-
 
 //-------------------------------------------- Constructeurs - destructeur
-    Trajet ( const Trajet & unTrajet );
-    // Mode d'emploi (constructeur de copie) :
-    //
-    // Contrat :
-    //
-
     Trajet ( );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
 
     virtual ~Trajet ( );
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
 
 //------------------------------------------------------------------ PRIVE
 

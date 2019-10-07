@@ -6,13 +6,14 @@
     e-mail               : $EMAIL$
 *************************************************************************/
 
-//---------- Réalisation de la classe <TrajetSimple> (fichier TrajetSimple.cpp) ------------
+//----- Réalisation de la classe <TrajetSimple> (fichier TrajetSimple.cpp)
 
 //---------------------------------------------------------------- INCLUDE
 
 //-------------------------------------------------------- Include système
 using namespace std;
 #include <iostream>
+#include <cstring>
 
 //------------------------------------------------------ Include personnel
 #include "TrajetSimple.h"
@@ -22,39 +23,27 @@ using namespace std;
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
-// type TrajetSimple::Méthode ( liste des paramètres )
-// Algorithme :
-//
-//{
-//} //----- Fin de Méthode
-
 
 //------------------------------------------------- Surcharge d'opérateurs
-TrajetSimple & TrajetSimple::operator = ( const TrajetSimple & unTrajetSimple )
-// Algorithme :
-//
+bool TrajetSimple::operator == ( TrajetSimple & trajet )
 {
-} //----- Fin de operator =
-
+  return !strcmp(villeDepart, trajet.villeDepart) &&
+         !strcmp(villeArrivee, trajet.villeArrivee) &&
+         moyenTransport == trajet.moyenTransport;
+} //----- Fin de operator ==
 
 //-------------------------------------------- Constructeurs - destructeur
-TrajetSimple::TrajetSimple ( const TrajetSimple & unTrajetSimple )
+TrajetSimple::TrajetSimple ( char *depart, char *arrivee, typeTransport transport ):
+    moyenTransport ( transport )
 // Algorithme :
 //
 {
-#ifdef MAP
-    cout << "Appel au constructeur de copie de <TrajetSimple>" << endl;
-#endif
-} //----- Fin de TrajetSimple (constructeur de copie)
+  #ifdef MAP
+      cout << "Appel au constructeur de <TrajetSimple>" << endl;
+  #endif
 
-
-TrajetSimple::TrajetSimple ( )
-// Algorithme :
-//
-{
-#ifdef MAP
-    cout << "Appel au constructeur de <TrajetSimple>" << endl;
-#endif
+  villeDepart = depart;
+  villeArrivee = arrivee;
 } //----- Fin de TrajetSimple
 
 
@@ -62,9 +51,9 @@ TrajetSimple::~TrajetSimple ( )
 // Algorithme :
 //
 {
-#ifdef MAP
-    cout << "Appel au destructeur de <TrajetSimple>" << endl;
-#endif
+  #ifdef MAP
+      cout << "Appel au destructeur de <TrajetSimple>" << endl;
+  #endif
 } //----- Fin de ~TrajetSimple
 
 
