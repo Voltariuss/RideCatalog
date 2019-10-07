@@ -47,11 +47,11 @@ public:
     virtual char * GetVilleArrivee ( ) const
     { return tableauTrajets.GetLesTrajets()[tableauTrajets.GetNbTrajets()-1]->GetVilleArrivee(); }
 
-    Collection * GetLesTrajets ( ) const
-    { return const_cast<Collection*>(&tableauTrajets); }
+    Collection * GetLesTrajets ( )
+    { return &tableauTrajets; }
 
 //------------------------------------------------- Surcharge d'opérateurs
-    bool operator == ( const TrajetCompose & trajet ) const;
+    // bool operator == ( const TrajetCompose & trajet ) const;
 
 //-------------------------------------------- Constructeurs - destructeur
     TrajetCompose ( Trajet * t1, Trajet * t2 );

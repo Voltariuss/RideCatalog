@@ -31,9 +31,9 @@ Trajet::Trajet ( )
 // Algorithme :
 //
 {
-#ifdef MAP
-    cout << "Appel au constructeur de <Trajet>" << endl;
-#endif
+  #ifdef MAP
+      cout << "Appel au constructeur de <Trajet>" << endl;
+  #endif
 } //----- Fin de Trajet
 
 
@@ -41,9 +41,9 @@ Trajet::~Trajet ( )
 // Algorithme :
 //
 {
-#ifdef MAP
-    cout << "Appel au destructeur de <Trajet>" << endl;
-#endif
+  #ifdef MAP
+      cout << "Appel au destructeur de <Trajet>" << endl;
+  #endif
 } //----- Fin de ~Trajet
 
 

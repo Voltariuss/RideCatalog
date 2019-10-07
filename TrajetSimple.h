@@ -50,10 +50,10 @@ public:
     { return moyenTransport; }
 
 //------------------------------------------------- Surcharge d'opérateurs
-    bool operator == ( TrajetSimple & trajet );
-
-    bool operator != ( TrajetSimple & trajet )
-    { return !(*this == trajet); }
+    // bool operator == ( TrajetSimple & trajet );
+    //
+    // bool operator != ( TrajetSimple & trajet )
+    // { return !(*this == trajet); }
 
 //-------------------------------------------- Constructeurs - destructeur
     TrajetSimple ( char *depart, char *arrivee, TypeTransport transport );

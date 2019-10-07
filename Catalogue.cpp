@@ -1,5 +1,5 @@
 /*************************************************************************
-    Catalogue  -  Classe représentant un catalogue contenant l'ensemble 
+    Catalogue  -  Classe représentant un catalogue contenant l'ensemble
                         des trajets de l'application
                              -------------------
     début                : 3/10/2019
@@ -82,48 +82,16 @@ void Catalogue::Afficher(const Collection &trajets) const
     trajets.GetLesTrajets()[i]->Afficher();
     cout << endl;
   }
-  cout << "NbTrajets : " << trajets.GetNbTrajets() << " NbTrajetsMax : " << trajets.GetNbMaxTrajets();
 } //----- Fin de Afficher
 
-Collection Catalogue::RechercherParcours(char *depart, char *arrivee) const
+
+Collection Catalogue::RechercherParcoursSimple ( char * depart, char * arrivee ) const
 // Algorithme :
 //
 {
-  int nbTrajets = collectionTrajets.GetNbTrajets(); //, ajout;
-  Trajet **lesTrajets = collectionTrajets.GetLesTrajets();
-  Collection /* * lesTrajetsPossibles, */ lesTrajetsFinaux;
-  //
-  // lesTrajetsPossibles = new Collection[sizeof(Collection)*(pow(2, nbTrajets+1)-1)];
-  // lesTrajetsPossibles[0] = new Collection;
-  // lesTrajetsPossibles[0].Ajouter(lesTrajets[0]);
-  //
-  // lesTrajetsFinaux = new Collection;
-  // if(!strcmp(lesTrajets[0].GetVilleDepart(), depart) &&
-  //    !strcmp(lesTrajets[0].GetVilleArrivee(), arrivee))
-  // { lesTrajetsFinaux.Ajouter(lesTrajets[0]); }
-  //
-  // for(int i=1; i<nbTrajets; i++) {
-  //   for(int j=pow(2, i)-1; j<pow(2, i+1)-1; j++) {
-  //     lesTrajetsPossibles[i] = new Collection;
-  //     lesTrajetsPossibles[i].Ajouter(lesTrajetsPossibles[(i-1)/2]);
-  //     if(j%2 == 0 &&
-  //        lesTrajetsPossibles[(i-1)/2].GetLesTrajets()[lesTrajetsPossibles[(i-1)/2]
-  //                                    .GetNbTrajets()-1]
-  //                                    .ArriveeEgalDepart(lesTrajets[i]))
-  //     {
-  //       ajout = lesTrajetsPossibles[i].Ajouter(lesTrajets[i]);
-  //       if(ajout && !strcmp(lesTrajetsPossibles[i].GetLesTrajets()[0]
-  //                                                 .GetVilleDepart(), depart) &&
-  //          !strcmp(lesTrajetsPossibles[i].GetLesTrajets()[lesTrajetsPossibles[i]
-  //                                        .GetNbTrajets()-1]
-  //                                        .GetVilleArrivee(), arrivee))
-  //       { lesTrajetsFinaux.Ajouter(lesTrajetsPossibles[i]); }
-  //     }
-  //   }
-  // }
-  //
-  // for(i=0; i<pow(2, nbTrajets+1)-1; i++) { delete lesTrajetsPossibles[i]; }
-  // delete[] lesTrajetsPossibles;
+  int nbTrajets = tableauTrajets.GetNbTrajets();
+  Trajet ** lesTrajets = tableauTrajets.GetLesTrajets();
+  Collection lesTrajetsFinaux;
 
   for (int i = 0; i < nbTrajets; i++)
   {
@@ -132,6 +100,59 @@ Collection Catalogue::RechercherParcours(char *depart, char *arrivee) const
     {
       lesTrajetsFinaux.AjouterTrajet(lesTrajets[i]);
     }
+  }
+
+  return lesTrajetsFinaux;
+} //----- Fin de RechercherParcours
+
+
+Collection Catalogue::RechercherParcoursComplexe ( char * depart, char * arrivee ) const
+// Algorithme :
+//
+{
+  int nbTrajets = tableauTrajets.GetNbTrajets(), nbDeparts;
+  int iPointe, prochainIDispo, iMax;//, ajout;
+  Trajet ** lesTrajets = tableauTrajets.GetLesTrajets();
+  Collection * lesTrajetsPossibles, * tmpLesTrajetsPossibles, lesTrajetsFinaux;
+
+  nbDeparts = 0;
+  iMax = nbTrajets;
+  lesTrajetsPossibles = new Collection[sizeof(Collection)*iMax];
+  for(int i=0; i<nbTrajets; i++) {
+    if(!strcmp(lesTrajets[0]->GetVilleDepart(), depart)) {
+      // lesTrajetsPossibles = new Collection;
+      lesTrajetsPossibles[nbDeparts++].AjouterTrajet(lesTrajets[i]);
+    }
+  }
+
+  iPointe = 0;
+  prochainIDispo = nbDeparts;
+  while(iPointe != prochainIDispo) {
+    for(int i=0; i<nbTrajets; i++) {
+      // Si ville arrivée du trajet pointé est différent de l'arrivée voulue
+      // et ville arrivée du trajet pointé est égale à ville départ trajet i
+      if(strcmp(lesTrajetsPossibles[iPointe].GetLesTrajets()[lesTrajetsPossibles[iPointe].GetNbTrajets()-1]->GetVilleArrivee(), arrivee) &&
+         !strcmp(lesTrajetsPossibles[iPointe].GetLesTrajets()[lesTrajetsPossibles[iPointe].GetNbTrajets()-1]->GetVilleArrivee(), lesTrajets[i]->GetVilleDepart())) {
+        if(prochainIDispo == iMax) {
+          tmpLesTrajetsPossibles = new Collection[sizeof(Collection)*iMax*2];
+          for(int j=0; j<iMax; j++)
+          { tmpLesTrajetsPossibles[j] = lesTrajetsPossibles[j]; }
+          iMax *= 2;
+          delete[] lesTrajetsPossibles;
+          lesTrajetsPossibles = tmpLesTrajetsPossibles;
+        }
+        // lesTrajetsPossibles[prochainIDispo] = new Collection;
+        lesTrajetsPossibles[prochainIDispo].AjouterTrajet(&lesTrajetsPossibles[iPointe]);
+        lesTrajetsPossibles[prochainIDispo].AjouterTrajet(lesTrajets[i]);
+        prochainIDispo++;
+      }
+    }
+    iPointe++;
+  }
+
+  for(int i=0; i<prochainIDispo; i++) {
+    if(!strcmp(lesTrajetsPossibles[i].GetLesTrajets()[lesTrajetsPossibles[iPointe].GetNbTrajets()-1]->GetVilleArrivee(), arrivee))
+    { lesTrajetsFinaux.AjouterTrajet(&lesTrajetsPossibles[i]); }
   }
 
   return lesTrajetsFinaux;

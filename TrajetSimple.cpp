@@ -27,12 +27,12 @@ using namespace std;
 //----------------------------------------------------- Méthodes publiques
 
 //------------------------------------------------- Surcharge d'opérateurs
-bool TrajetSimple::operator == ( TrajetSimple & trajet )
-{
-  return !strcmp(villeDepart, trajet.villeDepart) &&
-         !strcmp(villeArrivee, trajet.villeArrivee) &&
-         moyenTransport == trajet.moyenTransport;
-} //----- Fin de operator ==
+// bool TrajetSimple::operator == ( TrajetSimple & trajet )
+// {
+//   return !strcmp(villeDepart, trajet.villeDepart) &&
+//          !strcmp(villeArrivee, trajet.villeArrivee) &&
+//          moyenTransport == trajet.moyenTransport;
+// } //----- Fin de operator ==
 
 //-------------------------------------------- Constructeurs - destructeur
 TrajetSimple::TrajetSimple ( char *depart, char *arrivee, TypeTransport transport ):
@@ -44,8 +44,8 @@ TrajetSimple::TrajetSimple ( char *depart, char *arrivee, TypeTransport transpor
       cout << "Appel au constructeur de <TrajetSimple>" << endl;
   #endif
 
-  villeDepart = depart;
-  villeArrivee = arrivee;
+  strcpy(villeDepart, depart);
+  strcpy(villeArrivee, arrivee);
 } //----- Fin de TrajetSimple
 
 
@@ -56,6 +56,9 @@ TrajetSimple::~TrajetSimple ( )
   #ifdef MAP
       cout << "Appel au destructeur de <TrajetSimple>" << endl;
   #endif
+
+  delete[] villeDepart;
+  delete[] villeArrivee;
 } //----- Fin de ~TrajetSimple
 
 

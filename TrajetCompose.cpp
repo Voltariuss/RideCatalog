@@ -1,5 +1,5 @@
 /*************************************************************************
-    TrajetCompose  -  Classe représentant un trajet composé caractérisé 
+    TrajetCompose  -  Classe représentant un trajet composé caractérisé
       par une collection ordonnée de trajets (simples et/ou composés)
                              -------------------
     début                : 3/10/2019
@@ -34,33 +34,34 @@ void TrajetCompose::Afficher() const
     cout << (i ? " - " : "");
     collection.GetLesTrajets()[i]->Afficher();
   }
-  cout << endl;
 } //----- Fin de Afficher
 
 //------------------------------------------------- Surcharge d'opérateurs
-bool TrajetCompose::operator==(const TrajetCompose &trajet) const
-// Algorithme :
+// bool TrajetCompose::operator == ( const TrajetCompose & trajet ) const
+// // Algorithme :
+// //
+// {
+//   Trajet *t1, *t2;
+//   unsigned int test = trajet.GetLesTrajets()->GetNbTrajets();
+//   cout << test << endl;
+// // cout << (trajet.GetLesTrajets()->GetNbTrajets()) << endl;
+//   // if(trajet.tableauTrajets.GetNbTrajets() != tableauTrajets.GetNbTrajets())
+//   //   return false;
+//   //
+//   // for(int i=0; i<tableauTrajets.GetNbTrajets(); i++) {
+//   //   t1 = trajet.tableauTrajets.GetLesTrajets()[i];
+//   //   t2 = tableauTrajets.GetLesTrajets()[i];
+//   //
+//   //   // Faire le second test (avec dynamic_cast) selon le type de t1 et t2
+//   //   // pour faciliter le tp, les trajets d'un trajet composé seront forcement
+//   //   // des trajets simple.
+//   //   if(typeid(&t1) != typeid(t2) &&
+//   //      *dynamic_cast<TrajetSimple*>(t1) != *dynamic_cast<TrajetSimple*>(t2))
+//   //     return false;
+//   // }
 //
-{
-  Trajet *t1, *t2;
-  cout << (trajet.GetLesTrajets()->GetLesTrajets()[0]->GetVilleDepart()) << endl;
-  // if(trajet.tableauTrajets.GetNbTrajets() != tableauTrajets.GetNbTrajets())
-  //   return false;
-  //
-  // for(int i=0; i<tableauTrajets.GetNbTrajets(); i++) {
-  //   t1 = trajet.tableauTrajets.GetLesTrajets()[i];
-  //   t2 = tableauTrajets.GetLesTrajets()[i];
-  //
-  //   // Faire le second test (avec dynamic_cast) selon le type de t1 et t2
-  //   // pour faciliter le tp, les trajets d'un trajet composé seront forcement
-  //   // des trajets simple.
-  //   if(typeid(&t1) != typeid(t2) &&
-  //      *dynamic_cast<TrajetSimple*>(t1) != *dynamic_cast<TrajetSimple*>(t2))
-  //     return false;
-  // }
-
-  return true;
-} //----- Fin de operator ==
+//   return true;
+// } //----- Fin de operator ==
 
 //-------------------------------------------- Constructeurs - destructeur
 TrajetCompose::TrajetCompose(Trajet *t1, Trajet *t2) : collection()

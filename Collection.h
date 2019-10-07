@@ -1,5 +1,5 @@
 /*************************************************************************
-    Collection  -  Structure de données permettant de gérer le stockage 
+    Collection  -  Structure de données permettant de gérer le stockage
           et les interactions avec les trajets de l'application
                              -------------------
     début                : 3/10/2019
@@ -42,7 +42,7 @@ public:
     // Contrat :
     //
 
-    bool Contient(Trajet *trajet) const;
+    // bool Contient ( Trajet * trajet ) const;
     // Mode d'emploi :
     //
     // Contrat :
@@ -58,7 +58,7 @@ public:
         {
             return nullptr;
         }
-        
+
     }
 
     Trajet *GetDernierTrajet() const
@@ -71,7 +71,7 @@ public:
         {
             return nullptr;
         }
-        
+
     }
 
     unsigned int GetNbTrajets() const

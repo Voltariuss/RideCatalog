@@ -1,5 +1,5 @@
 /*************************************************************************
-    Catalogue  -  Classe représentant un catalogue contenant l'ensemble 
+    Catalogue  -  Classe représentant un catalogue contenant l'ensemble
                         des trajets de l'application
                              -------------------
     début                : 3/10/2019
@@ -49,7 +49,13 @@ public:
         return collectionTrajets.AjouterTrajet(trajet);
     }
 
-    Collection RechercherParcours(char *depart, char *arrivee) const;
+    Collection RechercherParcoursSimple ( char *depart, char *arrivee ) const;
+    // Mode d'emploi :
+    //
+    // Contrat :
+    //
+
+    Collection RechercherParcoursComplexe ( char *depart, char *arrivee ) const;
     // Mode d'emploi :
     //
     // Contrat :

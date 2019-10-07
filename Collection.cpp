@@ -1,5 +1,5 @@
 /*************************************************************************
-    Collection  -  Structure de données permettant de gérer le stockage 
+    Collection  -  Structure de données permettant de gérer le stockage
           et les interactions avec les trajets de l'application
                              -------------------
     début                : 3/10/2019
@@ -33,8 +33,8 @@ int Collection::AjouterTrajet(Trajet *trajet)
 {
   bool realloc = false;
 
-  if (nbTrajets >= taille)
-    realloc = reallocaction();
+  // if(Contient(trajet)) return 0;
+  if(nbTrajets >= taille) realloc = reallocaction();
 
   lesTrajets[nbTrajets++] = trajet;
 
@@ -46,49 +46,40 @@ int Collection::AjouterTrajet(Collection *trajets)
 //
 {
   bool realloc = false;
-  int nbTrajetsAjoutes = 0;
+  // int nbTrajetsAjoutes = 0;
 
-  for (int i = 0; i < trajets->GetNbTrajets(); i++)
-  {
-    if (!Contient(trajets->GetLesTrajets()[i]))
-    {
-      if (nbTrajets >= taille)
-        realloc = reallocaction();
+  for(int i=0; i<trajets->GetNbTrajets(); i++) {
+    // if(!Contient(trajets->GetLesTrajets()[i])) {
+      if(nbTrajets >= taille) realloc = reallocaction();
 
       lesTrajets[nbTrajets++] = trajets->GetLesTrajets()[i];
-      nbTrajetsAjoutes++;
-    }
+      // nbTrajetsAjoutes++;
+    // }
   }
 
-  return realloc ? nbTrajetsAjoutes * -1 : nbTrajetsAjoutes;
+  return realloc ? trajets->GetNbTrajets() * -1 : trajets->GetNbTrajets();
 } //----- Fin de AjouterTrajet
 
-bool Collection::Contient(Trajet *trajet) const
-// Algorithme :
+
+// bool Collection::Contient ( Trajet * trajet ) const
+// // Algorithme :
+// //
+// {
+//   if(dynamic_cast<TrajetCompose*>(trajet)) cout << "NbTrajets : " << (*dynamic_cast<TrajetCompose*>(trajet)).GetLesTrajets()->GetNbTrajets() << endl;
 //
-{
-  if (dynamic_cast<TrajetCompose *>(trajet))
-    cout << (*dynamic_cast<TrajetCompose *>(trajet)).GetLesTrajets()->GetNbTrajets() << endl;
-
-  for (int i = 0; i < nbTrajets; i++)
-  {
-    if (typeid(trajet) == typeid(lesTrajets[i]))
-    {
-      if (dynamic_cast<TrajetSimple *>(trajet) &&
-          *dynamic_cast<TrajetSimple *>(trajet) == *dynamic_cast<TrajetSimple *>(lesTrajets[i]))
-      {
-        return true;
-      }
-      else if (dynamic_cast<TrajetCompose *>(trajet) &&
-               (*dynamic_cast<TrajetCompose *>(trajet)) == (*dynamic_cast<TrajetCompose *>(lesTrajets[i])))
-      {
-        return true;
-      }
-    }
-  }
-
-  return false;
-} //----- Fin de Contient
+//   for(int i=0; i<nbTrajets; i++) {
+//     if(typeid(trajet) == typeid(lesTrajets[i])) {
+//       if(dynamic_cast<TrajetSimple*>(trajet) &&
+//          *dynamic_cast<TrajetSimple*>(trajet) == *dynamic_cast<TrajetSimple*>(lesTrajets[i]))
+//       { return true; }
+//       else if(dynamic_cast<TrajetCompose*>(trajet) &&
+//               *dynamic_cast<TrajetCompose*>(trajet) == *dynamic_cast<TrajetCompose*>(lesTrajets[i]))
+//       { return true; }
+//     }
+//   }
+//
+//   return false;
+// } //----- Fin de Contient
 
 //------------------------------------------------- Surcharge d'opérateurs
 
@@ -108,9 +99,12 @@ Collection::~Collection()
 // Algorithme :
 //
 {
-#ifdef MAP
-  cout << "Appel au destructeur de <Collection>" << endl;
-#endif
+  #ifdef MAP
+      cout << "Appel au destructeur de <Collection>" << endl;
+  #endif
+
+  for(int i=0; i<nbTrajets; i++) { delete lesTrajets[i]; }
+  delete[] lesTrajets;
 } //----- Fin de ~Collection
 
 //------------------------------------------------------------------ PRIVE
