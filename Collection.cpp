@@ -33,8 +33,6 @@ int Collection::AjouterTrajet(Trajet *trajet)
 {
   bool realloc = false;
 
-  if (Contient(trajet))
-    return 0;
   if (nbTrajets >= taille)
     realloc = reallocaction();
 
