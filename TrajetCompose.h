@@ -1,9 +1,11 @@
 /*************************************************************************
-                           TrajetCompose  -  description
+    TrajetCompose  -  Classe représentant un trajet composé caractérisé 
+      par une collection ordonnée de trajets (simples et/ou composés)
                              -------------------
-    début                : $DATE$
-    copyright            : (C) $YEAR$ par $AUTHOR$
-    e-mail               : $EMAIL$
+    début                : 3/10/2019
+    copyright            : (C) 2019 par Nel BOUVIER & Loïc DUBOIS-TERMOZ
+    e-mail               : nel.bouvier@insa-lyon.fr
+                           loic.dubois-termoz@insa-lyon.fr
 *************************************************************************/
 
 //------- Interface de la classe <TrajetCompose> (fichier TrajetCompose.h)
