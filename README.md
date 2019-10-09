@@ -10,7 +10,7 @@ La réalisation de cette application a été soumise à des contraintes de réal
 Pour s'assurer de de l'absence de fuite de mémoire nous avons utilisé l'outil "valgrind".
 
 ### Mon binôme
-- Nel BOUVIER
+- [Nel BOUVIER](https://github.com/nbouvier)
 
 ## Les fonctionnalités de l'application
 - Ajout de trajets dans la structure de données créée (un simple tableau dynamique) ;
