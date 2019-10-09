@@ -20,48 +20,97 @@ using namespace std;
 //------------------------------------------------------ Include personnel
 #include "TrajetSimple.h"
 
-//------------------------------------------------------------- Constantes
-
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
+void TrajetSimple::Afficher(const char *indents) const
+// Algorithme :
+//      Affiche le trajet simple en prenant en compte l'indentation
+//      spécifiée et en convertissant le type de transport en
+//      chaîne de caractères.
+{
+    const char *typeTransportStr[] = {"AUTO", "AVION", "BATEAU", "TRAIN"};
 
-//------------------------------------------------- Surcharge d'opérateurs
-// bool TrajetSimple::operator == ( TrajetSimple & trajet )
-// {
-//   return !strcmp(villeDepart, trajet.villeDepart) &&
-//          !strcmp(villeArrivee, trajet.villeArrivee) &&
-//          moyenTransport == trajet.moyenTransport;
-// } //----- Fin de operator ==
+    cout << indents << "Trajet simple" << endl;
+    cout << indents << "\tVille de départ : " << villeDepart << endl;
+    cout << indents << "\tVille d'arrivée : " << villeArrivee << endl;
+    cout << indents << "\tMoyen de transport : "
+         << typeTransportStr[typeTransport] << endl;
+    cout << endl;
+} //----- Fin de Afficher
+
+char *TrajetSimple::GetVilleDepart() const
+// Algorithme :
+//      Retourne le nom de la ville de départ du trajet simple.
+{
+    return villeDepart;
+} //----- Fin de GetVilleDepart
+
+char *TrajetSimple::GetVilleArrivee() const
+// Algorithme :
+//      Retourne le nom de la ville d'arrivée du trajet simple.
+{
+    return villeArrivee;
+} //----- Fin de GetVilleArrivee
+
+TypeTransport TrajetSimple::GetTypeTransport() const
+// Algorithme :
+//      Retourne le moyen de transport du trajet simple.
+{
+    return typeTransport;
+} //----- Fin de GetMoyenTransport
+
+Trajet *TrajetSimple::Clone() const
+{
+    return new TrajetSimple(*this);
+}
+
+unsigned int TrajetSimple::GetNbInstance()
+{
+    return nbInstance;
+}
 
 //-------------------------------------------- Constructeurs - destructeur
-TrajetSimple::TrajetSimple ( char *depart, char *arrivee, TypeTransport transport ):
-    moyenTransport ( transport )
-// Algorithme :
-//
+TrajetSimple::TrajetSimple(char *depart, char *arrivee,
+                           TypeTransport transport) : villeDepart(depart),
+                                                      villeArrivee(arrivee),
+                                                      typeTransport(transport)
 {
-  #ifdef MAP
-      cout << "Appel au constructeur de <TrajetSimple>" << endl;
-  #endif
-
-  strcpy(villeDepart, depart);
-  strcpy(villeArrivee, arrivee);
+    nbInstance++;
+#ifdef MAP
+    cout << "Appel au constructeur de <TrajetSimple> (total : "
+         << GetNbInstance() << " instances)" << endl;
+#endif
 } //----- Fin de TrajetSimple
 
-
-TrajetSimple::~TrajetSimple ( )
-// Algorithme :
-//
+TrajetSimple::TrajetSimple(const TrajetSimple &trajetSimple)
+    : villeDepart(new char[TAILLE_CHAINE]),
+      villeArrivee(new char[TAILLE_CHAINE]),
+      typeTransport(trajetSimple.GetTypeTransport())
 {
-  #ifdef MAP
-      cout << "Appel au destructeur de <TrajetSimple>" << endl;
-  #endif
+    nbInstance++;
+#ifdef MAP
+    cout << "Appel au constructeur de copie de <TrajetSimple> (total : "
+         << GetNbInstance() << " instances)" << endl;
+#endif
+    char *depart = trajetSimple.GetVilleDepart();
+    strncpy(villeDepart, depart, strlen(depart) + 1);
+    char *arrivee = trajetSimple.GetVilleArrivee();
+    strncpy(villeArrivee, arrivee, strlen(arrivee) + 1);
+}
 
-  delete[] villeDepart;
-  delete[] villeArrivee;
+TrajetSimple::~TrajetSimple()
+{
+    nbInstance--;
+#ifdef MAP
+    cout << "Appel au destructeur de <TrajetSimple> (total : "
+         << GetNbInstance() << " instances restantes)" << endl;
+#endif
+    delete[] villeDepart;
+    delete[] villeArrivee;
 } //----- Fin de ~TrajetSimple
 
+//-------------------------------------------------------------- PROTECTED
 
-//------------------------------------------------------------------ PRIVE
-
-//----------------------------------------------------- Méthodes protégées
+//----------------------------------------------------- Attributs protégés
+unsigned int TrajetSimple::nbInstance = 0;

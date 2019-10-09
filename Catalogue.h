@@ -17,73 +17,59 @@
 #include "TrajetCompose.h"
 #include "Collection.h"
 
-//------------------------------------------------------------- Constantes
-
-//------------------------------------------------------------------ Types
-
 //------------------------------------------------------------------------
 // Rôle de la classe <Catalogue>
-//
-//
+//      Gestion du catalogue comportant la liste des trajets simples
+//      et composés de l'application avec la possibilité d'en saisir,
+//      d'afficher la liste actuelle ou de faire une recherche de
+//      parcours pour aller d'un point A à un point B.
 //------------------------------------------------------------------------
 
 class Catalogue
 {
-    //----------------------------------------------------------------- PUBLIC
-
+    //------------------------------------------------------------- PUBLIC
 public:
-    //----------------------------------------------------- Méthodes publiques
+    //------------------------------------------------- Méthodes publiques
     void SaisirTrajet();
-
-    void Afficher() const
-    {
-        Afficher(collectionTrajets);
-    }
-
-    void Afficher(const Collection &trajets) const;
     // Mode d'emploi :
-    //
-    // Contrat :
-    //
-
-    int AjouterTrajet(Trajet *trajet)
-    {
-        return collectionTrajets.AjouterTrajet(trajet);
-    }
-
-    Collection RechercherParcoursSimple ( char *depart, char *arrivee ) const;
+    //      Demande à l'utilisateur de saisir un trajet pour l'ajouter
+    //      ensuite dans le catalogue.
+    void Afficher(Collection *collection = nullptr) const;
     // Mode d'emploi :
-    //
-    // Contrat :
-    //
-
-    Collection RechercherParcoursComplexe ( char *depart, char *arrivee ) const;
+    //      Affiche la liste des trajets de la collection spécifiée. Si la
+    //      la collection est égale à nullptr, alors la méthode affichera
+    //      la collection du catalogue.
+    Collection *RechercherParcoursSimple(char *depart, char *arrivee) const;
     // Mode d'emploi :
-    //
+    //      Effectue une recherche simple de parcours et retourne la
+    //      collection de trajets correspondant au résultat de la
+    //      recherche.
     // Contrat :
-    //
-
-    //------------------------------------------------- Surcharge d'opérateurs
-
-    //-------------------------------------------- Constructeurs - destructeur
+    //      depart et arrivee doivent être différents de nullptr.
+    Collection *RechercherParcoursAvancee(char *depart, char *arrivee) const;
+    // Mode d'emploi :
+    //      Effectue une recherche avancée de parcours et retourne la
+    //      collection de trajets correspondant au résultat de la
+    //      recherche.
+    // Contrat :
+    //      depart et arrivee doivent être différents de nullptr.
+    //---------------------------------------- Constructeurs - destructeur
     Catalogue();
-
     virtual ~Catalogue();
 
-    //-------------------------------------------------------------- PROTECTED
-
+    //---------------------------------------------------------- PROTECTED
 protected:
-    //----------------------------------------------------- Méthodes protégées
-
-    //----------------------------------------------------- Attributs protégés
-    Collection collectionTrajets;
-
-    //------------------------------------------------------------------ PRIVE
-private:
+    //------------------------------------------------- Méthodes protégées
     TrajetSimple *saisirTrajetSimple();
     TrajetCompose *saisirTrajetCompose();
+    void rechercherParcoursAvanceeWorker(const char *depart,
+                                         const char *arrivee,
+                                         const TrajetCompose &trajetCompose,
+                                         const unsigned int *trajetsUtilises,
+                                         const unsigned int nbTrajetsUtilises,
+                                         Collection &trajetsFinaux) const;
+    //------------------------------------------------- Attributs protégés
+    Collection *collectionTrajets;
 };
-
 //-------------------------- Autres définitions dépendantes de <Catalogue>
-
 #endif // CATALOGUE_H

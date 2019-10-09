@@ -8,109 +8,66 @@
                            loic.dubois-termoz@insa-lyon.fr
 *************************************************************************/
 
-//----- Interface de la classe <Collection> (fichier Collection.h)
+//------------- Interface de la classe <Collection> (fichier Collection.h)
 #if !defined(TABLEAUTRAJETS_H)
 #define TABLEAUTRAJETS_H
 
 //--------------------------------------------------- Interfaces utilisées
 #include "Trajet.h"
 
-//------------------------------------------------------------- Constantes
-
-//------------------------------------------------------------------ Types
-
 //------------------------------------------------------------------------
 // Rôle de la classe <Collection>
-//
+//      Permet la gestion de la structure de données permettant de stocker
+//      une liste de trajets correspondant soit à l'ensemble du catalogue,
+//      soit à un trajet composé.
 //
 //------------------------------------------------------------------------
 
 class Collection
 {
-//----------------------------------------------------------------- PUBLIC
+    //------------------------------------------------------------- PUBLIC
 public:
     //------------------------------------------------- Méthodes publiques
     int AjouterTrajet(Trajet *trajet);
     // Mode d'emploi :
-    //
+    //      Ajoute un trajet dans la collection.
     // Contrat :
-    //
-
-    int AjouterTrajet(Collection *trajets);
+    //      Le trajet doit être différent de nullptr.
+    Trajet *GetPremierTrajet() const;
     // Mode d'emploi :
-    //
-    // Contrat :
-    //
-
-    // bool Contient ( Trajet * trajet ) const;
+    //      Retourne le premier trajet de la collection.
+    Trajet *GetDernierTrajet() const;
     // Mode d'emploi :
-    //
-    // Contrat :
-    //
-
-    Trajet *GetPremierTrajet() const
-    {
-        if (nbTrajets > 0)
-        {
-            return lesTrajets[0];
-        }
-        else
-        {
-            return nullptr;
-        }
-
-    }
-
-    Trajet *GetDernierTrajet() const
-    {
-        if (nbTrajets > 0)
-        {
-            return lesTrajets[nbTrajets - 1];
-        }
-        else
-        {
-            return nullptr;
-        }
-
-    }
-
-    unsigned int GetNbTrajets() const
-    {
-        return nbTrajets;
-    };
-
-    unsigned int GetNbMaxTrajets() const
-    {
-        return taille;
-    };
-
-    Trajet **GetLesTrajets() const
-    {
-        return lesTrajets;
-    };
-
-    //-------------------------------------------- Surcharge d'opérateurs
-
-    //--------------------------------------- Constructeurs - destructeur
+    //      Retourne le dernier trajet de la collection.
+    unsigned int GetNbTrajets() const;
+    // Mode d'emploi :
+    //      Retourne le nombre de trajets présents dans la collection.
+    unsigned int GetTaille() const;
+    // Mode d'emploi :
+    //      Retourne la taille de la collection.
+    Trajet **GetTrajets() const;
+    // Mode d'emploi :
+    //      Retourne la liste des trajets de la collection.
+    Collection *Clone() const;
+    // Mode d'emploi :
+    //      Clone la collection.
+    static unsigned int getNbInstance();
+    // Mode d'emploi :
+    //      Retourne le nombre d'instance de la classe.
+    //---------------------------------------- Constructeurs - destructeur
     Collection();
-
+    Collection(const Collection &collection);
     virtual ~Collection();
-
-//-------------------------------------------------------------- PROTECTED
+    
+    //---------------------------------------------------------- PROTECTED
 protected:
     //------------------------------------------------- Méthodes protégées
-    bool reallocaction();
-    // Mode d'emploi :
-    //
-    // Contrat :
-    //
-
+    bool reallocation();
     //------------------------------------------------- Attributs protégés
     unsigned int nbTrajets;
     unsigned int taille;
-    Trajet **lesTrajets;
+    Trajet **trajets;
+    static unsigned int nbInstance;
 };
-
-//--------------------- Autres définitions dépendantes de <Collection>
-
+//------------------------- Autres définitions dépendantes de <Collection>
 #endif // TABLEAUTRAJETS_H

@@ -18,35 +18,34 @@ using namespace std;
 //------------------------------------------------------ Include personnel
 #include "Trajet.h"
 
-//------------------------------------------------------------- Constantes
-
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
-
-//------------------------------------------------- Surcharge d'opérateurs
+unsigned int Trajet::GetNbInstance()
+{
+    return nbInstance;
+}
 
 //-------------------------------------------- Constructeurs - destructeur
-Trajet::Trajet ( )
-// Algorithme :
-//
+Trajet::Trajet()
 {
-  #ifdef MAP
-      cout << "Appel au constructeur de <Trajet>" << endl;
-  #endif
+    nbInstance++;
+#ifdef MAP
+    cout << "Appel au constructeur de <Trajet> (total : "
+         << GetNbInstance() << " instances)" << endl;
+#endif
 } //----- Fin de Trajet
 
-
-Trajet::~Trajet ( )
-// Algorithme :
-//
+Trajet::~Trajet()
 {
-  #ifdef MAP
-      cout << "Appel au destructeur de <Trajet>" << endl;
-  #endif
+    nbInstance--;
+#ifdef MAP
+    cout << "Appel au destructeur de <Trajet> (total : "
+         << GetNbInstance() << " instances restantes)" << endl;
+#endif
 } //----- Fin de ~Trajet
 
+//-------------------------------------------------------------- PROTECTED
 
-//------------------------------------------------------------------ PRIVE
-
-//----------------------------------------------------- Méthodes protégées
+//----------------------------------------------------- Attributs protégés
+unsigned int Trajet::nbInstance = 0;

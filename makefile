@@ -1,13 +1,10 @@
 CCPP=g++
-CPPFLAGS=-ansi -pedantic -Wall -std=c++11 -DMAP
-LDFLAGS=
-EXEC=voyage
+CPPFLAGS=-Wall -g -ansi -pedantic -std=c++11 -DMAP
+LDFLAGS=-g
 SRC=Main.cpp Catalogue.cpp Collection.cpp Trajet.cpp TrajetSimple.cpp TrajetCompose.cpp
-OBJ=$(SRC:.c=.o)
+OBJ=$(SRC:.cpp=.o)
 
-all: $(EXEC)
-
-$(EXEC): $(OBJ)
+voyage: $(OBJ)
 	$(CCPP) -o $@ $^ $(LDFLAGS)
 
 %.o: %.cpp

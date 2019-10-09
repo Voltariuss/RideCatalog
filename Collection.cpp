@@ -8,7 +8,7 @@
                            loic.dubois-termoz@insa-lyon.fr
 *************************************************************************/
 
-//- Réalisation de la classe <Collection> (fichier Collection.cpp)
+//--------- Réalisation de la classe <Collection> (fichier Collection.cpp)
 
 //---------------------------------------------------------------- INCLUDE
 
@@ -29,102 +29,176 @@ using namespace std;
 //----------------------------------------------------- Méthodes publiques
 int Collection::AjouterTrajet(Trajet *trajet)
 // Algorithme :
-//
+//      Ajoute le trajet passé en paramètre en vérifiant avant s'il
+//      est nécessaire de réallouer la collection ou non.
+//      Si l'ajout s'est effectué sans réallocation de mémoire, alors
+//      la méthode retourne 1, sinon elle renvoie -1.
 {
-  bool realloc = false;
+    bool realloc = false;
 
-  // if(Contient(trajet)) return 0;
-  if(nbTrajets >= taille) realloc = reallocaction();
-
-  lesTrajets[nbTrajets++] = trajet;
-
-  return realloc ? -1 : 1;
+    if (nbTrajets >= taille)
+    {
+        realloc = reallocation();
+    }
+    trajets[nbTrajets++] = trajet;
+    return realloc ? -1 : 1;
 } //----- Fin de AjouterTrajet
 
-int Collection::AjouterTrajet(Collection *trajets)
+Trajet *Collection::GetPremierTrajet() const
 // Algorithme :
-//
+//      Retourne le premier trajet si le nombre de trajets est
+//      supérieur à 0, nullptr sinon.
 {
-  bool realloc = false;
-  // int nbTrajetsAjoutes = 0;
+    if (nbTrajets > 0)
+    {
+        return trajets[0];
+    }
+    else
+    {
+        return nullptr;
+    }
+}
 
-  for(int i=0; i<trajets->GetNbTrajets(); i++) {
-    // if(!Contient(trajets->GetLesTrajets()[i])) {
-      if(nbTrajets >= taille) realloc = reallocaction();
+Trajet *Collection::GetDernierTrajet() const
+// Algorithme :
+//      Retourne le dernier trajet si le nombre de trajets est
+//      supérieur à 0, nullptr sinon.
+{
+    if (nbTrajets > 0)
+    {
+        return trajets[nbTrajets - 1];
+    }
+    else
+    {
+        return nullptr;
+    }
+}
 
-      lesTrajets[nbTrajets++] = trajets->GetLesTrajets()[i];
-      // nbTrajetsAjoutes++;
-    // }
-  }
+unsigned int Collection::GetNbTrajets() const
+{
+    return nbTrajets;
+}
 
-  return realloc ? trajets->GetNbTrajets() * -1 : trajets->GetNbTrajets();
-} //----- Fin de AjouterTrajet
+unsigned int Collection::GetTaille() const
+{
+    return taille;
+}
 
+Trajet **Collection::GetTrajets() const
+{
+    return trajets;
+}
 
-// bool Collection::Contient ( Trajet * trajet ) const
-// // Algorithme :
-// //
-// {
-//   if(dynamic_cast<TrajetCompose*>(trajet)) cout << "NbTrajets : " << (*dynamic_cast<TrajetCompose*>(trajet)).GetLesTrajets()->GetNbTrajets() << endl;
-//
-//   for(int i=0; i<nbTrajets; i++) {
-//     if(typeid(trajet) == typeid(lesTrajets[i])) {
-//       if(dynamic_cast<TrajetSimple*>(trajet) &&
-//          *dynamic_cast<TrajetSimple*>(trajet) == *dynamic_cast<TrajetSimple*>(lesTrajets[i]))
-//       { return true; }
-//       else if(dynamic_cast<TrajetCompose*>(trajet) &&
-//               *dynamic_cast<TrajetCompose*>(trajet) == *dynamic_cast<TrajetCompose*>(lesTrajets[i]))
-//       { return true; }
-//     }
-//   }
-//
-//   return false;
-// } //----- Fin de Contient
+Collection *Collection::Clone() const
+{
+    return new Collection(*this);
+}
 
-//------------------------------------------------- Surcharge d'opérateurs
+unsigned int Collection::getNbInstance()
+{
+    return nbInstance;
+}
 
 //-------------------------------------------- Constructeurs - destructeur
 Collection::Collection() : nbTrajets(0u),
                            taille(TAILLE_INIT),
-                           lesTrajets(new Trajet *[TAILLE_INIT])
+                           trajets(new Trajet *[taille])
 // Algorithme :
-//
+//      Initialise les attributs de la classe et vérifie que l'allocation
+//      de l'espace mémoire pour la liste des trajets a été effectué avec
+//      succès. Dans le cas contraire le constructeur stop le programme
+//      en renvoyant un message d'erreur.
 {
+    nbInstance++;
 #ifdef MAP
-  cout << "Appel au constructeur de <Collection>" << endl;
+    cout << "Appel au constructeur de <Collection> (total : "
+         << getNbInstance() << " instances)" << endl;
 #endif
+    if (trajets == nullptr)
+    {
+        cerr << "ERREUR FATALE : problème d'allocation de mémoire"
+             << ", fin du programme." << endl;
+        exit(EXIT_FAILURE);
+    }
+} //----- Fin de Collection
+
+Collection::Collection(const Collection &collection)
+    : nbTrajets(collection.GetNbTrajets()),
+      taille(collection.GetTaille()),
+      trajets(new Trajet *[taille])
+{
+    nbInstance++;
+#ifdef MAP
+    cout << "Appel au constructeur de copie de <Collection> (total : "
+         << getNbInstance() << " instances)" << endl;
+#endif
+    for (unsigned int i = 0; i < collection.GetNbTrajets(); i++)
+    {
+        trajets[i] = collection.GetTrajets()[i]->Clone();
+    }
 } //----- Fin de Collection
 
 Collection::~Collection()
 // Algorithme :
 //
 {
-  #ifdef MAP
-      cout << "Appel au destructeur de <Collection>" << endl;
-  #endif
+    nbInstance--;
+#ifdef MAP
+    cout << "Appel au destructeur de <Collection> (total : "
+         << getNbInstance() << " instances restantes)" << endl;
+#endif
 
-  for(int i=0; i<nbTrajets; i++) { delete lesTrajets[i]; }
-  delete[] lesTrajets;
+    for (unsigned int i = 0; i < nbTrajets; i++)
+    {
+        delete trajets[i];
+    }
+    delete[] trajets;
 } //----- Fin de ~Collection
 
-//------------------------------------------------------------------ PRIVE
-bool Collection::reallocaction()
-// Algorithme :
-//
-{
-  Trajet **newTrajets;
+//-------------------------------------------------------------- PROTECTED
 
-  if (nbTrajets == taille - TAILLE_INIT / 2)
-    return false;
-
-  taille += TAILLE_INIT / 2;
-  newTrajets = new Trajet *[taille];
-  for (int i = 0; i < nbTrajets; i++)
-    newTrajets[i] = lesTrajets[i];
-  delete[] lesTrajets;
-  lesTrajets = newTrajets;
-
-  return true;
-} //----- Fin de reallocaction
+//----------------------------------------------------- Attributs protégés
+unsigned int Collection::nbInstance = 0;
 
 //----------------------------------------------------- Méthodes protégées
+bool Collection::reallocation()
+// Mode d'emploi :
+//      Tente de réalloue la collection afin d'aggrandir sa taille.
+//      La méthode renvoie "vrai" si la réallocation a été effectuée avec
+//      succès, "faux" sinon.
+// Algorithme :
+//      La méthode vérifie si le nombre de trajets est suffisament élevé
+//      pour nécessité une réallocation. Si la vérification passe
+//      avec succès, alors une demande est faite au système pour obtenir
+//      une nouvelle zone mémoire. Si cela réussi, l'ensemble des trajets
+//      présents dans l'ancien espace mémoire sont transférés vers la
+//      nouvelle zone, la première étant libérée ensuite et la méthode
+//      retourne "vrai".
+//      Dans les autres cas la méthode renvoie "faux" pour signifier
+//      qu'aucune réallocation n'a été effectuée.
+{
+    bool estRealloue = false;
+    Trajet **newTrajets;
+    unsigned int incrementation = TAILLE_INIT / 2;
+
+    if (nbTrajets > taille - incrementation)
+    {
+        taille += incrementation;
+        newTrajets = new Trajet *[taille];
+
+        if (newTrajets != nullptr)
+        {
+            for (unsigned int i = 0; i < nbTrajets; i++)
+            {
+                newTrajets[i] = trajets[i];
+            }
+            delete[] trajets;
+            trajets = newTrajets;
+            estRealloue = true;
+#ifdef MAP
+            cout << "Réallocation de la mémoire" << endl;
+#endif
+        }
+    }
+    return estRealloue;
+} //----- Fin de reallocation

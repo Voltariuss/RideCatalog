@@ -20,78 +20,123 @@ using namespace std;
 #include "TrajetSimple.h"
 #include "TrajetCompose.h"
 
-//------------------------------------------------------------- Constantes
-
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
-void TrajetCompose::Afficher() const
+void TrajetCompose::Afficher(const char *indents) const
 // Algorithme :
-//
+//      Affiche la liste des trajets du trajet composé en ajoutant
+//      une tabulation supplémentaire à l'indentation actuelle.
 {
-  for (int i = 0; i < collection.GetNbTrajets(); i++)
-  {
-    cout << (i ? " - " : "");
-    collection.GetLesTrajets()[i]->Afficher();
-  }
+    cout << indents << "Trajet composé" << endl;
+    unsigned int size = strlen(indents) + 2;
+    char *incrIndent = new char[size];
+
+    for (unsigned int i = 0; i < size - 1; i++)
+    {
+        incrIndent[i] = '\t';
+    }
+    incrIndent[size - 1] = 0;
+
+    for (unsigned int i = 0; i < collection->GetNbTrajets(); i++)
+    {
+        collection->GetTrajets()[i]->Afficher(incrIndent);
+    }
+    delete[] incrIndent;
 } //----- Fin de Afficher
 
-//------------------------------------------------- Surcharge d'opérateurs
-// bool TrajetCompose::operator == ( const TrajetCompose & trajet ) const
-// // Algorithme :
-// //
-// {
-//   Trajet *t1, *t2;
-//   unsigned int test = trajet.GetLesTrajets()->GetNbTrajets();
-//   cout << test << endl;
-// // cout << (trajet.GetLesTrajets()->GetNbTrajets()) << endl;
-//   // if(trajet.collectionTrajets.GetNbTrajets() != collectionTrajets.GetNbTrajets())
-//   //   return false;
-//   //
-//   // for(int i=0; i<collectionTrajets.GetNbTrajets(); i++) {
-//   //   t1 = trajet.collectionTrajets.GetLesTrajets()[i];
-//   //   t2 = collectionTrajets.GetLesTrajets()[i];
-//   //
-//   //   // Faire le second test (avec dynamic_cast) selon le type de t1 et t2
-//   //   // pour faciliter le tp, les trajets d'un trajet composé seront forcement
-//   //   // des trajets simple.
-//   //   if(typeid(&t1) != typeid(t2) &&
-//   //      *dynamic_cast<TrajetSimple*>(t1) != *dynamic_cast<TrajetSimple*>(t2))
-//   //     return false;
-//   // }
-//
-//   return true;
-// } //----- Fin de operator ==
-
-//-------------------------------------------- Constructeurs - destructeur
-TrajetCompose::TrajetCompose(Trajet *t1, Trajet *t2) : collection()
+char *TrajetCompose::GetVilleDepart() const
 // Algorithme :
-//
+//      Si le nombre de trajets est supérieur à 0, alors la méthode
+//      retourne la ville de départ du premier trajet de la collection.
+//      Dans le cas contraire, la méthode renvoie nullptr.
 {
-#ifdef MAP
-  cout << "Appel au constructeur de <TrajetCompose>" << endl;
-#endif
+    if (collection->GetNbTrajets() > 0)
+    {
+        return collection->GetTrajets()[0]->GetVilleDepart();
+    }
+    else
+    {
+        return nullptr;
+    }
+} //----- Fin de GetVilleDepart
 
-  collection.AjouterTrajet(t1);
-  collection.AjouterTrajet(t2);
-} //----- Fin de TrajetCompose
-
-TrajetCompose::TrajetCompose(Collection laCollection) : collection(laCollection)
+char *TrajetCompose::GetVilleArrivee() const
+// Algorithme :
+//      Si le nombre de trajets est supérieur à 0, alors la méthode
+//      retourne la ville d'arrivée du dernier trajet de la collection.
+//      Dans le cas contraire, la méthode renvoie nullptr.
 {
-#ifdef MAP
-  cout << "Appel au constructeur de <TrajetCompose>" << endl;
-#endif
+    if (collection->GetNbTrajets() > 0)
+    {
+        Trajet **trajets = collection->GetTrajets();
+        Trajet *trajet = trajets[collection->GetNbTrajets() - 1];
+        return trajet->GetVilleArrivee();
+    }
+    else
+    {
+        return nullptr;
+    }
+} //----- Fin de GetVilleArrivee
+
+Collection *TrajetCompose::GetTrajets() const
+// Algorithme :
+//      Retourne la collection de trajets du trajet composé.
+{
+    return collection;
+} //----- Fin de GetTrajets
+
+Trajet *TrajetCompose::Clone() const
+{
+    return new TrajetCompose(*this);
 }
 
-TrajetCompose::~TrajetCompose()
-// Algorithme :
-//
+unsigned int TrajetCompose::GetNbInstance()
 {
+    return nbInstance;
+}
+
+//-------------------------------------------- Constructeurs - destructeur
+TrajetCompose::TrajetCompose() : collection(new Collection())
+{
+    nbInstance++;
 #ifdef MAP
-  cout << "Appel au destructeur de <TrajetCompose>" << endl;
+    cout << "Appel au constructeur de <TrajetCompose> (total : "
+         << GetNbInstance() << " instances)" << endl;
 #endif
+} //----- Fin de TrajetCompose
+
+TrajetCompose::TrajetCompose(Collection *laCollection)
+    : collection(laCollection)
+{
+    nbInstance++;
+#ifdef MAP
+    cout << "Appel au constructeur de <TrajetCompose> (total : "
+         << GetNbInstance() << " instances)" << endl;
+#endif
+} //----- Fin de TrajetCompose
+
+TrajetCompose::TrajetCompose(const TrajetCompose &trajetCompose)
+    : collection(trajetCompose.GetTrajets()->Clone())
+{
+    nbInstance++;
+#ifdef MAP
+    cout << "Appel au constructeur de copie de <TrajetCompose> (total : "
+         << GetNbInstance() << " instances)" << endl;
+#endif
+} //----- Fin de TrajetCompose
+
+TrajetCompose::~TrajetCompose()
+{
+    nbInstance--;
+#ifdef MAP
+    cout << "Appel au destructeur de <TrajetCompose> (total : "
+         << GetNbInstance() << " instances restantes)" << endl;
+#endif
+    delete collection;
 } //----- Fin de ~TrajetCompose
 
-//------------------------------------------------------------------ PRIVE
+//-------------------------------------------------------------- PROTECTED
 
-//----------------------------------------------------- Méthodes protégées
+//----------------------------------------------------- Attributs protégés
+unsigned int TrajetCompose::nbInstance = 0;

@@ -9,77 +9,68 @@
 *************************************************************************/
 
 //--------- Interface de la classe <TrajetSimple> (fichier TrajetSimple.h)
-#if ! defined ( TRAJETSIMPLE_H )
+#if !defined(TRAJETSIMPLE_H)
 #define TRAJETSIMPLE_H
 
 //--------------------------------------------------- Interfaces utilisées
 #include <iostream>
 #include "Trajet.h"
 
-//------------------------------------------------------------- Constantes
-
 //------------------------------------------------------------------ Types
-enum TypeTransport { AUTO, AVION, BATEAU, TRAIN };
+enum TypeTransport
+{
+    AUTO,
+    AVION,
+    BATEAU,
+    TRAIN
+};
 
 //------------------------------------------------------------------------
 // Rôle de la classe <TrajetSimple>
-//
-//
+//      Permet la gestion des trajets simples de l'application.
 //------------------------------------------------------------------------
 
 class TrajetSimple : public Trajet
 {
-//----------------------------------------------------------------- PUBLIC
-
+    //---------------------------------------------------------- -- PUBLIC
 public:
-//----------------------------------------------------- Méthodes publiques
-    virtual void Afficher ( ) const
-    {
-      cout << "Départ : " << villeDepart
-           << " Arrivée : " << villeArrivee
-           << " Moyen de Transport : " << moyenTransport;
-    }
-
-    virtual char * GetVilleDepart ( ) const
-    { return villeDepart; }
-
-    virtual char * GetVilleArrivee ( ) const
-    { return villeArrivee; }
-
-    TypeTransport GetMoyenTransport ( ) const
-    { return moyenTransport; }
-
-//------------------------------------------------- Surcharge d'opérateurs
-    // bool operator == ( TrajetSimple & trajet );
-    //
-    // bool operator != ( TrajetSimple & trajet )
-    // { return !(*this == trajet); }
-
-//-------------------------------------------- Constructeurs - destructeur
-    TrajetSimple ( char *depart, char *arrivee, TypeTransport transport );
+    //------------------------------------------------- Méthodes publiques
+    void Afficher(const char *indents) const;
     // Mode d'emploi :
-    //
+    //      Affiche le trajet simple en prenant en compte l'indentation
+    //      actuelle dans l'affichage.
     // Contrat :
-    //
-
-    virtual ~TrajetSimple ( );
+    //      La valeur du pointeur est différente de nullptr et la chaîne
+    //      de caractères associée doit être composée uniquement
+    //      de caractères de tabulation ('\t').
+    char *GetVilleDepart() const;
     // Mode d'emploi :
-    //
-    // Contrat :
-    //
+    //      Retourne la ville de départ du trajet simple.
+    char *GetVilleArrivee() const;
+    // Mode d'emploi :
+    //      Retourne la ville d'arrivée du trajet simple.
+    TypeTransport GetTypeTransport() const;
+    // Mode d'emploi :
+    //      Retourne le type de transport du trajet simple.
+    Trajet *Clone() const;
+    // Mode d'emploi :
+    //      Clone le trajet simple.
+    static unsigned int GetNbInstance();
+    // Mode d'emploi :
+    //      Retourne le nombre d'instance de la classe.
+    //---------------------------------------- Constructeurs - destructeur
+    TrajetSimple(char *depart, char *arrivee, TypeTransport transport);
+    TrajetSimple(const TrajetSimple &trajetSimple);
+    virtual ~TrajetSimple();
 
-//------------------------------------------------------------------ PRIVE
-
+    //---------------------------------------------------------- PROTECTED
 protected:
-//----------------------------------------------------- Méthodes protégées
-
-//----------------------------------------------------- Attributs protégés
+    //------------------------------------------------- Attributs protégés
     char *villeDepart;
     char *villeArrivee;
-    TypeTransport moyenTransport;
-
+    TypeTransport typeTransport;
+    static const unsigned int TAILLE_CHAINE = 100;
+    static unsigned int nbInstance;
 };
-
 //----------------------- Autres définitions dépendantes de <TrajetSimple>
-
 #endif // TRAJETSIMPLE_H
