@@ -7,10 +7,10 @@ La réalisation de cette application a été soumise à des contraintes de réal
 - La bibliothèque de manipulation des flux d'entrées / sorties "iostream" ne devant servir qu'à l'utilisation des objets cin, cout et cerr) ;
 - La bibliothèque de manipulation des chaînes de caractères "cstring" pour une utilisation de strlen, strcpy, ...
 
+Pour s'assurer de de l'absence de fuite de mémoire nous avons utilisé l'outil "valgrind".
+
 ### Mon binôme
 - Nel BOUVIER
-
-Pour s'assurer de de l'absence de fuite de mémoire nous avons utilisé l'outil "valgrind".
 
 ## Les fonctionnalités de l'application
 - Ajout de trajets dans la structure de données créée (un simple tableau dynamique) ;
