@@ -288,6 +288,10 @@ TrajetCompose *Catalogue::saisirTrajetCompose()
     {
         trajetCompose = new TrajetCompose(collection);
     }
+    else
+    {
+        delete collection;
+    }
     return trajetCompose;
 } //----- Fin de saisirTrajetCompose
 
@@ -361,10 +365,8 @@ void Catalogue::rechercherParcoursAvanceeWorker(const char *depart,
             // Sinon continuer la construction du trajet
             if (!strcmp(trajetComposeDuplique->GetVilleArrivee(), arrivee))
             {
-                for (unsigned int j = 0; j < trajetComposeDuplique->GetTrajets()->GetNbTrajets(); j++)
-                {
-                    trajetsFinaux.AjouterTrajet(trajetComposeDuplique->GetTrajets()->GetTrajets()[j]->Clone());
-                }
+                TrajetCompose * trajetCompose = new TrajetCompose(trajetComposeDuplique->GetTrajets()->Clone());
+                trajetsFinaux.AjouterTrajet(trajetCompose);
             }
             else
             {
