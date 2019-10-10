@@ -26,3 +26,6 @@ Pour s'assurer de de l'absence de fuite de mémoire nous avons utilisé l'outil 
 
 ## Diagramme de classe associé
 ![Diagramme de classe](https://imgur.com/vjrbHkQ.png)
+
+## Représentation symbolique de la mémoire (exemple)
+![Représentation symbolique de la mémoire](https://i.imgur.com/FXAKCj1.png)
