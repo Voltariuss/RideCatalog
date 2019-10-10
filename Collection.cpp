@@ -21,9 +21,6 @@ using namespace std;
 #include "TrajetSimple.h"
 #include "TrajetCompose.h"
 
-//------------------------------------------------------------- Constantes
-#define TAILLE_INIT 10
-
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques

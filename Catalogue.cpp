@@ -237,25 +237,7 @@ TrajetCompose *Catalogue::saisirTrajetCompose()
 
     do
     {
-        int typeTrajet;
-        cout << "Type de trajet (simple = 1, composé = 2) : ";
-        cin >> typeTrajet;
-
-        Trajet *trajet = nullptr;
-
-        if (typeTrajet == 1)
-        {
-            trajet = saisirTrajetSimple();
-        }
-        else if (typeTrajet == 2)
-        {
-            trajet = saisirTrajetCompose();
-        }
-        else
-        {
-            erreur = true;
-            cout << "ERREUR : Le type de trajet spécifié est incorrect." << endl;
-        }
+        Trajet *trajet = saisirTrajetSimple();
 
         if (!erreur && trajet != nullptr)
         {
@@ -374,13 +356,12 @@ void Catalogue::rechercherParcoursAvanceeWorker(const char *depart,
         if (!utilise && !strcmp(trajets[i]->GetVilleDepart(), depart))
         {
             TrajetCompose *trajetComposeDuplique = (TrajetCompose *)trajetCompose.Clone();
-            cout << "test" << endl;
             trajetComposeDuplique->GetTrajets()->AjouterTrajet(trajets[i]->Clone());
             // Si arrivée == arrivée finale alors ajouter aux trajets possibles
             // Sinon continuer la construction du trajet
             if (!strcmp(trajetComposeDuplique->GetVilleArrivee(), arrivee))
             {
-                for (unsigned int j = 0; j < trajetsFinaux.GetNbTrajets(); j++)
+                for (unsigned int j = 0; j < trajetComposeDuplique->GetTrajets()->GetNbTrajets(); j++)
                 {
                     trajetsFinaux.AjouterTrajet(trajetComposeDuplique->GetTrajets()->GetTrajets()[j]->Clone());
                 }

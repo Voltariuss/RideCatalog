@@ -68,6 +68,7 @@ protected:
     unsigned int taille;
     Trajet **trajets;
     static unsigned int nbInstance;
+    static const unsigned int TAILLE_INIT = 10;
 };
 //------------------------- Autres définitions dépendantes de <Collection>
 #endif // TABLEAUTRAJETS_H
