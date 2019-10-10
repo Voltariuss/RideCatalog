@@ -37,6 +37,8 @@ public:
     //------------------------------------------------- Méthodes publiques
     void Afficher(const char *indents) const;
     // Mode d'emploi :
+    //      - indents : Indentation de base de l'affichage du trajet
+    //
     //      Affiche le trajet simple en prenant en compte l'indentation
     //      actuelle dans l'affichage.
     // Contrat :

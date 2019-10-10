@@ -36,11 +36,17 @@ public:
     //      ensuite dans le catalogue.
     void Afficher(Collection *collection = nullptr) const;
     // Mode d'emploi :
+    //      - collection : pointeur sur la collection à afficher, nullptr
+    //          par défaut.
+    //
     //      Affiche la liste des trajets de la collection spécifiée. Si la
     //      la collection est égale à nullptr, alors la méthode affichera
     //      la collection du catalogue.
     Collection *RechercherParcoursSimple(char *depart, char *arrivee) const;
     // Mode d'emploi :
+    //      - depart : nom de la ville de la ville de départ du parcours
+    //      - arrivee : nom de la ville d'arrivée du parcours
+    //
     //      Effectue une recherche simple de parcours et retourne la
     //      collection de trajets correspondant au résultat de la
     //      recherche.
@@ -48,6 +54,9 @@ public:
     //      depart et arrivee doivent être différents de nullptr.
     Collection *RechercherParcoursAvancee(char *depart, char *arrivee) const;
     // Mode d'emploi :
+    //      - depart : nom de la ville de la ville de départ du parcours
+    //      - arrivee : nom de la ville d'arrivée du parcours
+    //
     //      Effectue une recherche avancée de parcours et retourne la
     //      collection de trajets correspondant au résultat de la
     //      recherche.

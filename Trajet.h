@@ -26,6 +26,8 @@ public:
     //------------------------------------------------- Méthodes publiques
     virtual void Afficher(const char *indents) const = 0;
     // Mode d'emploi :
+    //      - indents : Tabulation de base de l'affichage du trajet
+    //
     //      Affiche le trajet en prenant en compte l'indentation actuelle
     //      dans l'affichage.
     // Contrat :

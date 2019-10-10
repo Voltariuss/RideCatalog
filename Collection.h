@@ -29,10 +29,12 @@ class Collection
 public:
     //------------------------------------------------- Méthodes publiques
     int AjouterTrajet(Trajet *trajet);
-    // Mode d'emploi :
+    // Mode d'emploi
+    //      - trajet : Pointeur du trajet à ajouter dans la collection
+    //
     //      Ajoute un trajet dans la collection.
     // Contrat :
-    //      Le trajet doit être différent de nullptr.
+    //      Le pointeur du trajet doit être différent de nullptr.
     Trajet *GetPremierTrajet() const;
     // Mode d'emploi :
     //      Retourne le premier trajet de la collection.
@@ -58,7 +60,7 @@ public:
     Collection();
     Collection(const Collection &collection);
     virtual ~Collection();
-    
+
     //---------------------------------------------------------- PROTECTED
 protected:
     //------------------------------------------------- Méthodes protégées

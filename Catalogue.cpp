@@ -40,7 +40,6 @@ void Catalogue::SaisirTrajet()
 //    correspondant.
 //    Si la saisie est valide, alors le programme ajoute
 //    le trajet ainsi créée dans le catalogue.
-//
 {
     bool erreur = false;
     int typeTrajet;
@@ -95,7 +94,10 @@ void Catalogue::Afficher(Collection *collection) const
 
 Collection *Catalogue::RechercherParcoursSimple(char *depart, char *arrivee) const
 // Algorithme :
-//
+//      Pour chaque trajet du catalogue la méthode compare le nom de la ville
+//      de départ et d'arrivée avec les noms passés en paramètres.
+//      Si les noms correspondent, alors le trajet est copié dans la collection
+//      qui sera retournée à la fin de la méthode.
 {
     unsigned int nbTrajets = collectionTrajets->GetNbTrajets();
     Trajet **trajets = collectionTrajets->GetTrajets();
@@ -114,7 +116,7 @@ Collection *Catalogue::RechercherParcoursSimple(char *depart, char *arrivee) con
 
 Collection *Catalogue::RechercherParcoursAvancee(char *depart, char *arrivee) const
 // Algorithme :
-//
+//      Voir algorithme de rechercherParcoursAvanceeWorker.
 {
     TrajetCompose *trajetCompose = new TrajetCompose();
     Collection *trajetsFinaux = new Collection();
@@ -365,7 +367,7 @@ void Catalogue::rechercherParcoursAvanceeWorker(const char *depart,
             // Sinon continuer la construction du trajet
             if (!strcmp(trajetComposeDuplique->GetVilleArrivee(), arrivee))
             {
-                TrajetCompose * trajetCompose = new TrajetCompose(trajetComposeDuplique->GetTrajets()->Clone());
+                TrajetCompose *trajetCompose = new TrajetCompose(trajetComposeDuplique->GetTrajets()->Clone());
                 trajetsFinaux.AjouterTrajet(trajetCompose);
             }
             else
