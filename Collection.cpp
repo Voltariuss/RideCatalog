@@ -41,6 +41,105 @@ int Collection::AjouterTrajet(Trajet *trajet)
     return realloc ? -1 : 1;
 } //----- Fin de AjouterTrajet
 
+int Collection::FusionCollection(Collection *collection, int first, int last)
+// Algorithme :
+//      Ajoute les trajets clonés de la collection passée en paramètre en vérifiant avant s'il
+//      est nécessaire de réallouer la collection courante ou non.
+//      Si l'ajout s'est effectué sans réallocation de mémoire, alors
+//      la méthode retourne 1, sinon elle renvoie -1.
+{
+    bool realloc = false;
+
+    for (unsigned int i = 0; i < collection->GetNbTrajets(); i++)
+    {
+        if (i >= first && i <= last)
+        {
+            Trajet *trajet = collection->GetTrajets()[i]->Clone();
+            realloc = realloc || AjouterTrajet(trajet);
+            // TODO Check memory
+        }
+    }
+    return realloc;
+} //----- Fin de FusionCollection
+
+Collection *Collection::Filtrage(int first, int last)
+// Algorithme :
+//      Vérifie la validité des indexes spécifiés (interval et nombre d'éléments).
+//      Si les arguments sont valides, alors on fusionne la nouvelle collection vide avec la collection courante.
+//      Sinon on retourne nullptr.
+{
+    int nbElements = first - last + 1;
+    Collection *collection = nullptr;
+    bool isFirstValid = first >= 0 && first < GetNbTrajets();
+    bool isLastValid = last >= 0 && last < GetNbTrajets();
+    bool isNbElementsValid = nbElements >= 0;
+    bool isValid = isFirstValid && isLastValid && isNbElementsValid;
+
+    if (isValid)
+    {
+        collection = new Collection();
+        collection->FusionCollection(this, first, last);
+        // TODO Check memory
+    }
+    return collection;
+} //----- Fin de Filtrage(int, int)
+
+Collection *Collection::Filtrage(char *depart, char *arrivee)
+// Algorithme :
+//      On vérifie la validité d'au moins un des noms de ville passés en arguments.
+//      Si la validité est vérifiée, alors on créer une nouvelle collection avec les trajets clonés ayant comme
+//      ville de départ et/ou ville d'arrivée celle(s) spécifiée(s) en arguments de la méthode.
+{
+    Collection *collection = nullptr;
+    int sizeDepart = strlen(depart);
+    int sizeArrivee = strlen(arrivee);
+
+    if (sizeDepart > 0 || sizeArrivee > 0)
+    {
+        if (sizeDepart > 0)
+        {
+            collection = filtrageDepart(depart);
+        }
+
+        if (sizeArrivee > 0)
+        {
+            if (collection == nullptr)
+            {
+                collection = filtrageArrivee(arrivee);
+            }
+            else
+            {
+                Collection *collectionArrivee = collection->filtrageArrivee(arrivee);
+                delete collection;
+                collection = collectionArrivee;
+            }
+        }
+        // TODO Memory check
+    }
+    return collection;
+} //----- Fin de Filtrage(char *, char *)
+
+Collection *Collection::Filtrage(TypeTrajet typeTrajet)
+// Algorithme :
+//      On parcours l'ensemble des trajets de la collection courante en clonant dans la nouvelle collection ensuite
+//      retournée les trajets du même type que celui spécifié en argument de la méthode.
+{
+    Collection *collection = new Collection();
+
+    for (unsigned int i = 0; i < GetNbTrajets(); i++)
+    {
+        Trajet *trajet = GetTrajets()[i];
+        TypeTrajet type = (dynamic_cast<TrajetCompose *>(trajet) == nullptr) ? SIMPLE : COMPOSE;
+
+        if (type == typeTrajet)
+        {
+            collection->AjouterTrajet(trajet->Clone());
+        }
+    }
+    // TODO : Memory check
+    return collection;
+} //----- Fin de Filtrage(TypeTrajet)
+
 Trajet *Collection::GetPremierTrajet() const
 // Algorithme :
 //      Retourne le premier trajet si le nombre de trajets est
@@ -199,3 +298,49 @@ bool Collection::reallocation()
     }
     return estRealloue;
 } //----- Fin de reallocation
+
+Collection *Collection::filtrageDepart(char *depart)
+// Mode d'emploi :
+//      Filtre les trajets par rapport à la ville de départ spécifiée.
+// Contrat :
+//      depart doit être différent de nullptr et son nombre d'élément supérieur à 0
+// Algorithme :
+//      Parcours l'ensemble des trajets de la collection courante en clonant dans la nouvelle collection créée
+//      uniquement les trajets ayant comme ville de départ celle spécifiée en argument de la méthode.
+{
+    Collection *collection = new Collection();
+
+    for (unsigned int i = 0; i < GetNbTrajets(); i++)
+    {
+        Trajet *trajet = GetTrajets()[i];
+
+        if (strcmp(trajet->GetVilleDepart(), depart))
+        {
+            collection->AjouterTrajet(trajet->Clone());
+        }
+    }
+    return collection;
+} //----- Fin de filtrageDepart
+
+Collection *Collection::filtrageArrivee(char *arrivee)
+// Mode d'emploi :
+//      Filtre les trajets par rapport à la ville d'arrivée spécifiée.
+// Contrat :
+//      arrivee doit être différent de nullptr et son nombre d'élément supérieur à 0
+// Algorithme :
+//      Parcours l'ensemble des trajets de la collection courante en clonant dans la nouvelle collection créée
+//      uniquement les trajets ayant comme ville d'arrivée celle spécifiée en argument de la méthode.
+{
+    Collection *collection = new Collection();
+
+    for (unsigned int i = 0; i < GetNbTrajets(); i++)
+    {
+        Trajet *trajet = GetTrajets()[i];
+
+        if (strcmp(trajet->GetVilleArrivee(), arrivee))
+        {
+            collection->AjouterTrajet(trajet->Clone());
+        }
+    }
+    return collection;
+} //----- Fin de filtrageArrivee
