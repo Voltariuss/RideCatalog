@@ -30,6 +30,9 @@ class Catalogue
     //------------------------------------------------------------- PUBLIC
 public:
     //------------------------------------------------- Méthodes publiques
+    Collection * GetTrajet() const;
+    // Mode d'emploi :
+    //      Retourne la collection de trajets du catalogue.
     void SaisirTrajet();
     // Mode d'emploi :
     //      Demande à l'utilisateur de saisir un trajet pour l'ajouter

@@ -27,6 +27,13 @@ using namespace std;
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
+Collection * Catalogue::GetTrajet() const
+    // Algorithme :
+    //      Retourne la collection de trajets du catalogue.
+{
+    return collectionTrajets;
+} //----- Fin de GetTrajet
+
 void Catalogue::SaisirTrajet()
 // Algorithme :
 //    Récupère sur l'entrée standard le type de trajet, puis ses
