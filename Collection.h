@@ -35,6 +35,13 @@ public:
     //      Ajoute un trajet dans la collection.
     // Contrat :
     //      Le pointeur du trajet doit être différent de nullptr.
+    int FusionCollection(Collection *collection);
+    // Mode d'emploi :
+    //      - collection : La collection à inclure dans la collection courante
+    //
+    //      Ajouter les trajets de la collection spécifiée dans la collection courante.
+    // Contrat :
+    //      Le pointeur de la collection doit être différent de nullptr.
     Trajet *GetPremierTrajet() const;
     // Mode d'emploi :
     //      Retourne le premier trajet de la collection.

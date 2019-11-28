@@ -41,6 +41,23 @@ int Collection::AjouterTrajet(Trajet *trajet)
     return realloc ? -1 : 1;
 } //----- Fin de AjouterTrajet
 
+int Collection::FusionCollection(Collection *collection)
+// Algorithme :
+//      Ajoute les trajets clonés de la collection passée en paramètre en vérifiant avant s'il
+//      est nécessaire de réallouer la collection courante ou non.
+//      Si l'ajout s'est effectué sans réallocation de mémoire, alors
+//      la méthode retourne 1, sinon elle renvoie -1.
+{
+    bool realloc = false;
+
+    for (unsigned int i = 0; i < collection->getNbInstance(); i++)
+    {
+        Trajet *trajet = collection->trajets[i]->Clone();
+        realloc = realloc || AjouterTrajet(trajet);
+    }
+    return realloc;
+} //----- Fin de FusionCollection
+
 Trajet *Collection::GetPremierTrajet() const
 // Algorithme :
 //      Retourne le premier trajet si le nombre de trajets est
