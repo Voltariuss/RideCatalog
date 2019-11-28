@@ -10,6 +10,8 @@
 #if ! defined ( PERSISTANCE_H )
 #define PERSISTANCE_H
 //--------------------------------------------------- Interfaces utilisées
+#include "Collection.h"
+
 
 //------------------------------------------------------------- Constantes
 
@@ -26,6 +28,13 @@ class Persistance
 public:
 //----------------------------------------------------- Méthodes publiques
 
+
+    Collection Import();
+
+    
+    bool Export(Collection & collection, const string nomFichierExport);
+
+
 //------------------------------------------------- Surcharge d'opérateurs
     Persistance & operator = ( const Persistance & unPersistance );
     // Mode d'emploi :
@@ -35,6 +44,7 @@ public:
     //
 
 //-------------------------------------------- Constructeurs - destructeur
+    Persistance ( const Persistance & unPersistance );
     Persistance ();
     // Mode d'emploi :
     // Constructeur par défaut de la classe <Persistance>
@@ -42,8 +52,7 @@ public:
     // Contrat :
     //
 
-    bool Import();
-    Collection Export(Collection & _collection);
+    
     
     
 //------------------------------------------------------------------ PRIVE
@@ -51,6 +60,7 @@ public:
 protected:
 //----------------------------------------------------- Méthodes protégées
 
+    
 //----------------------------------------------------- Attributs protégés
     
 };

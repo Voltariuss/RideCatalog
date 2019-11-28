@@ -22,6 +22,18 @@ using namespace std;
 
 //----------------------------------------------------------------- PUBLIC
 
+ostream & operator << (ostream & out, const TrajetCompose & t)
+{
+    
+    out << t.GetVilleDepart() << "/"
+    << t.GetVilleArrivee() << "/"
+    << t.GetTrajets()->GetNbTrajets()
+    << endl;
+
+    return out;
+
+}
+
 //----------------------------------------------------- Méthodes publiques
 void TrajetCompose::Afficher(const char *indents) const
 // Algorithme :
@@ -52,7 +64,7 @@ char *TrajetCompose::GetVilleDepart() const
 //      Dans le cas contraire, la méthode renvoie nullptr.
 {
     if (collection->GetNbTrajets() > 0)
-    {
+    {   
         return collection->GetTrajets()[0]->GetVilleDepart();
     }
     else

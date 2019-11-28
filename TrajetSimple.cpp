@@ -21,7 +21,17 @@ using namespace std;
 #include "TrajetSimple.h"
 
 //----------------------------------------------------------------- PUBLIC
+ostream & operator << (ostream & out, const TrajetSimple & t)
+{
+    
+    out << t.GetVilleDepart() << "/"
+    << t.GetVilleArrivee() << "/"
+    << t.GetTypeTransport()
+    << endl;
 
+    return out;
+
+}
 //----------------------------------------------------- Méthodes publiques
 void TrajetSimple::Afficher(const char *indents) const
 // Algorithme :

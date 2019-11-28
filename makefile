@@ -1,7 +1,7 @@
 CCPP=g++
 CPPFLAGS=-Wall -g -ansi -pedantic -std=c++11 -DMAP
 LDFLAGS=-g
-SRC=Main.cpp Catalogue.cpp Collection.cpp Trajet.cpp TrajetSimple.cpp TrajetCompose.cpp
+SRC=Main.cpp Catalogue.cpp Collection.cpp Trajet.cpp TrajetSimple.cpp TrajetCompose.cpp Persistance.cpp
 OBJ=$(SRC:.cpp=.o)
 
 voyage: $(OBJ)

@@ -16,6 +16,7 @@ using namespace std;
 
 //------------------------------------------------------ Include personnel
 #include "Catalogue.h"
+#include "Persistance.h"
 
 #define TAILLE_CHAINE 100
 
@@ -38,6 +39,7 @@ int main()
     char *villeDepart;
     char *villeArrivee;
     Collection *parcours;
+    Persistance P;
 
     while (1)
     {
@@ -79,6 +81,9 @@ int main()
             delete[] villeArrivee;
             delete parcours;
             break;
+        case 5:
+            P.Export(*catalogue.GetTrajet(),"exportCatalogue");
+            break;
         default:
             break;
         }
@@ -93,6 +98,7 @@ int afficherMenu()
     cout << "\t2 - Afficher les trajets du catalogue" << endl;
     cout << "\t3 - Rechercher un parcours (mode simple)" << endl;
     cout << "\t4 - Rechercher un parcours (mode avancé)" << endl;
+    cout << "\t5 - Exporter le catalogue" << endl;
     cout << "\t0 - Quitter le programme" << endl;
     cout << "Votre réponse : ";
     int reponse;
