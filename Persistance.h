@@ -43,9 +43,9 @@ public:
     //
 
     bool Import();
-    bool Export(Catalogue & _catalogue);
-    bool CritereSelection();
-
+    Collection Export(Collection & _collection);
+    
+    
 //------------------------------------------------------------------ PRIVE
 
 protected:

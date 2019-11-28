@@ -61,7 +61,7 @@ bool Persistance::Import()
 
 }
 
-bool Persistance::Export(Catalogue & _catalogue)
+Collection Persistance::Export(Collection & _collection)
 {
 
 }
