@@ -75,26 +75,26 @@ Collection Persistance::Import()
         out << nbTS << "|" << nbTC << endl;
         for (unsigned int i = 0; i < collection.GetNbTrajets(); i++)
         {
-            out  << i <<":";
+            out  << i <<"|";
 
             if (typeid(collection.GetTrajets()[i][0])==typeid(TrajetSimple))
             {
 
                 TrajetSimple * ptTs= dynamic_cast <TrajetSimple *> (collection.GetTrajets()[i]);
-                out << "\tS|" << ptTs[0];
+                out << "S|" << ptTs[0];
             }
             else if (typeid(collection.GetTrajets()[i][0])==typeid(TrajetCompose))
             {
                 TrajetCompose * ptTc= dynamic_cast <TrajetCompose *> (collection.GetTrajets()[i]);
 
-                out << "\tC|" << ptTc[0];
+                out << "C|" << ptTc[0];
 
                 TrajetSimple * ptTsdeTC;
 
                 for (unsigned int i = 0; i < ptTc[0].GetTrajets()->GetNbTrajets(); i++)
                 {
                     ptTsdeTC= dynamic_cast <TrajetSimple *> (ptTc[0].GetTrajets()->GetTrajets()[i]);
-                    out << "\t\tS|" << ptTsdeTC[0];
+                    out << "#|S|" << ptTsdeTC[0];
                 }
             }
         }
