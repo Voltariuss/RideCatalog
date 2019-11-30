@@ -41,26 +41,26 @@ int Collection::AjouterTrajet(Trajet *trajet)
     return realloc ? -1 : 1;
 } //----- Fin de AjouterTrajet
 
-int Collection::FusionCollection(Collection *collection, int first, int last)
-// Algorithme :
-//      Ajoute les trajets clonés de la collection passée en paramètre en vérifiant avant s'il
-//      est nécessaire de réallouer la collection courante ou non.
-//      Si l'ajout s'est effectué sans réallocation de mémoire, alors
-//      la méthode retourne 1, sinon elle renvoie -1.
-{
-    bool realloc = false;
+// int Collection::FusionCollection(Collection *collection, int first, int last)
+// // Algorithme :
+// //      Ajoute les trajets clonés de la collection passée en paramètre en vérifiant avant s'il
+// //      est nécessaire de réallouer la collection courante ou non.
+// //      Si l'ajout s'est effectué sans réallocation de mémoire, alors
+// //      la méthode retourne 1, sinon elle renvoie -1.
+// {
+//     bool realloc = false;
 
-    for (unsigned int i = 0; i < collection->GetNbTrajets(); i++)
-    {
-        if (i >= first && i <= last)
-        {
-            Trajet *trajet = collection->GetTrajets()[i]->Clone();
-            realloc = realloc || AjouterTrajet(trajet);
-            // TODO Check memory
-        }
-    }
-    return realloc;
-} //----- Fin de FusionCollection
+//     for (unsigned int i = 0; i < collection->GetNbTrajets(); i++)
+//     {
+//         if (i >= first && i <= last)
+//         {
+//             Trajet *trajet = collection->GetTrajets()[i]->Clone();
+//             realloc = realloc || AjouterTrajet(trajet);
+//             // TODO Check memory
+//         }
+//     }
+//     return realloc;
+// } //----- Fin de FusionCollection
 
 Collection *Collection::Filtrage(int first, int last)
 // Algorithme :
@@ -78,7 +78,7 @@ Collection *Collection::Filtrage(int first, int last)
     if (isValid)
     {
         collection = new Collection();
-        collection->FusionCollection(this, first, last);
+        // collection->FusionCollection(this, first, last);
         // TODO Check memory
     }
     return collection;

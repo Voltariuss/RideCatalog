@@ -43,8 +43,28 @@ Collection Persistance::Import()
 
     int nbTS=0;
     int nbTC=0;
-    // TODO: afficher le nombre de TS et de TC de tous l'export, ainsi que
-    // les listes des villes de départs et d'arrivées
+    // TODO: afficher les listes des villes de départs et d'arrivées
+    
+
+    bool contains; 
+
+    for (unsigned int i = 0; i < collection.GetNbTrajets(); i++)
+    {
+        if (typeid(*collection.GetTrajets()[i]) == typeid(TrajetSimple))
+        {
+            nbTS++;
+        }
+        else if (typeid(*collection.GetTrajets()[i]) == typeid(TrajetCompose))
+        {
+            nbTC++;
+        }
+        
+      
+
+
+
+    }
+    
 
 
     ofstream out(nomFichierExport.c_str());
@@ -52,28 +72,29 @@ Collection Persistance::Import()
     if(out)    
     {
 
+        out << nbTS << "|" << nbTC << endl;
         for (unsigned int i = 0; i < collection.GetNbTrajets(); i++)
         {
-            out  << i <<": "<< endl;
+            out  << i <<":";
 
             if (typeid(collection.GetTrajets()[i][0])==typeid(TrajetSimple))
             {
 
                 TrajetSimple * ptTs= dynamic_cast <TrajetSimple *> (collection.GetTrajets()[i]);
-                out << "\tS/" << ptTs[0];
+                out << "\tS|" << ptTs[0];
             }
             else if (typeid(collection.GetTrajets()[i][0])==typeid(TrajetCompose))
             {
                 TrajetCompose * ptTc= dynamic_cast <TrajetCompose *> (collection.GetTrajets()[i]);
 
-                out << "\tC" << ptTc[0];
+                out << "\tC|" << ptTc[0];
 
                 TrajetSimple * ptTsdeTC;
 
                 for (unsigned int i = 0; i < ptTc[0].GetTrajets()->GetNbTrajets(); i++)
                 {
                     ptTsdeTC= dynamic_cast <TrajetSimple *> (ptTc[0].GetTrajets()->GetTrajets()[i]);
-                    out << "\t\tS/" << ptTsdeTC[0];
+                    out << "\t\tS|" << ptTsdeTC[0];
                 }
             }
         }

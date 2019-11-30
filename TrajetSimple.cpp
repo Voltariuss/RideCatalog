@@ -24,8 +24,8 @@ using namespace std;
 ostream & operator << (ostream & out, const TrajetSimple & t)
 {
     
-    out << t.GetVilleDepart() << "/"
-    << t.GetVilleArrivee() << "/"
+    out << t.GetVilleDepart() << "|"
+    << t.GetVilleArrivee() << "|"
     << t.GetTypeTransport()
     << endl;
 

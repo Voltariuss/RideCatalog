@@ -42,7 +42,7 @@ public:
     //      Ajoute un trajet dans la collection.
     // Contrat :
     //      Le pointeur du trajet doit être différent de nullptr.
-    int FusionCollection(Collection *collection, int first = 0, int last = GetNbTrajets() - 1);
+    // int FusionCollection(Collection *collection, int first = 0, int last = GetNbTrajets() - 1);
     // Mode d'emploi :
     //      - collection : La collection à inclure dans la collection courante
     //
