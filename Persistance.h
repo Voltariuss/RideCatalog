@@ -10,7 +10,7 @@
 #if ! defined ( PERSISTANCE_H )
 #define PERSISTANCE_H
 //--------------------------------------------------- Interfaces utilisées
-
+#include "Collection.h"
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
@@ -25,6 +25,10 @@ class Persistance
 
 public:
 //----------------------------------------------------- Méthodes publiques
+
+    //Collection * Import(string nomFichier, const char * villeDepart, const char * villeArrivee);
+    //Collection Import(string nomFichier, int type); // enum a faire passer
+    Collection * Import(string nomFichier);
 
 //------------------------------------------------- Surcharge d'opérateurs
     Persistance & operator = ( const Persistance & unPersistance );
@@ -41,12 +45,12 @@ public:
     //
     // Contrat :
     //
+    
 
-    bool Import();
-    Collection Export(Collection & _collection);
-    
-    
 //------------------------------------------------------------------ PRIVE
+
+    void Split(string data, string array[]);
+    Collection * CreateCollection(ifstream & fichier, int recursivite = -1);
 
 protected:
 //----------------------------------------------------- Méthodes protégées

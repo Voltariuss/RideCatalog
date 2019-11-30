@@ -16,6 +16,7 @@ using namespace std;
 
 //------------------------------------------------------ Include personnel
 #include "Catalogue.h"
+#include "Persistance.h"
 
 #define TAILLE_CHAINE 100
 
@@ -38,6 +39,7 @@ int main()
     char *villeDepart;
     char *villeArrivee;
     Collection *parcours;
+    Persistance objPersistance;
 
     while (1)
     {
@@ -78,6 +80,9 @@ int main()
             delete[] villeDepart;
             delete[] villeArrivee;
             delete parcours;
+            break;
+        case 5:
+            //catalogue.= objPersistance.Import("data.txt");
             break;
         default:
             break;
