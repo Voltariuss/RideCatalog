@@ -39,7 +39,11 @@ int main()
     char *villeDepart;
     char *villeArrivee;
     Collection *parcours;
+<<<<<<< HEAD
     Persistance objPersistance;
+=======
+    Persistance P;
+>>>>>>> c8a988d50f11405134e148f3e222f5a1e72ccbca
 
     while (1)
     {
@@ -82,7 +86,7 @@ int main()
             delete parcours;
             break;
         case 5:
-            //catalogue.= objPersistance.Import("data.txt");
+            P.Export(*catalogue.GetTrajet(),"exportCatalogue");
             break;
         default:
             break;
@@ -98,6 +102,7 @@ int afficherMenu()
     cout << "\t2 - Afficher les trajets du catalogue" << endl;
     cout << "\t3 - Rechercher un parcours (mode simple)" << endl;
     cout << "\t4 - Rechercher un parcours (mode avancé)" << endl;
+    cout << "\t5 - Exporter le catalogue" << endl;
     cout << "\t0 - Quitter le programme" << endl;
     cout << "Votre réponse : ";
     int reponse;

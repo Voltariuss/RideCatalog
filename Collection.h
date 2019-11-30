@@ -15,6 +15,13 @@
 //--------------------------------------------------- Interfaces utilisées
 #include "Trajet.h"
 
+//------------------------------------------------------------------ Types
+enum TypeTrajet
+{
+    SIMPLE,
+    COMPOSE
+};
+
 //------------------------------------------------------------------------
 // Rôle de la classe <Collection>
 //      Permet la gestion de la structure de données permettant de stocker
@@ -35,13 +42,34 @@ public:
     //      Ajoute un trajet dans la collection.
     // Contrat :
     //      Le pointeur du trajet doit être différent de nullptr.
-    int FusionCollection(Collection *collection);
+    // int FusionCollection(Collection *collection, int first = 0, int last = GetNbTrajets() - 1);
     // Mode d'emploi :
     //      - collection : La collection à inclure dans la collection courante
     //
     //      Ajouter les trajets de la collection spécifiée dans la collection courante.
     // Contrat :
     //      Le pointeur de la collection doit être différent de nullptr.
+    Collection *Filtrage(int first, int last);
+    // Mode d'emploi :
+    //      - first : L'index du premier élément à conserver
+    //      - last : L'index du dernier élément à conserver
+    //
+    //      Filtre la collection sur les indexes
+    Collection *Filtrage(char *depart, char *arrivee);
+    // Mode d'emploi :
+    //      - depart : Ville de départ
+    //      - arrivee : Ville d'arrivée
+    //
+    //      Filtrage de la collection par rapport à la ville de départ et/ou la ville d'arrivée en clonant les trajets
+    //      dans une nouvelle collection retournée.
+    // Contrat :
+    //      depart et arrivee doivent être différent de nullptr.
+    Collection *Filtrage(TypeTrajet typeTrajet);
+    // Mode d'emploi :
+    //      - typeTrajet : Le type de trajet à conserver
+    //
+    //      Filtrage de la collection courante par rapport au type de trajet spécifié en créant une nouvelle collection
+    //      dont les trajets sont des clones de la collection courante.
     Trajet *GetPremierTrajet() const;
     // Mode d'emploi :
     //      Retourne le premier trajet de la collection.
@@ -72,6 +100,8 @@ public:
 protected:
     //------------------------------------------------- Méthodes protégées
     bool reallocation();
+    Collection *filtrageDepart(char *depart);
+    Collection *filtrageArrivee(char *arrivee);
     //------------------------------------------------- Attributs protégés
     unsigned int nbTrajets;
     unsigned int taille;

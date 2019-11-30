@@ -34,6 +34,9 @@ class TrajetSimple : public Trajet
 {
     //---------------------------------------------------------- -- PUBLIC
 public:
+
+    friend ostream & operator << (ostream & out, const TrajetSimple & t);
+    
     //------------------------------------------------- Méthodes publiques
     void Afficher(const char *indents) const;
     // Mode d'emploi :

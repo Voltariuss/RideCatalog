@@ -11,6 +11,8 @@
 #define PERSISTANCE_H
 //--------------------------------------------------- Interfaces utilisées
 #include "Collection.h"
+
+
 //------------------------------------------------------------- Constantes
 
 //------------------------------------------------------------------ Types
@@ -26,9 +28,10 @@ class Persistance
 public:
 //----------------------------------------------------- Méthodes publiques
 
-    //Collection * Import(string nomFichier, const char * villeDepart, const char * villeArrivee);
-    //Collection Import(string nomFichier, int type); // enum a faire passer
     Collection * Import(string nomFichier);
+    
+    bool Export(Collection & collection, const string nomFichierExport);
+
 
 //------------------------------------------------- Surcharge d'opérateurs
     Persistance & operator = ( const Persistance & unPersistance );
@@ -39,12 +42,16 @@ public:
     //
 
 //-------------------------------------------- Constructeurs - destructeur
+    Persistance ( const Persistance & unPersistance );
     Persistance ();
     // Mode d'emploi :
     // Constructeur par défaut de la classe <Persistance>
     //
     // Contrat :
     //
+
+    
+    
     
 
 //------------------------------------------------------------------ PRIVE
@@ -55,6 +62,7 @@ public:
 protected:
 //----------------------------------------------------- Méthodes protégées
 
+    
 //----------------------------------------------------- Attributs protégés
     
 };

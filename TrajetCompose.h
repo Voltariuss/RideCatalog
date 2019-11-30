@@ -25,6 +25,9 @@ class TrajetCompose : public Trajet
 {
     //------------------------------------------------------------- PUBLIC
 public:
+
+    friend ostream & operator << (ostream & out, const TrajetCompose & t);
+
     //------------------------------------------------- Méthodes publiques
     void Afficher(const char *indents) const;
     // Mode d'emploi :
