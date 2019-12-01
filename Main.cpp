@@ -30,6 +30,10 @@ void afficherParcours(Catalogue &catalogue, char *villeDepart, char *villeArrive
 // Mode d'emploi :
 //      Affiche la liste de parcours spécifiés en paramètre.
 
+void import(Catalogue & c, Persistance & p);
+// Mode d'emploi :
+//      Affiche le menu de sélection de l'import
+
 //-------------------------------------------------------------- Fonctions
 int main()
 {
@@ -182,13 +186,62 @@ int main()
                 break;
             }
             break;
-                
+        case 6:
+            import(catalogue, P);
+            break;
         default:
             break;
         }
     }
     return EXIT_SUCCESS;
 } //----- fin de main
+
+void import(Catalogue & c, Persistance & p)
+{
+    string nomFichier;
+    int reponse;
+    int n,m;
+
+
+    cout << "Veuillez insérer le nom du fichier d'import :" << endl;
+    cin >> nomFichier;
+    cout << "Choisissez un type d'importation :" << endl;
+    cout << "\t1 - Importer tous les trajets du fichier" << endl;
+    cout << "\t2 - Importer les trajets selon leurs type (Simple/Composé)" << endl;
+    cout << "\t3 - Importer les trajets selon la ville de départ et/ou la ville d'arrivée" << endl;
+    cout << "\t4 - Importer les trajets selon un intervalle" << endl;
+    cin >> reponse;
+
+    switch (reponse)
+    {
+    case 1:
+        c.Fusion(p.Import(nomFichier));
+        break;
+
+    case 2:
+        cout << "Type de trajet (simple = 1, composé = 2) : "; 
+        cin >> reponse;
+
+        if(reponse==1)
+            c.Fusion(p.Import(nomFichier));
+        else if(reponse==2)
+            c.Fusion(p.Import(nomFichier));
+
+        break;
+    case 3:
+        c.Fusion(p.Import(nomFichier));
+        break;
+    case 4:
+        cout << "Indice n (indice du premier trajet) : "; 
+        cin >> n;
+        cout << "Indice m (indice du dernier trajet) : "; 
+        cin >> m;
+        c.Fusion(p.Import(nomFichier));
+        break;
+    default:
+        break;
+    }
+}
 
 int afficherMenu()
 {
@@ -198,6 +251,7 @@ int afficherMenu()
     cout << "\t3 - Rechercher un parcours (mode simple)" << endl;
     cout << "\t4 - Rechercher un parcours (mode avancé)" << endl;
     cout << "\t5 - Exporter le catalogue" << endl;
+    cout << "\t6 - Importer un catalogue" << endl;
     cout << "\t0 - Quitter le programme" << endl;
     cout << "Votre réponse : ";
     int reponse;
