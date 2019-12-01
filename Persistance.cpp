@@ -36,15 +36,14 @@ Collection *Persistance::Import(string nomFichier)
 {
     Collection *col = new Collection();
     string value = "";
-    int i;
 
     ifstream fichier;
     fichier.open("Data/" + nomFichier, ios::in);
     if (fichier)
     {
-        //on saute les 3 premieres lignes du fichier
-        for (i = 0; i < META_DONNEE_LENGHT; i++)
-            getline(fichier, value);
+        // //on saute les 3 premieres lignes du fichier
+        // for (int i = 0; i < META_DONNEE_LENGHT; i++)
+        //     getline(fichier, value);
 
         col = CreateCollection(fichier);
     }
@@ -122,9 +121,11 @@ Collection * Persistance::CreateCollection(ifstream & fichier, int recursivite)
 }
 
 bool Persistance::Export(Collection & collection, const string nomFichierExport)
+// Algorithme :
+// Créer le fichier d'export selon la topologie definie (cf documentation).
 {
-
-    ofstream out(nomFichierExport.c_str());
+    ofstream out;
+    out.open("Data/" + nomFichierExport, ios::out);
 
     if(out)    
     {

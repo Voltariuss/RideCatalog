@@ -37,7 +37,12 @@ public:
     // l'utilisateur rentre un fichier au format .txt
     
     bool Export(Collection & collection, const string nomFichierExport);
-
+    // Mode d'emploi :
+    // Permet d'exporter une collection de trajet dans un fichier dont le nom est passé en paramètre.
+    //
+    // Contrat :
+    // Le dossier Data doit déjà être créé. Les exports seront placés dans ce répertoire.
+    // Si un fichier du même nom existait déjà, il sera supprimé.
 
 //------------------------------------------------- Surcharge d'opérateurs
     Persistance & operator = ( const Persistance & unPersistance );
