@@ -36,7 +36,6 @@ Collection *Persistance::Import(string nomFichier)
 {
     Collection *col = new Collection();
     string value = "";
-    int i;
 
     ifstream fichier;
     fichier.open("Data/" + nomFichier, ios::in);
@@ -122,40 +121,15 @@ Collection * Persistance::CreateCollection(ifstream & fichier, int recursivite)
 }
 
 bool Persistance::Export(Collection & collection, const string nomFichierExport)
+// Algorithme :
+// Créer le fichier d'export selon la topologie definie (cf documentation).
 {
-
-    int nbTS=0;
-    int nbTC=0;
-    // TODO: afficher les listes des villes de départs et d'arrivées
-    
-
-    bool contains; 
-
-    for (unsigned int i = 0; i < collection.GetNbTrajets(); i++)
-    {
-        if (typeid(*collection.GetTrajets()[i]) == typeid(TrajetSimple))
-        {
-            nbTS++;
-        }
-        else if (typeid(*collection.GetTrajets()[i]) == typeid(TrajetCompose))
-        {
-            nbTC++;
-        }
-        
-      
-
-
-
-    }
-    
-
-
-    ofstream out(nomFichierExport.c_str());
+    ofstream out;
+    out.open("Data/" + nomFichierExport, ios::out);
 
     if(out)    
     {
 
-        out << nbTS << "|" << nbTC << endl;
         for (unsigned int i = 0; i < collection.GetNbTrajets(); i++)
         {
             out  << i <<"|";
