@@ -155,6 +155,15 @@ Trajet *Collection::GetPremierTrajet() const
     }
 }
 
+void Collection::Fusion(Collection * col)
+{
+    int i;
+    for(i=0; i < col->nbTrajets; i++)
+    {
+        this->AjouterTrajet(col->GetTrajets()[i]->Clone());
+    }
+}
+
 Trajet *Collection::GetDernierTrajet() const
 // Algorithme :
 //      Retourne le dernier trajet si le nombre de trajets est

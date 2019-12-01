@@ -28,9 +28,13 @@ class Persistance
 public:
 //----------------------------------------------------- Méthodes publiques
 
-
-    Collection Import();
-
+    Collection * Import(string nomFichier);
+    // Mode d'emploi :
+    // - nomFichier : nom du fichier txt a partir duquelle l'import va s'effectuer
+    //
+    // Récupere tous les trajets d'un fichier et les stock dans une collection
+    // Contrat :
+    // l'utilisateur rentre un fichier au format .txt
     
     bool Export(Collection & collection, const string nomFichierExport);
 
@@ -55,7 +59,12 @@ public:
     
     
     
+
 //------------------------------------------------------------------ PRIVE
+
+    void Split(string data, string array[], char separator = '|');
+    // 
+    Collection * CreateCollection(ifstream & fichier, int recursivite = -1);
 
 protected:
 //----------------------------------------------------- Méthodes protégées

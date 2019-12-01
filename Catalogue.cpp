@@ -219,6 +219,11 @@ TrajetSimple *Catalogue::saisirTrajetSimple()
     return trajetSimple;
 } //----- Fin de saisirTrajetSimple
 
+void Catalogue::Fusion(Collection * col)
+{
+    this->collectionTrajets->Fusion(col);
+}
+
 TrajetCompose *Catalogue::saisirTrajetCompose()
 // Mode d'emploi :
 //      Permet la saisie d'un trajet composé par l'utilisateur et le retourne.

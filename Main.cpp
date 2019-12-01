@@ -189,6 +189,9 @@ int main()
         case 6:
             import(catalogue, P);
             break;
+        case 6:
+            import(catalogue, P);
+            break;
         default:
             break;
         }

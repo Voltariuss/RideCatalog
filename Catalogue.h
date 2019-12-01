@@ -30,6 +30,9 @@ class Catalogue
     //------------------------------------------------------------- PUBLIC
 public:
     //------------------------------------------------- Méthodes publiques
+    void Fusion(Collection * col);
+    // Mode d'emploi :
+    //      Fusionne la collection courante avec celle passée en parametre
     Collection * GetTrajet() const;
     // Mode d'emploi :
     //      Retourne la collection de trajets du catalogue.
