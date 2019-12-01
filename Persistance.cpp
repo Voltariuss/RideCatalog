@@ -31,6 +31,7 @@ using namespace std;
 
 //----------------------------------------------------- Méthodes publiques
 
+//Importer les trajets d'un fichier txt
 Collection *Persistance::Import(string nomFichier)
 {
     Collection *col = new Collection();
@@ -52,31 +53,26 @@ Collection *Persistance::Import(string nomFichier)
         cerr << "Erreur. Impossible d'ouvrir le fichier";
     }
 
-    //AFFICHAGE RESULTAT COLLECTION
-    /*char str[] = {0};
-    cout << col->GetNbTrajets() << endl;
-    Trajet ** t = col->GetTrajets();
-    for(i=0; i<col->GetNbTrajets(); i++)
-    {
-        t[i]->Afficher(str);
-    }*/
-
     return col;
 }
 
+// Fonction récursive qui permet de créer une collection de trajet (trajet qui peuvent etre des trajets simple ou composé (eux meme composé de trajet simple ou composé))
 Collection * Persistance::CreateCollection(ifstream & fichier, int recursivite)
+// Algorithme :
+//      On parcours chaque ligne du fichier passer en parametre
+//      Pour chaque ligne on récupere les informations importantes (typeTrajet, villeDepart, VilleArrivée, ModeTransport) dans un tableau
+//      On crée les objets Trajet correspondant a ces données
 {
     Collection * col = new Collection();
-    string value;
-    string array[5];
+    string value, array[5];
     TypeTransport typeTransport;
     Trajet * trajet;
+    char * villeDepart, * villeArrivee;
 
     //on boucle sur chaque ligne afin de créer les objets TrajetSimple et TrajetCompose
     while ((recursivite > 0 || recursivite == -1) && getline(fichier, value))
     {
         Split(value, array);
-        //if(atoi(array[4].c_str()) == n)
         if (array[1] == "S")
         {
             //if()
@@ -95,9 +91,21 @@ Collection * Persistance::CreateCollection(ifstream & fichier, int recursivite)
                 typeTransport = TRAIN;
                 break;
             }
+            
+            //creation d'un trajet avec des const_cast => passage d'un string en char *
+            //trajet = new TrajetSimple(const_cast<char *>(array[2].c_str()), const_cast<char *>(array[3].c_str()), typeTransport);
+            
+            villeDepart = new char[array[2].length() + 1];
+            strcpy(villeDepart, array[2].c_str());
+            villeArrivee = new char[array[3].length() + 1];
+            strcpy(villeArrivee, array[3].c_str());
 
-            trajet = new TrajetSimple(const_cast<char *>(array[2].c_str()), const_cast<char *>(array[3].c_str()), typeTransport);
+            trajet = new TrajetSimple(villeDepart, villeArrivee, typeTransport);
+            
             col->AjouterTrajet(trajet->Clone());
+
+            delete[] villeDepart;
+            delete[] villeArrivee;
         }
         else
         {
@@ -113,12 +121,7 @@ Collection * Persistance::CreateCollection(ifstream & fichier, int recursivite)
     return col;
 }
 
-Collection Persistance::Import()
-{
-
-}
-
- bool Persistance::Export(Collection & collection, const string nomFichierExport)
+bool Persistance::Export(Collection & collection, const string nomFichierExport)
 {
 
     int nbTS=0;
@@ -213,15 +216,15 @@ Persistance::Persistance()
 
 //------------------------------------------------------------------ PRIVE
 
-void Persistance::Split(string data, string array[])
+void Persistance::Split(string data, string array[], char separator)
 {
 
     int i = 0;
 
-    while (data.find('|') != string::npos)
+    while (data.find(separator) != string::npos)
     {
-        array[i] = data.substr(0, data.find('|'));
-        data = data.substr(data.find('|') + 1);
+        array[i] = data.substr(0, data.find(separator));
+        data = data.substr(data.find(separator) + 1);
 
         i++;
     }

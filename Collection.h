@@ -70,6 +70,11 @@ public:
     //
     //      Filtrage de la collection courante par rapport au type de trajet spécifié en créant une nouvelle collection
     //      dont les trajets sont des clones de la collection courante.
+    void Fusion(Collection * col);
+    // Mode d'emploi :
+    //      - col : collection a copier dans la collection courante (this)
+    //
+    //      Copie chaque element de col dans la collection courante (this)
     Trajet *GetPremierTrajet() const;
     // Mode d'emploi :
     //      Retourne le premier trajet de la collection.
