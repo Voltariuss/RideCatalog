@@ -24,7 +24,7 @@ using namespace std;
 
 //------------------------------------------------------------- Constantes
 
-#define META_DONNEE_LENGHT 3
+#define META_DONNEE_LENGHT 1
 //---------------------------------------------------- Variables statiques
 
 //----------------------------------------------------------------- PUBLIC
@@ -42,7 +42,7 @@ Collection *Persistance::Import(string nomFichier)
     fichier.open("Data/" + nomFichier, ios::in);
     if (fichier)
     {
-        //on saute les 3 premieres lignes du fichier
+        //on saute les lignes de metadonnées
         for (i = 0; i < META_DONNEE_LENGHT; i++)
             getline(fichier, value);
 

@@ -49,7 +49,7 @@ public:
     //      Ajouter les trajets de la collection spécifiée dans la collection courante.
     // Contrat :
     //      Le pointeur de la collection doit être différent de nullptr.
-    Collection *Filtrage(int first, int last);
+    Collection *Filtrage(unsigned int first, unsigned int last);
     // Mode d'emploi :
     //      - first : L'index du premier élément à conserver
     //      - last : L'index du dernier élément à conserver

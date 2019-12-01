@@ -102,9 +102,12 @@ void import(Catalogue & c, Persistance & p)
 {
     string nomFichier;
     int reponse;
-    int n,m;
+    unsigned int n,m;
+    TypeTrajet typeTrajet;
+    char *villeDepart = new char[TAILLE_CHAINE];
+    char *villeArrive = new char[TAILLE_CHAINE];
 
-
+    //TODO => check si le fichier existe bien et afficher un msg
     cout << "Veuillez insérer le nom du fichier d'import :" << endl;
     cin >> nomFichier;
     cout << "Choisissez un type d'importation :" << endl;
@@ -125,24 +128,36 @@ void import(Catalogue & c, Persistance & p)
         cin >> reponse;
 
         if(reponse==1)
-            c.Fusion(p.Import(nomFichier));
+            typeTrajet = TypeTrajet::SIMPLE;
         else if(reponse==2)
-            c.Fusion(p.Import(nomFichier));
+            typeTrajet = TypeTrajet::COMPOSE;
 
+        c.Fusion(p.Import(nomFichier)->Filtrage(typeTrajet));
         break;
     case 3:
-        c.Fusion(p.Import(nomFichier));
+        cout << "Ville de départ (si aucune condition sur la ville de départ alors tapez '.') : ";
+        cin >> villeDepart;
+        cout << "Ville d'arrivé (si aucune condition sur la ville d'arrivée alors tapez '.') : ";
+        cin >> villeArrive;
+        c.Fusion(p.Import(nomFichier)->Filtrage(villeDepart, villeArrive));
         break;
     case 4:
         cout << "Indice n (indice du premier trajet) : "; 
         cin >> n;
         cout << "Indice m (indice du dernier trajet) : "; 
         cin >> m;
-        c.Fusion(p.Import(nomFichier));
+
+        if(n >= 0 && m >= 0 && m>n)
+            c.Fusion(p.Import(nomFichier)->Filtrage(n,m));
+        else
+            cout << "Les bornes n et m sont incorrectes. Veuillez recommencer" << endl;
         break;
     default:
         break;
     }
+
+    delete[] villeDepart;
+    delete[] villeArrive;
 }
 
 int afficherMenu()

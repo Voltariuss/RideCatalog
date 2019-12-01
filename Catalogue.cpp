@@ -221,7 +221,8 @@ TrajetSimple *Catalogue::saisirTrajetSimple()
 
 void Catalogue::Fusion(Collection * col)
 {
-    this->collectionTrajets->Fusion(col);
+    if(col != nullptr)
+        this->collectionTrajets->Fusion(col);
 }
 
 TrajetCompose *Catalogue::saisirTrajetCompose()

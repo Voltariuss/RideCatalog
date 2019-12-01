@@ -62,23 +62,28 @@ int Collection::AjouterTrajet(Trajet *trajet)
 //     return realloc;
 // } //----- Fin de FusionCollection
 
-Collection *Collection::Filtrage(int first, int last)
+Collection *Collection::Filtrage(unsigned int first, unsigned int last)
 // Algorithme :
 //      Vérifie la validité des indexes spécifiés (interval et nombre d'éléments).
 //      Si les arguments sont valides, alors on fusionne la nouvelle collection vide avec la collection courante.
 //      Sinon on retourne nullptr.
 {
-    int nbElements = first - last + 1;
+    int nbElements = last - first + 1;
     Collection *collection = nullptr;
     bool isFirstValid = first >= 0 && first < GetNbTrajets();
     bool isLastValid = last >= 0 && last < GetNbTrajets();
-    bool isNbElementsValid = nbElements >= 0;
+    bool isNbElementsValid = nbElements >= 1;
     bool isValid = isFirstValid && isLastValid && isNbElementsValid;
 
     if (isValid)
     {
         collection = new Collection();
-        // collection->FusionCollection(this, first, last);
+
+        for (unsigned int i = first; i < last; i++)
+        {
+            collection->AjouterTrajet(GetTrajets()[i]->Clone());
+        }
+
         // TODO Check memory
     }
     return collection;
@@ -91,31 +96,31 @@ Collection *Collection::Filtrage(char *depart, char *arrivee)
 //      ville de départ et/ou ville d'arrivée celle(s) spécifiée(s) en arguments de la méthode.
 {
     Collection *collection = nullptr;
-    int sizeDepart = strlen(depart);
-    int sizeArrivee = strlen(arrivee);
 
-    if (sizeDepart > 0 || sizeArrivee > 0)
+    //QUESTION : Si il ne selectionne ni une ville de depart, ni une ville d'arrivée => on retourne tous les trajets du fichier ??? ou rien ?
+
+    //REMARQUE : j'ai modifié cette methode et j'aurais peut etre pas du => si l'export l'utilise alors elle risque de ne plus fonctionner correctement. comportement a verifier
+    //              => la methode utilisais avant le taille des chaines depart et arrivee. si les parametres etaient vident alors le filtre n'était pas appliqué. Mais je ne sais pas comment l'utilisateur peut saisir une chaine vide avec cin >> villedepart
+
+    if (strcmp(depart, ".") != 0)
     {
-        if (sizeDepart > 0)
-        {
-            collection = filtrageDepart(depart);
-        }
-
-        if (sizeArrivee > 0)
-        {
-            if (collection == nullptr)
-            {
-                collection = filtrageArrivee(arrivee);
-            }
-            else
-            {
-                Collection *collectionArrivee = collection->filtrageArrivee(arrivee);
-                delete collection;
-                collection = collectionArrivee;
-            }
-        }
-        // TODO Memory check
+        collection = filtrageDepart(depart);
     }
+
+    if (strcmp(arrivee, ".") != 0)
+    {
+        if (collection == nullptr)
+        {
+            collection = filtrageArrivee(arrivee);
+        }
+        else
+        {
+            Collection *collectionArrivee = collection->filtrageArrivee(arrivee);
+            delete collection;
+            collection = collectionArrivee;
+        }
+    }
+    // TODO Memory check
     return collection;
 } //----- Fin de Filtrage(char *, char *)
 
@@ -155,10 +160,10 @@ Trajet *Collection::GetPremierTrajet() const
     }
 }
 
-void Collection::Fusion(Collection * col)
+void Collection::Fusion(Collection *col)
 {
-    int i;
-    for(i=0; i < col->nbTrajets; i++)
+    unsigned int i;
+    for (i = 0; i < col->nbTrajets; i++)
     {
         this->AjouterTrajet(col->GetTrajets()[i]->Clone());
     }
@@ -317,13 +322,14 @@ Collection *Collection::filtrageDepart(char *depart)
 //      Parcours l'ensemble des trajets de la collection courante en clonant dans la nouvelle collection créée
 //      uniquement les trajets ayant comme ville de départ celle spécifiée en argument de la méthode.
 {
+    cout << "wola" << endl;
     Collection *collection = new Collection();
 
     for (unsigned int i = 0; i < GetNbTrajets(); i++)
     {
         Trajet *trajet = GetTrajets()[i];
 
-        if (strcmp(trajet->GetVilleDepart(), depart))
+        if (strcmp(trajet->GetVilleDepart(), depart) == 0)
         {
             collection->AjouterTrajet(trajet->Clone());
         }
@@ -346,7 +352,7 @@ Collection *Collection::filtrageArrivee(char *arrivee)
     {
         Trajet *trajet = GetTrajets()[i];
 
-        if (strcmp(trajet->GetVilleArrivee(), arrivee))
+        if (strcmp(trajet->GetVilleArrivee(), arrivee) == 0)
         {
             collection->AjouterTrajet(trajet->Clone());
         }
