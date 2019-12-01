@@ -41,9 +41,9 @@ Collection *Persistance::Import(string nomFichier)
     fichier.open("Data/" + nomFichier, ios::in);
     if (fichier)
     {
-        //on saute les lignes de metadonnées
-        for (i = 0; i < META_DONNEE_LENGHT; i++)
-            getline(fichier, value);
+        // //on saute les lignes de metadonnées
+        // for (int i = 0; i < META_DONNEE_LENGHT; i++)
+        //     getline(fichier, value);
 
         col = CreateCollection(fichier);
     }
