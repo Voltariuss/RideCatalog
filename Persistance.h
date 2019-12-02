@@ -28,6 +28,10 @@ class Persistance
 public:
 //----------------------------------------------------- Méthodes publiques
 
+    bool FileExist(string nomFichier);
+    // Mode d'emploi :
+    // - nomFichier : nom du fichier txt sur lequel effectuer un test d'ouverture
+
     Collection * Import(string nomFichier);
     // Mode d'emploi :
     // - nomFichier : nom du fichier txt a partir duquelle l'import va s'effectuer
