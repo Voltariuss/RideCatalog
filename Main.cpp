@@ -202,6 +202,7 @@ void import(Catalogue &c, Persistance &p)
     TypeTrajet typeTrajet;
     char *villeDepart = new char[TAILLE_CHAINE];
     char *villeArrivee = new char[TAILLE_CHAINE];
+    Collection * col;
 
     cout << "Veuillez insérer le nom du fichier d'import :" << endl;
     cin >> nomFichier;
@@ -219,7 +220,8 @@ void import(Catalogue &c, Persistance &p)
         switch (reponse)
         {
         case 1:
-            c.Fusion(p.Import(nomFichier));
+            col = p.Import(nomFichier);
+            c.Fusion(col);
             break;
 
         case 2:
@@ -290,6 +292,7 @@ void import(Catalogue &c, Persistance &p)
 
     delete[] villeDepart;
     delete[] villeArrivee;
+    delete col;
 }
 
 int afficherMenu()
