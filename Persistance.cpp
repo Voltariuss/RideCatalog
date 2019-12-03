@@ -25,11 +25,21 @@ using namespace std;
 //------------------------------------------------------------- Constantes
 
 #define META_DONNEE_LENGHT 1
+#define DOSSIER_DATA "Data/"
 //---------------------------------------------------- Variables statiques
 
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
+
+//vérifie si l'ouverture d'un fichier ne retourne aucun flag d'erreur
+bool Persistance::FileExist(string nomFichier)
+{
+    ifstream fichier;
+
+    fichier.open(DOSSIER_DATA+nomFichier);
+    return fichier.good();
+}
 
 //Importer les trajets d'un fichier txt
 Collection *Persistance::Import(string nomFichier)
@@ -38,13 +48,9 @@ Collection *Persistance::Import(string nomFichier)
     string value = "";
 
     ifstream fichier;
-    fichier.open("Data/" + nomFichier, ios::in);
+    fichier.open(DOSSIER_DATA + nomFichier, ios::in);
     if (fichier)
     {
-        // //on saute les lignes de metadonnées
-        // for (int i = 0; i < META_DONNEE_LENGHT; i++)
-        //     getline(fichier, value);
-
         col = CreateCollection(fichier);
     }
     else
@@ -103,14 +109,18 @@ Collection * Persistance::CreateCollection(ifstream & fichier, int recursivite)
             
             col->AjouterTrajet(trajet->Clone());
 
+            //delete trajet;
+
             delete[] villeDepart;
-            delete[] villeArrivee;
+            delete[] villeArrivee; 
         }
         else
         {
             trajet = new TrajetCompose(CreateCollection(fichier, atoi(array[4].c_str())));
             
             col->AjouterTrajet(trajet->Clone());
+
+            //delete trajet;
         }
 
         if(recursivite > 0 )
@@ -124,9 +134,11 @@ bool Persistance::Export(Collection & collection, const string nomFichierExport)
 // Algorithme :
 // Créer le fichier d'export selon la topologie definie (cf documentation).
 {
-    ofstream out;
-    out.open("Data/" + nomFichierExport, ios::out);
 
+    ofstream out;
+    out.open(DOSSIER_DATA + nomFichierExport, ios::out);
+
+    
     if(out)    
     {
 

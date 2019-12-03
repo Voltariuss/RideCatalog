@@ -30,7 +30,7 @@ void afficherParcours(Catalogue &catalogue, char *villeDepart, char *villeArrive
 // Mode d'emploi :
 //      Affiche la liste de parcours spécifiés en paramètre.
 
-void import(Catalogue & c, Persistance & p);
+void import(Catalogue &c, Persistance &p);
 // Mode d'emploi :
 //      Affiche le menu de sélection de l'import
 
@@ -51,8 +51,6 @@ int main()
     unsigned int n;
     unsigned int m;
     char answer;
-
-    
 
     while (1)
     {
@@ -95,7 +93,7 @@ int main()
             delete parcours;
             break;
         case 5:
-            choix=afficherSousMenuExport();
+            choix = afficherSousMenuExport();
             cout << "Veuillez donner un nom au fichier d'export:" << endl;
             cin >> nomExport;
 
@@ -104,82 +102,81 @@ int main()
             case 0:
                 break;
             case 1:
-                P.Export(*catalogue.GetTrajet(),nomExport);
+                P.Export(*catalogue.GetTrajet(), nomExport);
                 break;
             case 2:
-                
-                do
-                    {
-                        cout << "Veuillez sélectionner les trajets que vous souhaitez exporter:" << endl;
-                        cout << "\t1 - Les trajets simples" << endl;
-                        cout << "\t2 - Les trajets composés" << endl;
-                        cin >> typeTrajet;
 
-                        if (typeTrajet!=1 && typeTrajet!=2)
-                        {
-                            cout << "saisie incorrecte. Veuillez recommencer." << endl << endl;
-                        }
-                    }while (typeTrajet!=1 && typeTrajet!=2);
-                    
-                if (typeTrajet==1)
+                do
                 {
-                    P.Export(*catalogue.GetTrajet()->Filtrage(SIMPLE),nomExport);
+                    cout << "Veuillez sélectionner les trajets que vous souhaitez exporter:" << endl;
+                    cout << "\t1 - Les trajets simples" << endl;
+                    cout << "\t2 - Les trajets composés" << endl;
+                    cin >> typeTrajet;
+
+                    if (typeTrajet != 1 && typeTrajet != 2)
+                    {
+                        cout << "saisie incorrecte. Veuillez recommencer." << endl
+                             << endl;
+                    }
+                } while (typeTrajet != 1 && typeTrajet != 2);
+
+                if (typeTrajet == 1)
+                {
+                    P.Export(*catalogue.GetTrajet()->Filtrage(SIMPLE), nomExport);
                 }
-                else if (typeTrajet==2)
+                else if (typeTrajet == 2)
                 {
-                    P.Export(*catalogue.GetTrajet()->Filtrage(COMPOSE),nomExport);
-                }              
+                    P.Export(*catalogue.GetTrajet()->Filtrage(COMPOSE), nomExport);
+                }
                 break;
-            
+
             case 3:
                 villeDepart = new char[TAILLE_CHAINE];
                 villeArrivee = new char[TAILLE_CHAINE];
 
                 do
+                {
+                    cout << "Souhaitez vous saisir une ville de départ? (O/N) : ";
+                    cin >> answer;
+
+                    if (answer == 'O')
                     {
-                        cout << "Souhaitez vous saisir une ville de départ? (O/N) : ";
-                        cin >> answer;
-
-                        if (answer == 'O')
-                        {
-                            cout << "Saisie de la ville de départ : ";
-                            cin >> villeDepart;
-                        }
-                        else if (answer != 'N')
-                        {
-                            cout << "Saisie incorrect." << endl;
-                        }
-                    } while (answer != 'N' && answer != 'O');
-
+                        cout << "Saisie de la ville de départ : ";
+                        cin >> villeDepart;
+                    }
+                    else if (answer != 'N')
+                    {
+                        cout << "Saisie incorrect." << endl;
+                    }
+                } while (answer != 'N' && answer != 'O');
 
                 do
+                {
+                    cout << "Souhaitez vous saisir une ville d'arrivée'? (O/N) : ";
+                    cin >> answer;
+
+                    if (answer == 'O')
                     {
-                        cout << "Souhaitez vous saisir une ville d'arrivée'? (O/N) : ";
-                        cin >> answer;
+                        cout << "Saisie de la ville d'arrivée : ";
+                        cin >> villeArrivee;
+                    }
+                    else if (answer != 'N')
+                    {
+                        cout << "Saisie incorrect." << endl;
+                    }
+                } while (answer != 'N' && answer != 'O');
 
-                        if (answer == 'O')
-                        {
-                            cout << "Saisie de la ville d'arrivée : ";
-                            cin >> villeArrivee;
-                        }
-                        else if (answer != 'N')
-                        {
-                            cout << "Saisie incorrect." << endl;
-                        }
-                    } while (answer != 'N' && answer != 'O');
-                
-
-                P.Export(*catalogue.GetTrajet()->Filtrage(villeDepart,villeArrivee),nomExport);
+                P.Export(*catalogue.GetTrajet()->Filtrage(villeDepart, villeArrivee), nomExport);
                 delete[] villeDepart;
                 delete[] villeArrivee;
                 break;
-            
+
             case 4:
-                cout << "Veuillez entrer la valeure inférieure de l'intervalle [n,m] :"<<endl;
+                cout << "Veuillez entrer la valeure inférieure de l'intervalle [n,m] :" << endl;
                 cin >> n;
-                cout << "Veuillez entrer la valeure supérieure de l'intervalle [n,m] : "<<endl;
+                cout << "Veuillez entrer la valeure supérieure de l'intervalle [n,m] : " << endl;
                 cin >> m;
-                P.Export(*catalogue.GetTrajet()->Filtrage(n,m),nomExport);
+                P.Export(*catalogue.GetTrajet()->Filtrage(n, m), nomExport);
                 break;
 
             default:
@@ -196,62 +193,71 @@ int main()
     return EXIT_SUCCESS;
 } //----- fin de main
 
-void import(Catalogue & c, Persistance & p)
+void import(Catalogue &c, Persistance &p)
 {
     string nomFichier;
     int reponse;
-    unsigned int n,m;
+    unsigned int n, m;
     TypeTrajet typeTrajet;
     char *villeDepart = new char[TAILLE_CHAINE];
     char *villeArrive = new char[TAILLE_CHAINE];
 
-    //TODO => check si le fichier existe bien et afficher un msg
     cout << "Veuillez insérer le nom du fichier d'import :" << endl;
     cin >> nomFichier;
-    cout << "Choisissez un type d'importation :" << endl;
-    cout << "\t1 - Importer tous les trajets du fichier" << endl;
-    cout << "\t2 - Importer les trajets selon leurs type (Simple/Composé)" << endl;
-    cout << "\t3 - Importer les trajets selon la ville de départ et/ou la ville d'arrivée" << endl;
-    cout << "\t4 - Importer les trajets selon un intervalle" << endl;
-    cin >> reponse;
 
-    switch (reponse)
+    if (p.FileExist(nomFichier))
     {
-    case 1:
-        c.Fusion(p.Import(nomFichier));
-        break;
 
-    case 2:
-        cout << "Type de trajet (simple = 1, composé = 2) : "; 
+        cout << "Choisissez un type d'importation :" << endl;
+        cout << "\t1 - Importer tous les trajets du fichier" << endl;
+        cout << "\t2 - Importer les trajets selon leurs type (Simple/Composé)" << endl;
+        cout << "\t3 - Importer les trajets selon la ville de départ et/ou la ville d'arrivée" << endl;
+        cout << "\t4 - Importer les trajets selon un intervalle" << endl;
         cin >> reponse;
 
-        if(reponse==1)
-            typeTrajet = TypeTrajet::SIMPLE;
-        else if(reponse==2)
-            typeTrajet = TypeTrajet::COMPOSE;
+        switch (reponse)
+        {
+        case 1:
+            c.Fusion(p.Import(nomFichier));
+            break;
 
-        c.Fusion(p.Import(nomFichier)->Filtrage(typeTrajet));
-        break;
-    case 3:
-        cout << "Ville de départ (si aucune condition sur la ville de départ alors tapez '.') : ";
-        cin >> villeDepart;
-        cout << "Ville d'arrivé (si aucune condition sur la ville d'arrivée alors tapez '.') : ";
-        cin >> villeArrive;
-        c.Fusion(p.Import(nomFichier)->Filtrage(villeDepart, villeArrive));
-        break;
-    case 4:
-        cout << "Indice n (indice du premier trajet) : "; 
-        cin >> n;
-        cout << "Indice m (indice du dernier trajet) : "; 
-        cin >> m;
+        case 2:
+            cout << "Type de trajet (simple = 1, composé = 2) : ";
+            cin >> reponse;
 
-        if(n >= 0 && m >= 0 && m>n)
-            c.Fusion(p.Import(nomFichier)->Filtrage(n,m));
-        else
-            cout << "Les bornes n et m sont incorrectes. Veuillez recommencer" << endl;
-        break;
-    default:
-        break;
+            if (reponse == 1)
+                typeTrajet = TypeTrajet::SIMPLE;
+            else if (reponse == 2)
+                typeTrajet = TypeTrajet::COMPOSE;
+
+            c.Fusion(p.Import(nomFichier)->Filtrage(typeTrajet));
+            break;
+        case 3:
+            cout << "Ville de départ (si aucune condition sur la ville de départ alors tapez '.') : ";
+            cin >> villeDepart;
+            cout << "Ville d'arrivé (si aucune condition sur la ville d'arrivée alors tapez '.') : ";
+            cin >> villeArrive;
+            c.Fusion(p.Import(nomFichier)->Filtrage(villeDepart, villeArrive));
+            break;
+        case 4:
+            cout << "Indice n (indice du premier trajet) : ";
+            cin >> n;
+            cout << "Indice m (indice du dernier trajet) : ";
+            cin >> m;
+
+            if (n >= 0 && m >= 0 && m > n)
+                c.Fusion(p.Import(nomFichier)->Filtrage(n, m));
+            else
+                cout << "Les bornes n et m sont incorrectes. Veuillez recommencer" << endl;
+            break;
+        default:
+            break;
+        }
+    }
+    else
+    {
+        cout << "Impossible d'ouvrir le fichier " << nomFichier;
+        cerr << "Impossible d'ouvrir le fichier " << nomFichier;
     }
 
     delete[] villeDepart;
@@ -274,7 +280,6 @@ int afficherMenu()
     return reponse;
 } //----- fin de afficherMenu
 
-
 int afficherSousMenuExport()
 {
     cout << "Quel type d'export voulez vous faire?" << endl;
@@ -287,7 +292,6 @@ int afficherSousMenuExport()
     cin >> reponse;
     return reponse;
 } //----- fin de afficherMenu
-
 
 void afficherParcours(Catalogue &catalogue, char *villeDepart, char *villeArrivee, Collection &parcours)
 {
