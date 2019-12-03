@@ -55,7 +55,7 @@ int Collection::AjouterTrajet(Trajet *trajet)
          if (i >= first && i <= last)
          {
              Trajet *trajet = collection->GetTrajets()[i]->Clone();
-             realloc = realloc || AjouterTrajet(trajet);
+             realloc = AjouterTrajet(trajet) || realloc;
              // TODO Check memory
          }
      }
@@ -308,7 +308,6 @@ Collection *Collection::filtrageDepart(char *depart)
 //      Parcours l'ensemble des trajets de la collection courante en clonant dans la nouvelle collection créée
 //      uniquement les trajets ayant comme ville de départ celle spécifiée en argument de la méthode.
 {
-    cout << "wola" << endl;
     Collection *collection = new Collection();
 
     for (unsigned int i = 0; i < GetNbTrajets(); i++)

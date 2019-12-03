@@ -44,7 +44,7 @@ bool Persistance::FileExist(string nomFichier)
 //Importer les trajets d'un fichier txt
 Collection *Persistance::Import(string nomFichier)
 {
-    Collection *col = new Collection();
+    Collection *col;
     string value = "";
 
     ifstream fichier;
@@ -71,12 +71,12 @@ Collection * Persistance::CreateCollection(ifstream & fichier, int recursivite)
     Collection * col = new Collection();
     string value, array[5];
     TypeTransport typeTransport;
-    Trajet * trajet;
     char * villeDepart, * villeArrivee;
 
     //on boucle sur chaque ligne afin de créer les objets TrajetSimple et TrajetCompose
     while ((recursivite > 0 || recursivite == -1) && getline(fichier, value))
     {
+        Trajet * trajet;
         Split(value, array);
         if (array[1] == "S")
         {
@@ -109,10 +109,8 @@ Collection * Persistance::CreateCollection(ifstream & fichier, int recursivite)
             
             col->AjouterTrajet(trajet->Clone());
 
-            //delete trajet;
+            delete trajet;
 
-            delete[] villeDepart;
-            delete[] villeArrivee; 
         }
         else
         {
@@ -120,7 +118,7 @@ Collection * Persistance::CreateCollection(ifstream & fichier, int recursivite)
             
             col->AjouterTrajet(trajet->Clone());
 
-            //delete trajet;
+            delete trajet;
         }
 
         if(recursivite > 0 )

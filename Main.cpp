@@ -197,10 +197,11 @@ void import(Catalogue &c, Persistance &p)
 {
     string nomFichier;
     int reponse;
+    char answer;
     unsigned int n, m;
     TypeTrajet typeTrajet;
     char *villeDepart = new char[TAILLE_CHAINE];
-    char *villeArrive = new char[TAILLE_CHAINE];
+    char *villeArrivee = new char[TAILLE_CHAINE];
 
     cout << "Veuillez insérer le nom du fichier d'import :" << endl;
     cin >> nomFichier;
@@ -233,11 +234,39 @@ void import(Catalogue &c, Persistance &p)
             c.Fusion(p.Import(nomFichier)->Filtrage(typeTrajet));
             break;
         case 3:
-            cout << "Ville de départ (si aucune condition sur la ville de départ alors tapez '.') : ";
-            cin >> villeDepart;
-            cout << "Ville d'arrivé (si aucune condition sur la ville d'arrivée alors tapez '.') : ";
-            cin >> villeArrive;
-            c.Fusion(p.Import(nomFichier)->Filtrage(villeDepart, villeArrive));
+            do
+            {
+                cout << "Souhaitez vous saisir une ville de départ? (O/N) : ";
+                cin >> answer;
+
+                if (answer == 'O')
+                {
+                    cout << "Saisie de la ville de départ : ";
+                    cin >> villeDepart;
+                }
+                else if (answer != 'N')
+                {
+                    cout << "Saisie incorrect." << endl;
+                }
+            } while (answer != 'N' && answer != 'O');
+
+            do
+            {
+                cout << "Souhaitez vous saisir une ville d'arrivée'? (O/N) : ";
+                cin >> answer;
+
+                if (answer == 'O')
+                {
+                    cout << "Saisie de la ville d'arrivée : ";
+                    cin >> villeArrivee;
+                }
+                else if (answer != 'N')
+                {
+                    cout << "Saisie incorrect." << endl;
+                }
+            } while (answer != 'N' && answer != 'O');
+           
+            c.Fusion(p.Import(nomFichier)->Filtrage(villeDepart, villeArrivee));
             break;
         case 4:
             cout << "Indice n (indice du premier trajet) : ";
@@ -256,12 +285,11 @@ void import(Catalogue &c, Persistance &p)
     }
     else
     {
-        cout << "Impossible d'ouvrir le fichier " << nomFichier;
         cerr << "Impossible d'ouvrir le fichier " << nomFichier;
     }
 
     delete[] villeDepart;
-    delete[] villeArrive;
+    delete[] villeArrivee;
 }
 
 int afficherMenu()
