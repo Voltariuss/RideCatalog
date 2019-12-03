@@ -23,25 +23,34 @@ using namespace std;
 
 #define TAILLE_CHAINE 100
 
+enum TypeAction {
+    IMPORT,
+    EXPORT
+};
+
 //------------------------------------------------ Signatures de fonctions
-int afficherMenu();
+static int afficherMenu();
 // Mode d'emploi :
 //      Affiche le menu de sélection de l'action à entreprendre sur
 //      l'application et retourne la réponse de l'utilisateur.
 
-void afficherMenuImport(Catalogue &c, Persistance &p);
+static void afficherMenuImport(Catalogue &c, Persistance &p);
 // Mode d'emploi :
 //      Affiche le menu de sélection pour l'import
 
-int afficherMenuExport();
+static int afficherMenuImportType();
+// Mode d'emploi :
+//      Affiche le menu de sélection du type d'importation
+
+static int afficherMenuExport();
 // Mode d'emploi :
 //      Afficher le menu de sélection pour l'export
 
-string saisirNomFichier();
+static string *saisirNomFichier(Persistance &persistance, TypeAction typeAction);
 // Mode d'emploi :
 //      Demande à l'utilisateur la saisie d'un nom de fichier
 
-void afficherParcours(Catalogue &catalogue, char *villeDepart, char *villeArrivee, Collection &parcours);
+static void afficherParcours(Catalogue &catalogue, char *villeDepart, char *villeArrivee, Collection &parcours);
 // Mode d'emploi :
 //      Affiche la liste de parcours spécifiés en paramètre.
 
@@ -192,19 +201,19 @@ int main() {
     }
 } //----- fin de main
 
-bool verificationSaisie(istream &in) {
+static bool verificationSaisie(istream &in) {
     bool valid = true;
     if (!in) {
         valid = false;
-        in.clear();
-        in.ignore(INT_MAX, '\n');
         cout << ChatColor(ROUGE) << "ERREUR : La saisie est incorrecte." << ChatColor(RESET)
              << endl;
     }
+    in.clear();
+    in.ignore(INT_MAX, '\n');
     return valid;
 } //----- fin de verificationSaisie
 
-int afficherMenu() {
+static int afficherMenu() {
     bool valid;
     int reponse;
     do {
@@ -222,7 +231,7 @@ int afficherMenu() {
 
         if (valid && (reponse < 0 || reponse > 6)) {
             valid = false;
-            cout << ChatColor(ROUGE)
+            cerr << ChatColor(ROUGE)
                  << "ERREUR : Le numéro saisie ne correspond pas un numéro d'action valide. Veuillez réessayer."
                  << ChatColor(RESET) << endl;
         }
@@ -230,105 +239,181 @@ int afficherMenu() {
     return reponse;
 } //----- fin de afficherMenu
 
-void afficherMenuImport(Catalogue &c, Persistance &persistance) {
-    string nomFichier;
+static void afficherMenuImport(Catalogue &catalogue, Persistance &persistance) {
+    string *nomFichier;
+    bool valid;
+
+    nomFichier = saisirNomFichier(persistance, IMPORT);
+
+    if (nomFichier && persistance.FileExist(*nomFichier)) {
+        int reponse;
+        Collection *collection = nullptr;
+
+        reponse = afficherMenuImportType();
+
+        switch (reponse) {
+            case 0:
+                cout << ChatColor(VERT) << "Annulation de l'action d'import de trajet." << ChatColor(RESET) << endl;
+                return;
+            case 1: {
+                collection = persistance.Import(*nomFichier);
+                break;
+            }
+            case 2: {
+                int reponseType;
+                TypeTrajet typeTrajet;
+
+                do {
+                    cout << "Sélectionnez le type de trajet à conserver (simple = 1, composé = 2) : ";
+                    cin >> reponseType;
+                    valid = verificationSaisie(cin);
+
+                    if (valid && reponseType != 1 && reponseType != 2) {
+                        valid = false;
+                        cerr << ChatColor(ROUGE)
+                             << "ERREUR : Le numéro saisie est incorrect. Veuillez réessayer."
+                             << ChatColor(RESET) << endl;
+                    }
+                } while (!valid);
+
+                if (reponseType == 1) {
+                    typeTrajet = TypeTrajet::SIMPLE;
+                } else {
+                    typeTrajet = TypeTrajet::COMPOSE;
+                }
+                collection = persistance.Import(*nomFichier)->Filtrage(typeTrajet);
+                break;
+            }
+            case 3: {
+                char reponseVD;
+                char *villeDepart = new char[TAILLE_CHAINE];
+                char *villeArrivee = new char[TAILLE_CHAINE];
+
+                do {
+                    cout << "Souhaitez-vous saisir une ville de départ ? (O/N) : ";
+                    cin >> reponseVD;
+                    valid = verificationSaisie(cin);
+
+                    if (valid && reponseVD != 'O' && reponseVD != 'N') {
+                        valid = false;
+                        cerr << ChatColor(ROUGE)
+                             << "ERREUR : La réponse saisie est incorrecte. Veuillez réessayer."
+                             << ChatColor(RESET) << endl;
+                    }
+                } while (!valid);
+
+                if (reponseVD == 'O') {
+                    do {
+                        cout << "Saisie de la ville de départ : ";
+                        cin >> villeDepart;
+                        valid = verificationSaisie(cin);
+                    } while (!valid);
+                }
+
+                char reponseVA;
+
+                do {
+                    cout << "Souhaitez-vous saisir une ville d'arrivée ? (O/N) : ";
+                    cin >> reponseVA;
+                    valid = verificationSaisie(cin);
+
+                    if (valid && reponseVA != 'O' && reponseVA != 'N') {
+                        valid = false;
+                        cerr << ChatColor(ROUGE)
+                             << "ERREUR : La réponse saisie est incorrecte. Veuillez réessayer."
+                             << ChatColor(RESET) << endl;
+                    }
+                } while (!valid);
+
+                if (reponseVA == 'O') {
+                    do {
+                        cout << "Saisie de la ville d'arrivée : ";
+                        cin >> villeArrivee;
+                        valid = verificationSaisie(cin);
+                    } while (!valid);
+                }
+
+                collection = persistance.Import(*nomFichier)->Filtrage(villeDepart, villeArrivee);
+                delete[] villeDepart;
+                delete[] villeArrivee;
+                break;
+            }
+            case 4: {
+                unsigned int n, m;
+                Collection *importCollection = persistance.Import(*nomFichier);
+                unsigned int size = importCollection->GetNbTrajets();
+
+                do {
+                    cout << "Indice n (indice du premier trajet) : ";
+                    cin >> n;
+                    valid = verificationSaisie(cin);
+
+                    if (valid && (n < 0 || n >= size)) {
+                        valid = false;
+                        cerr << ChatColor(ROUGE) << "ERREUR : L'index saisi ne correspond à aucun trajet "
+                             << "(index max : " << size - 1 << ")."
+                             << ChatColor(RESET) << endl;
+                    }
+                } while (!valid);
+
+                do {
+                    cout << "Indice m (indice du dernier trajet) : ";
+                    cin >> m;
+                    valid = verificationSaisie(cin);
+
+                    if (valid && (m < 0 || m >= size || m < n)) {
+                        valid = false;
+
+                        if (m < n) {
+                            cerr << ChatColor(ROUGE) << "ERREUR : L'index m du dernier trajet ne peut pas être "
+                                 << "inférieur à l'index n du premier trajet." << ChatColor(RESET) << endl;
+                        } else {
+                            cerr << ChatColor(ROUGE) << "ERREUR : L'index saisi ne correspond à aucun trajet "
+                                 << "(index max : " << size - 1 << ")."
+                                 << ChatColor(RESET) << endl;
+                        }
+                    }
+                } while (!valid);
+
+                collection = importCollection->Filtrage(n, m);
+                break;
+            }
+        }
+        catalogue.Fusion(collection);
+        cout << ChatColor(VERT) << "Les trajets ont été importés avec succès !"
+             << ChatColor(RESET) << endl;
+        delete collection;
+    } else {
+        cerr << "Impossible d'ouvrir le fichier " << *nomFichier << endl;
+    }
+} //----- fin de afficherMenuImport
+
+static int afficherMenuImportType() {
     int reponse;
-    char answer;
-    unsigned int n, m;
-    TypeTrajet typeTrajet;
-    char *villeDepart = new char[TAILLE_CHAINE];
-    char *villeArrivee = new char[TAILLE_CHAINE];
+    bool valid;
 
-    cout << "Veuillez saisir le chemin du fichier d'import :" << endl;
-    cin >> nomFichier;
-
-    if (persistance.FileExist(nomFichier)) {
-
+    do {
         cout << "Choisissez un type d'importation :" << endl;
         cout << "\t1 - Importer tous les trajets du fichier" << endl;
         cout << "\t2 - Importer les trajets selon leurs type (Simple/Composé)" << endl;
         cout << "\t3 - Importer les trajets selon la ville de départ et/ou la ville d'arrivée" << endl;
         cout << "\t4 - Importer les trajets selon un intervalle" << endl;
+        cout << "\t0 - Annuler l'action" << endl;
+        cout << "Votre réponse : ";
         cin >> reponse;
+        valid = verificationSaisie(cin);
 
-        switch (reponse) {
-            case 1:
-                c.Fusion(persistance.Import(nomFichier));
-                break;
-
-            case 2:
-                cout << "Type de trajet (simple = 1, composé = 2) : ";
-                cin >> reponse;
-
-                if (reponse == 1)
-                    typeTrajet = TypeTrajet::SIMPLE;
-                else if (reponse == 2)
-                    typeTrajet = TypeTrajet::COMPOSE;
-
-            c.Fusion(p.Import(nomFichier)->Filtrage(typeTrajet));
-            break;
-        case 3:
-            do
-            {
-                cout << "Souhaitez vous saisir une ville de départ? (O/N) : ";
-                cin >> answer;
-
-                if (answer == 'O')
-                {
-                    cout << "Saisie de la ville de départ : ";
-                    cin >> villeDepart;
-                }
-                else if (answer != 'N')
-                {
-                    cout << "Saisie incorrect." << endl;
-                }
-            } while (answer != 'N' && answer != 'O');
-
-            do
-            {
-                cout << "Souhaitez vous saisir une ville d'arrivée'? (O/N) : ";
-                cin >> answer;
-
-                if (answer == 'O')
-                {
-                    cout << "Saisie de la ville d'arrivée : ";
-                    cin >> villeArrivee;
-                }
-                else if (answer != 'N')
-                {
-                    cout << "Saisie incorrect." << endl;
-                }
-            } while (answer != 'N' && answer != 'O');
-           
-            c.Fusion(p.Import(nomFichier)->Filtrage(villeDepart, villeArrivee));
-            break;
-        case 4:
-            cout << "Indice n (indice du premier trajet) : ";
-            cin >> n;
-            cout << "Indice m (indice du dernier trajet) : ";
-            cin >> m;
-
-                if (n >= 0 && m >= 0 && m > n)
-                    c.Fusion(persistance.Import(nomFichier)->Filtrage(n, m));
-                else
-                    cout << "Les bornes n et m sont incorrectes. Veuillez recommencer" << endl;
-                break;
-            default:
-                break;
+        if (valid && (reponse < 0 && reponse > 4)) {
+            valid = false;
+            cerr << ChatColor(ROUGE)
+                 << "ERREUR : Le numéro saisie ne correspond pas un numéro d'action valide. Veuillez réessayer."
+                 << ChatColor(RESET) << endl;
         }
+    } while (!valid);
+    return reponse;
+}
 
-        delete col;
-    }
-    else
-    {
-        cerr << "Impossible d'ouvrir le fichier " << nomFichier <<endl;
-    }
-
-    delete[] villeDepart;
-    delete[] villeArrive;
-} //----- fin de afficherMenuImport
-
-int afficherMenuExport() {
+static int afficherMenuExport() {
     cout << "Quel type d'export voulez vous faire?" << endl;
     cout << "\t1 - complet" << endl;
     cout << "\t2 - selon le type des trajets" << endl;
@@ -340,29 +425,49 @@ int afficherMenuExport() {
     return reponse;
 } //----- fin de afficherMenu
 
-string *saisirNomFichier(Persistance &persistance) {
+static string *saisirNomFichier(Persistance &persistance, TypeAction typeAction) {
     string *nomFichier = new string();
     cout << "Veuillez saisir un nom de fichier : ";
     cin >> *nomFichier;
-    cout << endl;
     bool valid = verificationSaisie(cin);
 
-    if (valid && persistance.FileExist(*nomFichier)) {
-        char confirmation;
-        cout << "Le fichier \"" << *nomFichier << "\" existe déjà. Souhaitez vous l'écraser ? (O/N) : ";
-        cin >> confirmation;
-        cout << endl;
-        valid = verificationSaisie(cin);
+    if (valid) {
+        bool erase = true;
+
+        if (typeAction == EXPORT && persistance.FileExist(*nomFichier)) {
+            erase = false;
+            char confirmation;
+
+            do {
+                cout << "Le fichier \"" << *nomFichier << "\" existe déjà. Souhaitez vous l'écraser ? (O/N) : ";
+                cin >> confirmation;
+                valid = verificationSaisie(cin);
+
+                if (valid) {
+                    if (confirmation != 'O' && confirmation != 'N') {
+                        valid = false;
+                        cerr << ChatColor(ROUGE) << "ERREUR : Saisie incorrecte. Veuillez réessayer."
+                             << ChatColor(RESET) << endl;
+                    } else {
+                        erase = confirmation == 'O';
+                    }
+                }
+            } while (!valid);
+        }
+
+        if (!erase) {
+            valid = false;
+        }
     }
 
     if (!valid) {
-        cout << ChatColor(ROUGE) << "ERREUR : Échec de la saisie du nom de fichier." << ChatColor(RESET) << endl;
+        cerr << ChatColor(ROUGE) << "ERREUR : Échec de la saisie du nom de fichier." << ChatColor(RESET) << endl;
         nomFichier = nullptr;
     }
     return nomFichier;
 } //-----fin de saisirNomFichier
 
-void afficherParcours(Catalogue &catalogue, char *villeDepart, char *villeArrivee, Collection &parcours) {
+static void afficherParcours(Catalogue &catalogue, char *villeDepart, char *villeArrivee, Collection &parcours) {
     if (parcours.GetNbTrajets() > 0) {
         cout << "Liste des trajets possibles entre " << villeDepart << " et "
              << villeArrivee << " :" << endl;

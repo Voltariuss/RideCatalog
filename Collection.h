@@ -89,7 +89,7 @@ public:
     // Mode d'emploi :
     //      Retourne la taille de la collection.
 
-    const Trajet **GetTrajets() const;
+    Trajet **GetTrajets() const;
     // Mode d'emploi :
     //      Retourne la liste des trajets de la collection.
 

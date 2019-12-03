@@ -42,19 +42,19 @@ int Collection::AjouterTrajet(Trajet *trajet)
     return realloc ? -1 : 1;
 } //----- Fin de AjouterTrajet
 
- int Collection::Fusion(Collection *collection, unsigned int first, unsigned int last)
- // Algorithme :
- //      Ajoute les trajets clonés de la collection passée en paramètre en vérifiant avant s'il
- //      est nécessaire de réallouer la collection courante ou non.
- //      Si l'ajout s'est effectué sans réallocation de mémoire, alors
- //      la méthode retourne 1, sinon elle renvoie -1.
- {
-     bool realloc = false;
+int Collection::Fusion(Collection *collection, unsigned int first, unsigned int last)
+// Algorithme :
+//      Ajoute les trajets clonés de la collection passée en paramètre en vérifiant avant s'il
+//      est nécessaire de réallouer la collection courante ou non.
+//      Si l'ajout s'est effectué sans réallocation de mémoire, alors
+//      la méthode retourne 1, sinon elle renvoie -1.
+{
+    bool realloc = false;
 
     for (unsigned int i = 0; i < collection->GetNbTrajets(); i++) {
         if (i >= first && i <= last) {
             Trajet *trajet = collection->GetTrajets()[i]->Clone();
-             realloc = AjouterTrajet(trajet) || realloc;
+            realloc = AjouterTrajet(trajet) || realloc;
         }
     }
     return realloc;
@@ -159,7 +159,7 @@ unsigned int Collection::GetTaille() const {
     return taille;
 }
 
-const Trajet **Collection::GetTrajets() const {
+Trajet **Collection::GetTrajets() const {
     return trajets;
 }
 

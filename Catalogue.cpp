@@ -106,7 +106,7 @@ Collection *Catalogue::RechercherParcoursSimple(char *depart, char *arrivee) con
 //      qui sera retournée à la fin de la méthode.
 {
     unsigned int nbTrajets = collectionTrajets->GetNbTrajets();
-    const Trajet **trajets = collectionTrajets->GetTrajets();
+    Trajet **trajets = collectionTrajets->GetTrajets();
     Collection *trajetsFinaux = new Collection();
 
     for (unsigned int i = 0; i < nbTrajets; i++) {
@@ -324,7 +324,7 @@ void Catalogue::rechercherParcoursAvanceeWorker(const char *depart,
 //              Destruction de trajetsUtilisesDuplique
 {
     unsigned int nbTrajets = collectionTrajets->GetNbTrajets();
-    const Trajet **trajets = collectionTrajets->GetTrajets();
+    Trajet **trajets = collectionTrajets->GetTrajets();
     bool utilise;
 
     for (unsigned int i = 0; i < nbTrajets; i++) {
