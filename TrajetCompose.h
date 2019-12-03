@@ -21,14 +21,12 @@
 //      Permet la gestion des trajets composés de l'application.
 //------------------------------------------------------------------------
 
-class TrajetCompose : public Trajet
-{
+class TrajetCompose : public Trajet {
     //------------------------------------------------------------- PUBLIC
 public:
-
-    friend ostream & operator << (ostream & out, const TrajetCompose & t);
-
     //------------------------------------------------- Méthodes publiques
+    friend ostream &operator<<(ostream &out, const TrajetCompose &t);
+
     void Afficher(const char *indents) const;
     // Mode d'emploi :
     //      - indents : Indentation de base de l'affichage du trajet
@@ -39,27 +37,36 @@ public:
     //      La valeur du pointeur est différente de nullptr et la chaîne
     //      de caractères associée doit être composée uniquement
     //      de caractères de tabulation ('\t').
+
     char *GetVilleDepart() const;
     // Mode d'emploi :
     //      Retourne la ville de départ du trajet composé.
+
     char *GetVilleArrivee() const;
     // Mode d'emploi :
     //      Retourne la ville d'arrivée du trajet composé.
+
     Collection *GetTrajets() const;
     // Mode d'emploi :
     //      Retourne la collection de trajets du trajet composé.
+
     Trajet *Clone() const;
     // Mode d'emploi :
     //      Clone le trajet composé.
+
     static unsigned int GetNbInstance();
     // Mode d'emploi :
     //      Retourne le nombre d'instance de la classe.
+
     //---------------------------------------- Constructeurs - destructeur
     TrajetCompose();
+
     TrajetCompose(Collection *laCollection);
     // Contrat :
     //      La collection doit être différente de nullptr.
+
     TrajetCompose(const TrajetCompose &trajetCompose);
+
     virtual ~TrajetCompose();
 
     //---------------------------------------------------------- PROTECTED

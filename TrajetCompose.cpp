@@ -14,6 +14,7 @@
 
 //-------------------------------------------------------- Include système
 using namespace std;
+
 #include <iostream>
 
 //------------------------------------------------------ Include personnel
@@ -22,19 +23,15 @@ using namespace std;
 
 //----------------------------------------------------------------- PUBLIC
 
-ostream & operator << (ostream & out, const TrajetCompose & t)
-{
-    
+//----------------------------------------------------- Méthodes publiques
+ostream &operator<<(ostream &out, const TrajetCompose &t) {
     out << t.GetVilleDepart() << "|"
-    << t.GetVilleArrivee() << "|"
-    << t.GetTrajets()->GetNbTrajets()
-    << endl;
-
+        << t.GetVilleArrivee() << "|"
+        << t.GetTrajets()->GetNbTrajets()
+        << endl;
     return out;
-
 }
 
-//----------------------------------------------------- Méthodes publiques
 void TrajetCompose::Afficher(const char *indents) const
 // Algorithme :
 //      Affiche la liste des trajets du trajet composé en ajoutant
@@ -44,14 +41,12 @@ void TrajetCompose::Afficher(const char *indents) const
     unsigned int size = strlen(indents) + 2;
     char *incrIndent = new char[size];
 
-    for (unsigned int i = 0; i < size - 1; i++)
-    {
+    for (unsigned int i = 0; i < size - 1; i++) {
         incrIndent[i] = '\t';
     }
     incrIndent[size - 1] = 0;
 
-    for (unsigned int i = 0; i < collection->GetNbTrajets(); i++)
-    {
+    for (unsigned int i = 0; i < collection->GetNbTrajets(); i++) {
         collection->GetTrajets()[i]->Afficher(incrIndent);
     }
     delete[] incrIndent;
@@ -63,12 +58,9 @@ char *TrajetCompose::GetVilleDepart() const
 //      retourne la ville de départ du premier trajet de la collection.
 //      Dans le cas contraire, la méthode renvoie nullptr.
 {
-    if (collection->GetNbTrajets() > 0)
-    {   
+    if (collection->GetNbTrajets() > 0) {
         return collection->GetTrajets()[0]->GetVilleDepart();
-    }
-    else
-    {
+    } else {
         return nullptr;
     }
 } //----- Fin de GetVilleDepart
@@ -79,14 +71,11 @@ char *TrajetCompose::GetVilleArrivee() const
 //      retourne la ville d'arrivée du dernier trajet de la collection.
 //      Dans le cas contraire, la méthode renvoie nullptr.
 {
-    if (collection->GetNbTrajets() > 0)
-    {
+    if (collection->GetNbTrajets() > 0) {
         Trajet **trajets = collection->GetTrajets();
         Trajet *trajet = trajets[collection->GetNbTrajets() - 1];
         return trajet->GetVilleArrivee();
-    }
-    else
-    {
+    } else {
         return nullptr;
     }
 } //----- Fin de GetVilleArrivee
@@ -98,19 +87,16 @@ Collection *TrajetCompose::GetTrajets() const
     return collection;
 } //----- Fin de GetTrajets
 
-Trajet *TrajetCompose::Clone() const
-{
+Trajet *TrajetCompose::Clone() const {
     return new TrajetCompose(*this);
 }
 
-unsigned int TrajetCompose::GetNbInstance()
-{
+unsigned int TrajetCompose::GetNbInstance() {
     return nbInstance;
 }
 
 //-------------------------------------------- Constructeurs - destructeur
-TrajetCompose::TrajetCompose() : collection(new Collection())
-{
+TrajetCompose::TrajetCompose() : collection(new Collection()) {
     nbInstance++;
 #ifdef MAP
     cout << "Appel au constructeur de <TrajetCompose> (total : "
@@ -119,8 +105,7 @@ TrajetCompose::TrajetCompose() : collection(new Collection())
 } //----- Fin de TrajetCompose
 
 TrajetCompose::TrajetCompose(Collection *laCollection)
-    : collection(laCollection)
-{
+        : collection(laCollection) {
     nbInstance++;
 #ifdef MAP
     cout << "Appel au constructeur de <TrajetCompose> (total : "
@@ -129,8 +114,7 @@ TrajetCompose::TrajetCompose(Collection *laCollection)
 } //----- Fin de TrajetCompose
 
 TrajetCompose::TrajetCompose(const TrajetCompose &trajetCompose)
-    : collection(trajetCompose.GetTrajets()->Clone())
-{
+        : collection(trajetCompose.GetTrajets()->Clone()) {
     nbInstance++;
 #ifdef MAP
     cout << "Appel au constructeur de copie de <TrajetCompose> (total : "
@@ -138,8 +122,7 @@ TrajetCompose::TrajetCompose(const TrajetCompose &trajetCompose)
 #endif
 } //----- Fin de TrajetCompose
 
-TrajetCompose::~TrajetCompose()
-{
+TrajetCompose::~TrajetCompose() {
     nbInstance--;
 #ifdef MAP
     cout << "Appel au destructeur de <TrajetCompose> (total : "

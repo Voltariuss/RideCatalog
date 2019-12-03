@@ -14,6 +14,7 @@
 
 //-------------------------------------------------------- Include système
 using namespace std;
+
 #include <iostream>
 
 //------------------------------------------------------ Include personnel
@@ -36,9 +37,9 @@ void Catalogue::Fusion(Collection *collection)
     }
 }
 
-Collection * Catalogue::GetTrajet() const
-    // Algorithme :
-    //      Retourne la collection de trajets du catalogue.
+Collection *Catalogue::GetTrajet() const
+// Algorithme :
+//      Retourne la collection de trajets du catalogue.
 {
     return collectionTrajets;
 } //----- Fin de GetTrajet
@@ -63,31 +64,21 @@ void Catalogue::SaisirTrajet()
     cout << "Type de trajet (simple = 1, composé = 2, 0 pour annuler) : ";
     cin >> typeTrajet;
 
-    if (typeTrajet == 0)
-    {
+    if (typeTrajet == 0) {
         cout << "Fin de la saisie de trajets." << endl;
         return;
-    }
-    else if (typeTrajet == 1)
-    {
+    } else if (typeTrajet == 1) {
         trajet = saisirTrajetSimple();
-    }
-    else if (typeTrajet == 2)
-    {
+    } else if (typeTrajet == 2) {
         trajet = saisirTrajetCompose();
-    }
-    else
-    {
+    } else {
         erreur = true;
         cout << "ERREUR : Le type de trajet spécifié est incorrect." << endl;
     }
 
-    if (!erreur && trajet != nullptr)
-    {
+    if (!erreur && trajet != nullptr) {
         collectionTrajets->AjouterTrajet(trajet);
-    }
-    else
-    {
+    } else {
         cout << "Échec de l'ajout du trajet dans le catalogue." << endl;
     }
 } //----- Fin de SaisirTrajet
@@ -96,13 +87,11 @@ void Catalogue::Afficher(Collection *collection) const
 // Algorithme :
 //      Affiche individuellement chaque trajet de la collection spécifiée.
 {
-    if (collection == nullptr)
-    {
+    if (collection == nullptr) {
         collection = collectionTrajets;
     }
 
-    for (unsigned int i = 0; i < collection->GetNbTrajets(); i++)
-    {
+    for (unsigned int i = 0; i < collection->GetNbTrajets(); i++) {
         char str[] = {0};
         collection->GetTrajets()[i]->Afficher(str);
     }
@@ -119,11 +108,9 @@ Collection *Catalogue::RechercherParcoursSimple(char *depart, char *arrivee) con
     Trajet **trajets = collectionTrajets->GetTrajets();
     Collection *trajetsFinaux = new Collection();
 
-    for (unsigned int i = 0; i < nbTrajets; i++)
-    {
+    for (unsigned int i = 0; i < nbTrajets; i++) {
         if (!strcmp(trajets[i]->GetVilleDepart(), depart) &&
-            !strcmp(trajets[i]->GetVilleArrivee(), arrivee))
-        {
+            !strcmp(trajets[i]->GetVilleArrivee(), arrivee)) {
             trajetsFinaux->AjouterTrajet(trajets[i]->Clone());
         }
     }
@@ -146,21 +133,18 @@ Collection *Catalogue::RechercherParcoursAvancee(char *depart, char *arrivee) co
 } //----- Fin de RechercherParcours
 
 //-------------------------------------------- Constructeurs - destructeur
-Catalogue::Catalogue() : collectionTrajets(new Collection())
-{
+Catalogue::Catalogue() : collectionTrajets(new Collection()) {
 #ifdef MAP
     cout << "Appel au constructeur de <Catalogue>" << endl;
 #endif
-    if (collectionTrajets == nullptr)
-    {
+    if (collectionTrajets == nullptr) {
         cerr << "ERREUR FATALE : problème d'allocation de mémoire"
              << ", fin du programme." << endl;
         exit(EXIT_FAILURE);
     }
 } //----- Fin de Catalogue
 
-Catalogue::~Catalogue()
-{
+Catalogue::~Catalogue() {
 #ifdef MAP
     cout << "Appel au destructeur de <Catalogue>" << endl;
 #endif
@@ -196,32 +180,28 @@ TrajetSimple *Catalogue::saisirTrajetSimple()
     cout << "ID du mode de transport (0 : Auto, 1 : Avion, 2 : Bateau, 3 : Train) : ";
     cin >> typeTransportId;
 
-    switch (typeTransportId)
-    {
-    case AUTO:
-        typeTransport = AUTO;
-        break;
-    case AVION:
-        typeTransport = AVION;
-        break;
-    case BATEAU:
-        typeTransport = BATEAU;
-        break;
-    case TRAIN:
-        typeTransport = TRAIN;
-        break;
-    default:
-        erreur = true;
-        cout << "ERREUR : Le numéro du type de trajet spécifié est incorrect." << endl;
-        break;
+    switch (typeTransportId) {
+        case AUTO:
+            typeTransport = AUTO;
+            break;
+        case AVION:
+            typeTransport = AVION;
+            break;
+        case BATEAU:
+            typeTransport = BATEAU;
+            break;
+        case TRAIN:
+            typeTransport = TRAIN;
+            break;
+        default:
+            erreur = true;
+            cout << "ERREUR : Le numéro du type de trajet spécifié est incorrect." << endl;
+            break;
     }
 
-    if (!erreur)
-    {
+    if (!erreur) {
         trajetSimple = new TrajetSimple(villeDepart, villeArrive, typeTransport);
-    }
-    else
-    {
+    } else {
         delete[] villeDepart;
         delete[] villeArrive;
     }
@@ -254,61 +234,46 @@ TrajetCompose *Catalogue::saisirTrajetCompose()
     bool continueSaisie = true;
     cout << "===== Saisie d'un trajet composé =====" << endl;
 
-    do
-    {
+    do {
         Trajet *trajet = saisirTrajetSimple();
 
-        if (!erreur && trajet != nullptr)
-        {
+        if (!erreur && trajet != nullptr) {
             Trajet *dernierTrajet = collection->GetDernierTrajet();
             char *villeDepart = trajet->GetVilleDepart();
 
             if (dernierTrajet == nullptr ||
-                strcmp(dernierTrajet->GetVilleArrivee(), villeDepart) == 0)
-            {
+                strcmp(dernierTrajet->GetVilleArrivee(), villeDepart) == 0) {
                 collection->AjouterTrajet(trajet);
 
-                if (collection->GetNbTrajets() >= 2)
-                {
+                if (collection->GetNbTrajets() >= 2) {
                     char reponse;
 
-                    do
-                    {
+                    do {
                         cout << "Continuer la saisie de trajets ? (O/N) : ";
                         cin >> reponse;
 
-                        if (reponse == 'N')
-                        {
+                        if (reponse == 'N') {
                             continueSaisie = false;
-                        }
-                        else if (reponse != 'O')
-                        {
+                        } else if (reponse != 'O') {
                             cout << "Saisie incorrect." << endl;
                         }
                     } while (reponse != 'N' && reponse != 'O');
                 }
-            }
-            else
-            {
+            } else {
                 erreur = true;
                 cout << "ERREUR : La ville de départ d'un trajet doit";
                 cout << " correspondre à la ville d'arrivé du trajet";
                 cout << " précédent dans un trajet composé." << endl;
             }
-        }
-        else if (trajet == nullptr)
-        {
+        } else if (trajet == nullptr) {
             erreur = true;
             cout << "Échec de l'ajout du trajet dans le trajet composé." << endl;
         }
     } while (continueSaisie && !erreur);
 
-    if (!erreur)
-    {
+    if (!erreur) {
         trajetCompose = new TrajetCompose(collection);
-    }
-    else
-    {
+    } else {
         delete collection;
     }
     return trajetCompose;
@@ -361,41 +326,33 @@ void Catalogue::rechercherParcoursAvanceeWorker(const char *depart,
     Trajet **trajets = collectionTrajets->GetTrajets();
     bool utilise;
 
-    for (unsigned int i = 0; i < nbTrajets; i++)
-    {
+    for (unsigned int i = 0; i < nbTrajets; i++) {
         // Vérifier que le trajet n'a pas déjà été utilisé dans la constrution de ce parcours
         utilise = false;
 
-        for (unsigned int j = 0; j < nbTrajetsUtilises; j++)
-        {
-            if (trajetsUtilises[j] == i)
-            {
+        for (unsigned int j = 0; j < nbTrajetsUtilises; j++) {
+            if (trajetsUtilises[j] == i) {
                 utilise = true;
                 break;
             }
         }
 
         // Départ == Arrivée précédente
-        if (!utilise && !strcmp(trajets[i]->GetVilleDepart(), depart))
-        {
-            TrajetCompose *trajetComposeDuplique = (TrajetCompose *)trajetCompose.Clone();
+        if (!utilise && !strcmp(trajets[i]->GetVilleDepart(), depart)) {
+            TrajetCompose *trajetComposeDuplique = (TrajetCompose *) trajetCompose.Clone();
             trajetComposeDuplique->GetTrajets()->AjouterTrajet(trajets[i]->Clone());
             // Si arrivée == arrivée finale alors ajouter aux trajets possibles
             // Sinon continuer la construction du trajet
-            if (!strcmp(trajetComposeDuplique->GetVilleArrivee(), arrivee))
-            {
+            if (!strcmp(trajetComposeDuplique->GetVilleArrivee(), arrivee)) {
                 TrajetCompose *trajetCompose = new TrajetCompose(trajetComposeDuplique->GetTrajets()->Clone());
                 trajetsFinaux.AjouterTrajet(trajetCompose);
-            }
-            else
-            {
+            } else {
                 // Si tous les trajets du catalogue n'ont pas déjà été utilisés
-                if (nbTrajetsUtilises < nbTrajets)
-                {
-                    unsigned int *trajetsUtilisesDuplique = new unsigned int[sizeof(unsigned int) * (nbTrajetsUtilises + 1)];
+                if (nbTrajetsUtilises < nbTrajets) {
+                    unsigned int *trajetsUtilisesDuplique = new unsigned int[sizeof(unsigned int) *
+                                                                             (nbTrajetsUtilises + 1)];
 
-                    for (unsigned int j = 0; j < nbTrajetsUtilises; j++)
-                    {
+                    for (unsigned int j = 0; j < nbTrajetsUtilises; j++) {
                         trajetsUtilisesDuplique[j] = trajetsUtilises[j];
                     }
                     trajetsUtilisesDuplique[nbTrajetsUtilises] = i;

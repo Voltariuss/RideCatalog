@@ -34,24 +34,29 @@ public:
     //      La valeur du pointeur est différente de nullptr et la chaîne
     //      de caractères associée doit être composée uniquement
     //      de caractères de tabulation ('\t').
+
     virtual char *GetVilleDepart() const = 0;
     // Mode d'emploi :
     //      Retourne la ville de départ du trajet.
+
     virtual char *GetVilleArrivee() const = 0;
     // Mode d'emploi :
     //      Retourne la ville d'arrivée du trajet.
+
     virtual Trajet *Clone() const = 0;
     // Mode d'emploi :
     //      Clone le trajet.
+
     static unsigned int GetNbInstance();
     // Mode d'emploi :
     //      Retourne le nombre d'instance de la classe.
+
     //---------------------------------------- Constructeurs - destructeur
     Trajet();
     virtual ~Trajet();
 
     //---------------------------------------------------------- PROTECTED
-
+protected:
     //------------------------------------------------- Attributs protégés
     static unsigned int nbInstance;
 };

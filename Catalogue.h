@@ -25,8 +25,7 @@
 //      parcours pour aller d'un point A à un point B.
 //------------------------------------------------------------------------
 
-class Catalogue
-{
+class Catalogue {
     //------------------------------------------------------------- PUBLIC
 public:
     //------------------------------------------------- Méthodes publiques
@@ -35,13 +34,16 @@ public:
     //      Fusionne la collection courante avec celle passée en paramètre.
     // Contrat :
     //      Le pointeur de la collection doit être différent de nullptr.
-    Collection * GetTrajet() const;
+
+    Collection *GetTrajet() const;
     // Mode d'emploi :
     //      Retourne la collection de trajets du catalogue.
+
     void SaisirTrajet();
     // Mode d'emploi :
     //      Demande à l'utilisateur de saisir un trajet pour l'ajouter
     //      ensuite dans le catalogue.
+
     void Afficher(Collection *collection = nullptr) const;
     // Mode d'emploi :
     //      - collection : pointeur sur la collection à afficher, nullptr
@@ -50,6 +52,7 @@ public:
     //      Affiche la liste des trajets de la collection spécifiée. Si la
     //      la collection est égale à nullptr, alors la méthode affichera
     //      la collection du catalogue.
+
     Collection *RechercherParcoursSimple(char *depart, char *arrivee) const;
     // Mode d'emploi :
     //      - depart : nom de la ville de la ville de départ du parcours
@@ -60,6 +63,7 @@ public:
     //      recherche.
     // Contrat :
     //      depart et arrivee doivent être différents de nullptr.
+
     Collection *RechercherParcoursAvancee(char *depart, char *arrivee) const;
     // Mode d'emploi :
     //      - depart : nom de la ville de la ville de départ du parcours
@@ -70,21 +74,26 @@ public:
     //      recherche.
     // Contrat :
     //      depart et arrivee doivent être différents de nullptr.
+
     //---------------------------------------- Constructeurs - destructeur
     Catalogue();
+
     virtual ~Catalogue();
 
     //---------------------------------------------------------- PROTECTED
 protected:
     //------------------------------------------------- Méthodes protégées
     TrajetSimple *saisirTrajetSimple();
+
     TrajetCompose *saisirTrajetCompose();
+
     void rechercherParcoursAvanceeWorker(const char *depart,
                                          const char *arrivee,
                                          const TrajetCompose &trajetCompose,
                                          const unsigned int *trajetsUtilises,
                                          const unsigned int nbTrajetsUtilises,
                                          Collection &trajetsFinaux) const;
+
     //------------------------------------------------- Attributs protégés
     Collection *collectionTrajets;
 };

@@ -14,6 +14,7 @@
 
 //-------------------------------------------------------- Include système
 using namespace std;
+
 #include <iostream>
 #include <cstring>
 
@@ -21,18 +22,16 @@ using namespace std;
 #include "TrajetSimple.h"
 
 //----------------------------------------------------------------- PUBLIC
-ostream & operator << (ostream & out, const TrajetSimple & t)
-{
-    
-    out << t.GetVilleDepart() << "|"
-    << t.GetVilleArrivee() << "|"
-    << t.GetTypeTransport()
-    << endl;
 
-    return out;
-
-}
 //----------------------------------------------------- Méthodes publiques
+ostream &operator<<(ostream &out, const TrajetSimple &t) {
+    out << t.GetVilleDepart() << "|"
+        << t.GetVilleArrivee() << "|"
+        << t.GetTypeTransport()
+        << endl;
+    return out;
+}
+
 void TrajetSimple::Afficher(const char *indents) const
 // Algorithme :
 //      Affiche le trajet simple en prenant en compte l'indentation
@@ -70,13 +69,11 @@ TypeTransport TrajetSimple::GetTypeTransport() const
     return typeTransport;
 } //----- Fin de GetMoyenTransport
 
-Trajet *TrajetSimple::Clone() const
-{
+Trajet *TrajetSimple::Clone() const {
     return new TrajetSimple(*this);
 }
 
-unsigned int TrajetSimple::GetNbInstance()
-{
+unsigned int TrajetSimple::GetNbInstance() {
     return nbInstance;
 }
 
@@ -84,8 +81,7 @@ unsigned int TrajetSimple::GetNbInstance()
 TrajetSimple::TrajetSimple(char *depart, char *arrivee,
                            TypeTransport transport) : villeDepart(depart),
                                                       villeArrivee(arrivee),
-                                                      typeTransport(transport)
-{
+                                                      typeTransport(transport) {
     nbInstance++;
 #ifdef MAP
     cout << "Appel au constructeur de <TrajetSimple> (total : "
@@ -94,10 +90,9 @@ TrajetSimple::TrajetSimple(char *depart, char *arrivee,
 } //----- Fin de TrajetSimple
 
 TrajetSimple::TrajetSimple(const TrajetSimple &trajetSimple)
-    : villeDepart(new char[TAILLE_CHAINE]),
-      villeArrivee(new char[TAILLE_CHAINE]),
-      typeTransport(trajetSimple.GetTypeTransport())
-{
+        : villeDepart(new char[TAILLE_CHAINE]),
+          villeArrivee(new char[TAILLE_CHAINE]),
+          typeTransport(trajetSimple.GetTypeTransport()) {
     nbInstance++;
 #ifdef MAP
     cout << "Appel au constructeur de copie de <TrajetSimple> (total : "
@@ -109,8 +104,7 @@ TrajetSimple::TrajetSimple(const TrajetSimple &trajetSimple)
     strncpy(villeArrivee, arrivee, strlen(arrivee) + 1);
 }
 
-TrajetSimple::~TrajetSimple()
-{
+TrajetSimple::~TrajetSimple() {
     nbInstance--;
 #ifdef MAP
     cout << "Appel au destructeur de <TrajetSimple> (total : "
