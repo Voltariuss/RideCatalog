@@ -14,6 +14,7 @@ using namespace std;
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cstring>
 
 //------------------------------------------------------ Include personnel
 #include "Persistance.h"

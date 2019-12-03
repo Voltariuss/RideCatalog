@@ -16,6 +16,7 @@
 using namespace std;
 
 #include <iostream>
+#include <cstring>
 
 //------------------------------------------------------ Include personnel
 #include "Catalogue.h"
@@ -105,7 +106,7 @@ Collection *Catalogue::RechercherParcoursSimple(char *depart, char *arrivee) con
 //      qui sera retournée à la fin de la méthode.
 {
     unsigned int nbTrajets = collectionTrajets->GetNbTrajets();
-    Trajet **trajets = collectionTrajets->GetTrajets();
+    const Trajet **trajets = collectionTrajets->GetTrajets();
     Collection *trajetsFinaux = new Collection();
 
     for (unsigned int i = 0; i < nbTrajets; i++) {
@@ -238,8 +239,8 @@ TrajetCompose *Catalogue::saisirTrajetCompose()
         Trajet *trajet = saisirTrajetSimple();
 
         if (!erreur && trajet != nullptr) {
-            Trajet *dernierTrajet = collection->GetDernierTrajet();
-            char *villeDepart = trajet->GetVilleDepart();
+            const Trajet *dernierTrajet = collection->GetDernierTrajet();
+            const char *villeDepart = trajet->GetVilleDepart();
 
             if (dernierTrajet == nullptr ||
                 strcmp(dernierTrajet->GetVilleArrivee(), villeDepart) == 0) {
@@ -323,7 +324,7 @@ void Catalogue::rechercherParcoursAvanceeWorker(const char *depart,
 //              Destruction de trajetsUtilisesDuplique
 {
     unsigned int nbTrajets = collectionTrajets->GetNbTrajets();
-    Trajet **trajets = collectionTrajets->GetTrajets();
+    const Trajet **trajets = collectionTrajets->GetTrajets();
     bool utilise;
 
     for (unsigned int i = 0; i < nbTrajets; i++) {

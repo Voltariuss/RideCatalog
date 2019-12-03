@@ -16,6 +16,7 @@
 using namespace std;
 
 #include <iostream>
+#include <cstring>
 
 //------------------------------------------------------ Include personnel
 #include "Collection.h"
@@ -50,17 +51,14 @@ int Collection::AjouterTrajet(Trajet *trajet)
  {
      bool realloc = false;
 
-     for (unsigned int i = 0; i < collection->GetNbTrajets(); i++)
-     {
-         if (i >= first && i <= last)
-         {
-             Trajet *trajet = collection->GetTrajets()[i]->Clone();
+    for (unsigned int i = 0; i < collection->GetNbTrajets(); i++) {
+        if (i >= first && i <= last) {
+            Trajet *trajet = collection->GetTrajets()[i]->Clone();
              realloc = AjouterTrajet(trajet) || realloc;
-             // TODO Check memory
-         }
-     }
-     return realloc;
- } //----- Fin de FusionCollection
+        }
+    }
+    return realloc;
+} //----- Fin de FusionCollection
 
 Collection *Collection::Filtrage(unsigned int first, unsigned int last)
 // Algorithme :
@@ -78,7 +76,6 @@ Collection *Collection::Filtrage(unsigned int first, unsigned int last)
     if (isValid) {
         collection = new Collection();
         collection->Fusion(this, first, last);
-        // TODO Check memory
     }
     return collection;
 } //----- Fin de Filtrage(int, int)
@@ -109,7 +106,6 @@ Collection *Collection::Filtrage(char *depart, char *arrivee)
             collection = collectionArrivee;
         }
     }
-    // TODO Memory check
     return collection;
 } //----- Fin de Filtrage(char *, char *)
 
@@ -121,18 +117,17 @@ Collection *Collection::Filtrage(TypeTrajet typeTrajet)
     Collection *collection = new Collection();
 
     for (unsigned int i = 0; i < GetNbTrajets(); i++) {
-        Trajet *trajet = GetTrajets()[i];
-        TypeTrajet type = (dynamic_cast<TrajetCompose *>(trajet) == nullptr) ? SIMPLE : COMPOSE;
+        const Trajet *trajet = GetTrajets()[i];
+        TypeTrajet type = (dynamic_cast<TrajetCompose *>(trajet->Clone()) == nullptr) ? SIMPLE : COMPOSE;
 
         if (type == typeTrajet) {
             collection->AjouterTrajet(trajet->Clone());
         }
     }
-    // TODO : Memory check
     return collection;
 } //----- Fin de Filtrage(TypeTrajet)
 
-Trajet *Collection::GetPremierTrajet() const
+const Trajet *Collection::GetPremierTrajet() const
 // Algorithme :
 //      Retourne le premier trajet si le nombre de trajets est
 //      supérieur à 0, nullptr sinon.
@@ -144,7 +139,7 @@ Trajet *Collection::GetPremierTrajet() const
     }
 }
 
-Trajet *Collection::GetDernierTrajet() const
+const Trajet *Collection::GetDernierTrajet() const
 // Algorithme :
 //      Retourne le dernier trajet si le nombre de trajets est
 //      supérieur à 0, nullptr sinon.
@@ -164,7 +159,7 @@ unsigned int Collection::GetTaille() const {
     return taille;
 }
 
-Trajet **Collection::GetTrajets() const {
+const Trajet **Collection::GetTrajets() const {
     return trajets;
 }
 
@@ -282,7 +277,7 @@ Collection *Collection::filtrageDepart(char *depart)
     Collection *collection = new Collection();
 
     for (unsigned int i = 0; i < GetNbTrajets(); i++) {
-        Trajet *trajet = GetTrajets()[i];
+        const Trajet *trajet = GetTrajets()[i];
 
         if (strcmp(trajet->GetVilleDepart(), depart) == 0) {
             collection->AjouterTrajet(trajet->Clone());
@@ -303,7 +298,7 @@ Collection *Collection::filtrageArrivee(char *arrivee)
     Collection *collection = new Collection();
 
     for (unsigned int i = 0; i < GetNbTrajets(); i++) {
-        Trajet *trajet = GetTrajets()[i];
+        const Trajet *trajet = GetTrajets()[i];
 
         if (strcmp(trajet->GetVilleArrivee(), arrivee) == 0) {
             collection->AjouterTrajet(trajet->Clone());

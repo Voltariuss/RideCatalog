@@ -38,11 +38,11 @@ public:
     //      de caractères associée doit être composée uniquement
     //      de caractères de tabulation ('\t').
 
-    char *GetVilleDepart() const;
+    const char *GetVilleDepart() const;
     // Mode d'emploi :
     //      Retourne la ville de départ du trajet composé.
 
-    char *GetVilleArrivee() const;
+    const char *GetVilleArrivee() const;
     // Mode d'emploi :
     //      Retourne la ville d'arrivée du trajet composé.
 
@@ -52,7 +52,8 @@ public:
 
     Trajet *Clone() const;
     // Mode d'emploi :
-    //      Clone le trajet composé.
+    //      Créer une copie profonde de l'instance courante du trajet
+    //      et la retourne.
 
     static unsigned int GetNbInstance();
     // Mode d'emploi :

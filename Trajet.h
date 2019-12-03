@@ -11,9 +11,6 @@
 #if !defined(Trajet_H)
 #define Trajet_H
 
-//--------------------------------------------------- Interfaces utilisées
-#include <cstring>
-
 //------------------------------------------------------------------------
 // Rôle de la classe <Trajet>
 //      Permet la gestion des trajets de l'application.
@@ -35,17 +32,18 @@ public:
     //      de caractères associée doit être composée uniquement
     //      de caractères de tabulation ('\t').
 
-    virtual char *GetVilleDepart() const = 0;
+    virtual const char *GetVilleDepart() const = 0;
     // Mode d'emploi :
     //      Retourne la ville de départ du trajet.
 
-    virtual char *GetVilleArrivee() const = 0;
+    virtual const char *GetVilleArrivee() const = 0;
     // Mode d'emploi :
     //      Retourne la ville d'arrivée du trajet.
 
     virtual Trajet *Clone() const = 0;
     // Mode d'emploi :
-    //      Clone le trajet.
+    //      Créer une copie profonde de l'instance courante du trajet
+    //      et la retourne.
 
     static unsigned int GetNbInstance();
     // Mode d'emploi :

@@ -13,7 +13,6 @@
 #define TRAJETSIMPLE_H
 
 //--------------------------------------------------- Interfaces utilisées
-#include <iostream>
 #include "Trajet.h"
 
 //------------------------------------------------------------------ Types
@@ -23,6 +22,8 @@ enum TypeTransport {
     BATEAU,
     TRAIN
 };
+
+static const char *const typeTransportStr[] = {"AUTO", "AVION", "BATEAU", "TRAIN"};
 
 //------------------------------------------------------------------------
 // Rôle de la classe <TrajetSimple>
@@ -46,11 +47,11 @@ public:
     //      de caractères associée doit être composée uniquement
     //      de caractères de tabulation ('\t').
 
-    char *GetVilleDepart() const;
+    const char *GetVilleDepart() const;
     // Mode d'emploi :
     //      Retourne la ville de départ du trajet simple.
 
-    char *GetVilleArrivee() const;
+    const char *GetVilleArrivee() const;
     // Mode d'emploi :
     //      Retourne la ville d'arrivée du trajet simple.
 
@@ -60,7 +61,8 @@ public:
 
     Trajet *Clone() const;
     // Mode d'emploi :
-    //      Clone le trajet simple.
+    //      Créer une copie profonde de l'instance courante du trajet
+    //      et la retourne.
 
     static unsigned int GetNbInstance();
     // Mode d'emploi :
@@ -79,7 +81,6 @@ protected:
     char *villeDepart;
     char *villeArrivee;
     TypeTransport typeTransport;
-    static const unsigned int TAILLE_CHAINE = 100;
     static unsigned int nbInstance;
 };
 //----------------------- Autres définitions dépendantes de <TrajetSimple>

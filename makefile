@@ -1,5 +1,9 @@
 CCPP=g++
-CPPFLAGS=-Wall -g -ansi -pedantic -std=c++11 -DMAP
+DEBUG=true
+CPPFLAGS=-Wall -g -ansi -pedantic -std=c++11
+ifeq (DEBUG, true)
+    CPPFLAGS+=-DMAP
+endif
 LDFLAGS=-g
 SRC=Main.cpp Catalogue.cpp Collection.cpp Trajet.cpp TrajetSimple.cpp TrajetCompose.cpp Persistance.cpp
 OBJ=$(SRC:.cpp=.o)
@@ -11,4 +15,4 @@ voyage: $(OBJ)
 	$(CCPP) -o $@ -c $< $(CPPFLAGS)
 
 clean:
-	rm -rf *.o
+	rm *.o

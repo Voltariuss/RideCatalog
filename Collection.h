@@ -9,8 +9,8 @@
 *************************************************************************/
 
 //------------- Interface de la classe <Collection> (fichier Collection.h)
-#if !defined(TABLEAUTRAJETS_H)
-#define TABLEAUTRAJETS_H
+#if !defined(COLLECTION_H)
+#define COLLECTION_H
 
 //--------------------------------------------------- Interfaces utilisées
 #include "Trajet.h"
@@ -73,11 +73,11 @@ public:
     //      Filtrage de la collection courante par rapport au type de trajet spécifié en créant une nouvelle collection
     //      dont les trajets sont des clones de la collection courante.
 
-    Trajet *GetPremierTrajet() const;
+    const Trajet *GetPremierTrajet() const;
     // Mode d'emploi :
     //      Retourne le premier trajet de la collection.
 
-    Trajet *GetDernierTrajet() const;
+    const Trajet *GetDernierTrajet() const;
     // Mode d'emploi :
     //      Retourne le dernier trajet de la collection.
 
@@ -89,7 +89,7 @@ public:
     // Mode d'emploi :
     //      Retourne la taille de la collection.
 
-    Trajet **GetTrajets() const;
+    const Trajet **GetTrajets() const;
     // Mode d'emploi :
     //      Retourne la liste des trajets de la collection.
 
@@ -125,4 +125,4 @@ protected:
     static const unsigned int TAILLE_INIT = 10;
 };
 //------------------------- Autres définitions dépendantes de <Collection>
-#endif // TABLEAUTRAJETS_H
+#endif // COLLECTION_H

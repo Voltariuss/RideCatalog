@@ -16,6 +16,7 @@
 using namespace std;
 
 #include <iostream>
+#include <cstring>
 
 //------------------------------------------------------ Include personnel
 #include "TrajetSimple.h"
@@ -52,7 +53,7 @@ void TrajetCompose::Afficher(const char *indents) const
     delete[] incrIndent;
 } //----- Fin de Afficher
 
-char *TrajetCompose::GetVilleDepart() const
+const char *TrajetCompose::GetVilleDepart() const
 // Algorithme :
 //      Si le nombre de trajets est supérieur à 0, alors la méthode
 //      retourne la ville de départ du premier trajet de la collection.
@@ -65,7 +66,7 @@ char *TrajetCompose::GetVilleDepart() const
     }
 } //----- Fin de GetVilleDepart
 
-char *TrajetCompose::GetVilleArrivee() const
+const char *TrajetCompose::GetVilleArrivee() const
 // Algorithme :
 //      Si le nombre de trajets est supérieur à 0, alors la méthode
 //      retourne la ville d'arrivée du dernier trajet de la collection.
