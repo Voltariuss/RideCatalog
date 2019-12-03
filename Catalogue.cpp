@@ -32,7 +32,7 @@ void Catalogue::Fusion(Collection *collection)
 //      Fusionne la collection passée en paramètre avec la collection du catalogue.
 {
     if (collection != nullptr) {
-        this->collectionTrajets->Fusion(collection);
+        this->collectionTrajets->Fusion(collection, 0, collection->GetNbTrajets());
     }
 }
 
