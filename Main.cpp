@@ -94,7 +94,7 @@ int main()
             break;
         case 5:
             choix = afficherSousMenuExport();
-            cout << "Veuillez donner un nom au fichier d'export:" << endl;
+            cout << "Veuillez saisir le chemin du fichier d'export:" << endl;
             cin >> nomExport;
 
             switch (choix)
@@ -202,13 +202,13 @@ void import(Catalogue &c, Persistance &p)
     TypeTrajet typeTrajet;
     char *villeDepart = new char[TAILLE_CHAINE];
     char *villeArrivee = new char[TAILLE_CHAINE];
-    Collection * col;
 
-    cout << "Veuillez insérer le nom du fichier d'import :" << endl;
+    cout << "Veuillez saisir le chemin du fichier d'import :" << endl;
     cin >> nomFichier;
 
     if (p.FileExist(nomFichier))
     {
+        Collection * col;
 
         cout << "Choisissez un type d'importation :" << endl;
         cout << "\t1 - Importer tous les trajets du fichier" << endl;
@@ -284,15 +284,16 @@ void import(Catalogue &c, Persistance &p)
         default:
             break;
         }
+
+        delete col;
     }
     else
     {
-        cerr << "Impossible d'ouvrir le fichier " << nomFichier;
+        cerr << "Impossible d'ouvrir le fichier " << nomFichier <<endl;
     }
 
     delete[] villeDepart;
     delete[] villeArrivee;
-    delete col;
 }
 
 int afficherMenu()

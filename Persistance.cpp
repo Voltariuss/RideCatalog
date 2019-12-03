@@ -25,7 +25,6 @@ using namespace std;
 //------------------------------------------------------------- Constantes
 
 #define META_DONNEE_LENGHT 1
-#define DOSSIER_DATA "Data/"
 //---------------------------------------------------- Variables statiques
 
 //----------------------------------------------------------------- PUBLIC
@@ -33,22 +32,22 @@ using namespace std;
 //----------------------------------------------------- Méthodes publiques
 
 //vérifie si l'ouverture d'un fichier ne retourne aucun flag d'erreur
-bool Persistance::FileExist(string nomFichier)
+bool Persistance::FileExist(string cheminFichier)
 {
     ifstream fichier;
 
-    fichier.open(DOSSIER_DATA+nomFichier);
+    fichier.open(cheminFichier);
     return fichier.good();
 }
 
 //Importer les trajets d'un fichier txt
-Collection *Persistance::Import(string nomFichier)
+Collection *Persistance::Import(string cheminFichier)
 {
     Collection *col;
     string value = "";
 
     ifstream fichier;
-    fichier.open(DOSSIER_DATA + nomFichier, ios::in);
+    fichier.open(cheminFichier, ios::in);
     if (fichier)
     {
         col = CreateCollection(fichier);
@@ -134,7 +133,7 @@ bool Persistance::Export(Collection & collection, const string nomFichierExport)
 {
 
     ofstream out;
-    out.open(DOSSIER_DATA + nomFichierExport, ios::out);
+    out.open(nomFichierExport, ios::out);
 
     
     if(out)    
