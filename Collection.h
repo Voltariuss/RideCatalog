@@ -16,8 +16,7 @@
 #include "Trajet.h"
 
 //------------------------------------------------------------------ Types
-enum TypeTrajet
-{
+enum TypeTrajet {
     SIMPLE,
     COMPOSE
 };
@@ -30,8 +29,7 @@ enum TypeTrajet
 //
 //------------------------------------------------------------------------
 
-class Collection
-{
+class Collection {
     //------------------------------------------------------------- PUBLIC
 public:
     //------------------------------------------------- Méthodes publiques
@@ -42,19 +40,22 @@ public:
     //      Ajoute un trajet dans la collection.
     // Contrat :
     //      Le pointeur du trajet doit être différent de nullptr.
-     int Fusion(Collection *collection, unsigned int first, unsigned int last);
+
+    int Fusion(Collection *collection, unsigned int first, unsigned int last);
     // Mode d'emploi :
     //      - collection : La collection à inclure dans la collection courante
     //
     //      Ajouter les trajets de la collection spécifiée dans la collection courante.
     // Contrat :
     //      Le pointeur de la collection doit être différent de nullptr.
+
     Collection *Filtrage(unsigned int first, unsigned int last);
     // Mode d'emploi :
     //      - first : L'index du premier élément à conserver
     //      - last : L'index du dernier élément à conserver
     //
     //      Filtre la collection sur les indexes
+
     Collection *Filtrage(char *depart, char *arrivee);
     // Mode d'emploi :
     //      - depart : Ville de départ
@@ -64,44 +65,58 @@ public:
     //      dans une nouvelle collection retournée.
     // Contrat :
     //      depart et arrivee doivent être différent de nullptr.
+
     Collection *Filtrage(TypeTrajet typeTrajet);
     // Mode d'emploi :
     //      - typeTrajet : Le type de trajet à conserver
     //
     //      Filtrage de la collection courante par rapport au type de trajet spécifié en créant une nouvelle collection
     //      dont les trajets sont des clones de la collection courante.
+
     Trajet *GetPremierTrajet() const;
     // Mode d'emploi :
     //      Retourne le premier trajet de la collection.
+
     Trajet *GetDernierTrajet() const;
     // Mode d'emploi :
     //      Retourne le dernier trajet de la collection.
+
     unsigned int GetNbTrajets() const;
     // Mode d'emploi :
     //      Retourne le nombre de trajets présents dans la collection.
+
     unsigned int GetTaille() const;
     // Mode d'emploi :
     //      Retourne la taille de la collection.
+
     Trajet **GetTrajets() const;
     // Mode d'emploi :
     //      Retourne la liste des trajets de la collection.
+
     Collection *Clone() const;
     // Mode d'emploi :
     //      Clone la collection.
+
     static unsigned int getNbInstance();
     // Mode d'emploi :
     //      Retourne le nombre d'instance de la classe.
+
     //---------------------------------------- Constructeurs - destructeur
     Collection();
+
     Collection(const Collection &collection);
+
     virtual ~Collection();
 
     //---------------------------------------------------------- PROTECTED
 protected:
     //------------------------------------------------- Méthodes protégées
     bool reallocation();
+
     Collection *filtrageDepart(char *depart);
+
     Collection *filtrageArrivee(char *arrivee);
+
     //------------------------------------------------- Attributs protégés
     unsigned int nbTrajets;
     unsigned int taille;

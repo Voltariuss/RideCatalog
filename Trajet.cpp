@@ -13,6 +13,7 @@
 
 //-------------------------------------------------------- Include système
 using namespace std;
+
 #include <iostream>
 
 //------------------------------------------------------ Include personnel
@@ -21,14 +22,12 @@ using namespace std;
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
-unsigned int Trajet::GetNbInstance()
-{
+unsigned int Trajet::GetNbInstance() {
     return nbInstance;
 }
 
 //-------------------------------------------- Constructeurs - destructeur
-Trajet::Trajet()
-{
+Trajet::Trajet() {
     nbInstance++;
 #ifdef MAP
     cout << "Appel au constructeur de <Trajet> (total : "
@@ -36,8 +35,7 @@ Trajet::Trajet()
 #endif
 } //----- Fin de Trajet
 
-Trajet::~Trajet()
-{
+Trajet::~Trajet() {
     nbInstance--;
 #ifdef MAP
     cout << "Appel au destructeur de <Trajet> (total : "

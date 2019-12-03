@@ -17,8 +17,7 @@
 #include "Trajet.h"
 
 //------------------------------------------------------------------ Types
-enum TypeTransport
-{
+enum TypeTransport {
     AUTO,
     AVION,
     BATEAU,
@@ -30,14 +29,12 @@ enum TypeTransport
 //      Permet la gestion des trajets simples de l'application.
 //------------------------------------------------------------------------
 
-class TrajetSimple : public Trajet
-{
+class TrajetSimple : public Trajet {
     //---------------------------------------------------------- -- PUBLIC
 public:
-
-    friend ostream & operator << (ostream & out, const TrajetSimple & t);
-    
     //------------------------------------------------- Méthodes publiques
+    friend ostream &operator<<(ostream &out, const TrajetSimple &t);
+
     void Afficher(const char *indents) const;
     // Mode d'emploi :
     //      - indents : Indentation de base de l'affichage du trajet
@@ -48,24 +45,32 @@ public:
     //      La valeur du pointeur est différente de nullptr et la chaîne
     //      de caractères associée doit être composée uniquement
     //      de caractères de tabulation ('\t').
+
     char *GetVilleDepart() const;
     // Mode d'emploi :
     //      Retourne la ville de départ du trajet simple.
+
     char *GetVilleArrivee() const;
     // Mode d'emploi :
     //      Retourne la ville d'arrivée du trajet simple.
+
     TypeTransport GetTypeTransport() const;
     // Mode d'emploi :
     //      Retourne le type de transport du trajet simple.
+
     Trajet *Clone() const;
     // Mode d'emploi :
     //      Clone le trajet simple.
+
     static unsigned int GetNbInstance();
     // Mode d'emploi :
     //      Retourne le nombre d'instance de la classe.
+
     //---------------------------------------- Constructeurs - destructeur
     TrajetSimple(char *depart, char *arrivee, TypeTransport transport);
+
     TrajetSimple(const TrajetSimple &trajetSimple);
+
     virtual ~TrajetSimple();
 
     //---------------------------------------------------------- PROTECTED

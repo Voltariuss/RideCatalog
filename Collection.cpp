@@ -14,6 +14,7 @@
 
 //-------------------------------------------------------- Include système
 using namespace std;
+
 #include <iostream>
 
 //------------------------------------------------------ Include personnel
@@ -33,8 +34,7 @@ int Collection::AjouterTrajet(Trajet *trajet)
 {
     bool realloc = false;
 
-    if (nbTrajets >= taille)
-    {
+    if (nbTrajets >= taille) {
         realloc = reallocation();
     }
     trajets[nbTrajets++] = trajet;
@@ -75,8 +75,7 @@ Collection *Collection::Filtrage(unsigned int first, unsigned int last)
     bool isNbElementsValid = nbElements >= 1;
     bool isValid = isFirstValid && isLastValid && isNbElementsValid;
 
-    if (isValid)
-    {
+    if (isValid) {
         collection = new Collection();
         collection->Fusion(this, first, last);
         // TODO Check memory
@@ -97,19 +96,14 @@ Collection *Collection::Filtrage(char *depart, char *arrivee)
     //REMARQUE : j'ai modifié cette methode et j'aurais peut etre pas du => si l'export l'utilise alors elle risque de ne plus fonctionner correctement. comportement a verifier
     //              => la methode utilisais avant le taille des chaines depart et arrivee. si les parametres etaient vident alors le filtre n'était pas appliqué. Mais je ne sais pas comment l'utilisateur peut saisir une chaine vide avec cin >> villedepart
 
-    if (strcmp(depart, "") != 0)
-    {
+    if (strcmp(depart, "") != 0) {
         collection = filtrageDepart(depart);
     }
 
-    if (strcmp(arrivee, "") != 0)
-    {
-        if (collection == nullptr)
-        {
+    if (strcmp(arrivee, "") != 0) {
+        if (collection == nullptr) {
             collection = filtrageArrivee(arrivee);
-        }
-        else
-        {
+        } else {
             Collection *collectionArrivee = collection->filtrageArrivee(arrivee);
             delete collection;
             collection = collectionArrivee;
@@ -126,13 +120,11 @@ Collection *Collection::Filtrage(TypeTrajet typeTrajet)
 {
     Collection *collection = new Collection();
 
-    for (unsigned int i = 0; i < GetNbTrajets(); i++)
-    {
+    for (unsigned int i = 0; i < GetNbTrajets(); i++) {
         Trajet *trajet = GetTrajets()[i];
         TypeTrajet type = (dynamic_cast<TrajetCompose *>(trajet) == nullptr) ? SIMPLE : COMPOSE;
 
-        if (type == typeTrajet)
-        {
+        if (type == typeTrajet) {
             collection->AjouterTrajet(trajet->Clone());
         }
     }
@@ -145,12 +137,9 @@ Trajet *Collection::GetPremierTrajet() const
 //      Retourne le premier trajet si le nombre de trajets est
 //      supérieur à 0, nullptr sinon.
 {
-    if (nbTrajets > 0)
-    {
+    if (nbTrajets > 0) {
         return trajets[0];
-    }
-    else
-    {
+    } else {
         return nullptr;
     }
 }
@@ -160,38 +149,30 @@ Trajet *Collection::GetDernierTrajet() const
 //      Retourne le dernier trajet si le nombre de trajets est
 //      supérieur à 0, nullptr sinon.
 {
-    if (nbTrajets > 0)
-    {
+    if (nbTrajets > 0) {
         return trajets[nbTrajets - 1];
-    }
-    else
-    {
+    } else {
         return nullptr;
     }
 }
 
-unsigned int Collection::GetNbTrajets() const
-{
+unsigned int Collection::GetNbTrajets() const {
     return nbTrajets;
 }
 
-unsigned int Collection::GetTaille() const
-{
+unsigned int Collection::GetTaille() const {
     return taille;
 }
 
-Trajet **Collection::GetTrajets() const
-{
+Trajet **Collection::GetTrajets() const {
     return trajets;
 }
 
-Collection *Collection::Clone() const
-{
+Collection *Collection::Clone() const {
     return new Collection(*this);
 }
 
-unsigned int Collection::getNbInstance()
-{
+unsigned int Collection::getNbInstance() {
     return nbInstance;
 }
 
@@ -210,8 +191,7 @@ Collection::Collection() : nbTrajets(0u),
     cout << "Appel au constructeur de <Collection> (total : "
          << getNbInstance() << " instances)" << endl;
 #endif
-    if (trajets == nullptr)
-    {
+    if (trajets == nullptr) {
         cerr << "ERREUR FATALE : problème d'allocation de mémoire"
              << ", fin du programme." << endl;
         exit(EXIT_FAILURE);
@@ -219,33 +199,27 @@ Collection::Collection() : nbTrajets(0u),
 } //----- Fin de Collection
 
 Collection::Collection(const Collection &collection)
-    : nbTrajets(collection.GetNbTrajets()),
-      taille(collection.GetTaille()),
-      trajets(new Trajet *[taille])
-{
+        : nbTrajets(collection.GetNbTrajets()),
+          taille(collection.GetTaille()),
+          trajets(new Trajet *[taille]) {
     nbInstance++;
 #ifdef MAP
     cout << "Appel au constructeur de copie de <Collection> (total : "
          << getNbInstance() << " instances)" << endl;
 #endif
-    for (unsigned int i = 0; i < collection.GetNbTrajets(); i++)
-    {
+    for (unsigned int i = 0; i < collection.GetNbTrajets(); i++) {
         trajets[i] = collection.GetTrajets()[i]->Clone();
     }
 } //----- Fin de Collection
 
-Collection::~Collection()
-// Algorithme :
-//
-{
+Collection::~Collection() {
     nbInstance--;
 #ifdef MAP
     cout << "Appel au destructeur de <Collection> (total : "
          << getNbInstance() << " instances restantes)" << endl;
 #endif
 
-    for (unsigned int i = 0; i < nbTrajets; i++)
-    {
+    for (unsigned int i = 0; i < nbTrajets; i++) {
         delete trajets[i];
     }
     delete[] trajets;
@@ -277,15 +251,12 @@ bool Collection::reallocation()
     Trajet **newTrajets;
     unsigned int incrementation = TAILLE_INIT / 2;
 
-    if (nbTrajets > taille - incrementation)
-    {
+    if (nbTrajets > taille - incrementation) {
         taille += incrementation;
         newTrajets = new Trajet *[taille];
 
-        if (newTrajets != nullptr)
-        {
-            for (unsigned int i = 0; i < nbTrajets; i++)
-            {
+        if (newTrajets != nullptr) {
+            for (unsigned int i = 0; i < nbTrajets; i++) {
                 newTrajets[i] = trajets[i];
             }
             delete[] trajets;
@@ -310,12 +281,10 @@ Collection *Collection::filtrageDepart(char *depart)
 {
     Collection *collection = new Collection();
 
-    for (unsigned int i = 0; i < GetNbTrajets(); i++)
-    {
+    for (unsigned int i = 0; i < GetNbTrajets(); i++) {
         Trajet *trajet = GetTrajets()[i];
 
-        if (strcmp(trajet->GetVilleDepart(), depart) == 0)
-        {
+        if (strcmp(trajet->GetVilleDepart(), depart) == 0) {
             collection->AjouterTrajet(trajet->Clone());
         }
     }
@@ -333,12 +302,10 @@ Collection *Collection::filtrageArrivee(char *arrivee)
 {
     Collection *collection = new Collection();
 
-    for (unsigned int i = 0; i < GetNbTrajets(); i++)
-    {
+    for (unsigned int i = 0; i < GetNbTrajets(); i++) {
         Trajet *trajet = GetTrajets()[i];
 
-        if (strcmp(trajet->GetVilleArrivee(), arrivee) == 0)
-        {
+        if (strcmp(trajet->GetVilleArrivee(), arrivee) == 0) {
             collection->AjouterTrajet(trajet->Clone());
         }
     }
