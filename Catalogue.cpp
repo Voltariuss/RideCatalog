@@ -27,6 +27,15 @@ using namespace std;
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
+void Catalogue::Fusion(Collection *collection)
+// Algorithme
+//      Fusionne la collection passée en paramètre avec la collection du catalogue.
+{
+    if (collection != nullptr) {
+        this->collectionTrajets->Fusion(collection);
+    }
+}
+
 Collection * Catalogue::GetTrajet() const
     // Algorithme :
     //      Retourne la collection de trajets du catalogue.
@@ -219,11 +228,6 @@ TrajetSimple *Catalogue::saisirTrajetSimple()
     return trajetSimple;
 } //----- Fin de saisirTrajetSimple
 
-void Catalogue::Fusion(Collection * col)
-{
-    if(col != nullptr)
-        this->collectionTrajets->Fusion(col);
-}
 
 TrajetCompose *Catalogue::saisirTrajetCompose()
 // Mode d'emploi :

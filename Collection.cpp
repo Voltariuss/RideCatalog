@@ -41,26 +41,26 @@ int Collection::AjouterTrajet(Trajet *trajet)
     return realloc ? -1 : 1;
 } //----- Fin de AjouterTrajet
 
-// int Collection::FusionCollection(Collection *collection, int first, int last)
-// // Algorithme :
-// //      Ajoute les trajets clonés de la collection passée en paramètre en vérifiant avant s'il
-// //      est nécessaire de réallouer la collection courante ou non.
-// //      Si l'ajout s'est effectué sans réallocation de mémoire, alors
-// //      la méthode retourne 1, sinon elle renvoie -1.
-// {
-//     bool realloc = false;
+ int Collection::Fusion(Collection *collection, unsigned int first, unsigned int last)
+ // Algorithme :
+ //      Ajoute les trajets clonés de la collection passée en paramètre en vérifiant avant s'il
+ //      est nécessaire de réallouer la collection courante ou non.
+ //      Si l'ajout s'est effectué sans réallocation de mémoire, alors
+ //      la méthode retourne 1, sinon elle renvoie -1.
+ {
+     bool realloc = false;
 
-//     for (unsigned int i = 0; i < collection->GetNbTrajets(); i++)
-//     {
-//         if (i >= first && i <= last)
-//         {
-//             Trajet *trajet = collection->GetTrajets()[i]->Clone();
-//             realloc = realloc || AjouterTrajet(trajet);
-//             // TODO Check memory
-//         }
-//     }
-//     return realloc;
-// } //----- Fin de FusionCollection
+     for (unsigned int i = 0; i < collection->GetNbTrajets(); i++)
+     {
+         if (i >= first && i <= last)
+         {
+             Trajet *trajet = collection->GetTrajets()[i]->Clone();
+             realloc = realloc || AjouterTrajet(trajet);
+             // TODO Check memory
+         }
+     }
+     return realloc;
+ } //----- Fin de FusionCollection
 
 Collection *Collection::Filtrage(unsigned int first, unsigned int last)
 // Algorithme :
@@ -78,12 +78,7 @@ Collection *Collection::Filtrage(unsigned int first, unsigned int last)
     if (isValid)
     {
         collection = new Collection();
-
-        for (unsigned int i = first; i < last; i++)
-        {
-            collection->AjouterTrajet(GetTrajets()[i]->Clone());
-        }
-
+        collection->Fusion(this, first, last);
         // TODO Check memory
     }
     return collection;
@@ -102,12 +97,12 @@ Collection *Collection::Filtrage(char *depart, char *arrivee)
     //REMARQUE : j'ai modifié cette methode et j'aurais peut etre pas du => si l'export l'utilise alors elle risque de ne plus fonctionner correctement. comportement a verifier
     //              => la methode utilisais avant le taille des chaines depart et arrivee. si les parametres etaient vident alors le filtre n'était pas appliqué. Mais je ne sais pas comment l'utilisateur peut saisir une chaine vide avec cin >> villedepart
 
-    if (strcmp(depart, ".") != 0)
+    if (strcmp(depart, "") != 0)
     {
         collection = filtrageDepart(depart);
     }
 
-    if (strcmp(arrivee, ".") != 0)
+    if (strcmp(arrivee, "") != 0)
     {
         if (collection == nullptr)
         {
@@ -157,15 +152,6 @@ Trajet *Collection::GetPremierTrajet() const
     else
     {
         return nullptr;
-    }
-}
-
-void Collection::Fusion(Collection *col)
-{
-    unsigned int i;
-    for (i = 0; i < col->nbTrajets; i++)
-    {
-        this->AjouterTrajet(col->GetTrajets()[i]->Clone());
     }
 }
 

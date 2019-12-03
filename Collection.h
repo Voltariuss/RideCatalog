@@ -42,7 +42,7 @@ public:
     //      Ajoute un trajet dans la collection.
     // Contrat :
     //      Le pointeur du trajet doit être différent de nullptr.
-    // int FusionCollection(Collection *collection, int first = 0, int last = GetNbTrajets() - 1);
+     int Fusion(Collection *collection, unsigned int first, unsigned int last);
     // Mode d'emploi :
     //      - collection : La collection à inclure dans la collection courante
     //
@@ -70,11 +70,6 @@ public:
     //
     //      Filtrage de la collection courante par rapport au type de trajet spécifié en créant une nouvelle collection
     //      dont les trajets sont des clones de la collection courante.
-    void Fusion(Collection * col);
-    // Mode d'emploi :
-    //      - col : collection a copier dans la collection courante (this)
-    //
-    //      Copie chaque element de col dans la collection courante (this)
     Trajet *GetPremierTrajet() const;
     // Mode d'emploi :
     //      Retourne le premier trajet de la collection.

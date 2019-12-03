@@ -30,9 +30,11 @@ class Catalogue
     //------------------------------------------------------------- PUBLIC
 public:
     //------------------------------------------------- Méthodes publiques
-    void Fusion(Collection * col);
+    void Fusion(Collection *collection);
     // Mode d'emploi :
-    //      Fusionne la collection courante avec celle passée en parametre
+    //      Fusionne la collection courante avec celle passée en paramètre.
+    // Contrat :
+    //      Le pointeur de la collection doit être différent de nullptr.
     Collection * GetTrajet() const;
     // Mode d'emploi :
     //      Retourne la collection de trajets du catalogue.
