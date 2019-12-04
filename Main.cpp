@@ -663,6 +663,7 @@ static void afficherMenuImport(Catalogue &catalogue, Persistance &persistance) {
         cout << ChatColor(VERT) << "Les trajets ont été importés avec succès !"
              << ChatColor(RESET) << endl;
         delete collection;
+        delete nomFichier;
     } else {
         cerr << "Impossible d'ouvrir le fichier " << *nomFichier << endl;
     }
