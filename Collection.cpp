@@ -80,7 +80,7 @@ Collection *Collection::Filtrage(unsigned int first, unsigned int last)
     return collection;
 } //----- Fin de Filtrage(int, int)
 
-Collection *Collection::Filtrage(char *depart, char *arrivee)
+Collection *Collection::Filtrage(const char *depart, const char *arrivee)
 // Algorithme :
 //      On vérifie la validité d'au moins un des noms de ville passés en arguments.
 //      Si la validité est vérifiée, alors on créer une nouvelle collection avec les trajets clonés ayant comme
@@ -265,7 +265,7 @@ bool Collection::reallocation()
     return estRealloue;
 } //----- Fin de reallocation
 
-Collection *Collection::filtrageDepart(char *depart)
+Collection *Collection::filtrageDepart(const char *depart)
 // Mode d'emploi :
 //      Filtre les trajets par rapport à la ville de départ spécifiée.
 // Contrat :
@@ -286,7 +286,7 @@ Collection *Collection::filtrageDepart(char *depart)
     return collection;
 } //----- Fin de filtrageDepart
 
-Collection *Collection::filtrageArrivee(char *arrivee)
+Collection *Collection::filtrageArrivee(const char *arrivee)
 // Mode d'emploi :
 //      Filtre les trajets par rapport à la ville d'arrivée spécifiée.
 // Contrat :

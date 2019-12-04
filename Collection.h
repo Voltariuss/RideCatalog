@@ -56,7 +56,7 @@ public:
     //
     //      Filtre la collection sur les indexes
 
-    Collection *Filtrage(char *depart, char *arrivee);
+    Collection *Filtrage(const char *depart, const char *arrivee);
     // Mode d'emploi :
     //      - depart : Ville de départ
     //      - arrivee : Ville d'arrivée
@@ -113,9 +113,9 @@ protected:
     //------------------------------------------------- Méthodes protégées
     bool reallocation();
 
-    Collection *filtrageDepart(char *depart);
+    Collection *filtrageDepart(const char *depart);
 
-    Collection *filtrageArrivee(char *arrivee);
+    Collection *filtrageArrivee(const char *arrivee);
 
     //------------------------------------------------- Attributs protégés
     unsigned int nbTrajets;

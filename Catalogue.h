@@ -35,14 +35,15 @@ public:
     // Contrat :
     //      Le pointeur de la collection doit être différent de nullptr.
 
+    void AjouterTrajet(Trajet *trajet);
+    // Mode d'emploi :
+    //      Ajoute un trajet dans le catalogue.
+    // Contrat :
+    //      Le pointeur du trajet doit être différent de nullptr.
+
     Collection *GetTrajet() const;
     // Mode d'emploi :
     //      Retourne la collection de trajets du catalogue.
-
-    void SaisirTrajet();
-    // Mode d'emploi :
-    //      Demande à l'utilisateur de saisir un trajet pour l'ajouter
-    //      ensuite dans le catalogue.
 
     void Afficher(Collection *collection = nullptr) const;
     // Mode d'emploi :
@@ -83,10 +84,6 @@ public:
     //---------------------------------------------------------- PROTECTED
 protected:
     //------------------------------------------------- Méthodes protégées
-    TrajetSimple *saisirTrajetSimple();
-
-    TrajetCompose *saisirTrajetCompose();
-
     void rechercherParcoursAvanceeWorker(const char *depart,
                                          const char *arrivee,
                                          const TrajetCompose &trajetCompose,
