@@ -383,52 +383,47 @@ TrajetCompose *saisirTrajetCompose()
 {
     TrajetCompose *trajetCompose = nullptr;
     Collection *collection = new Collection();
-    bool erreur = false;
     bool continueSaisie = true;
     cout << "===== Saisie d'un trajet composé =====" << endl;
 
     do {
         Trajet *trajet = saisirTrajetSimple();
 
-        if (!erreur && trajet != nullptr) {
-            const Trajet *dernierTrajet = collection->GetDernierTrajet();
-            const char *villeDepart = trajet->GetVilleDepart();
+        const Trajet *dernierTrajet = collection->GetDernierTrajet();
+        const char *villeDepart = trajet->GetVilleDepart();
 
-            if (dernierTrajet == nullptr ||
-                strcmp(dernierTrajet->GetVilleArrivee(), villeDepart) == 0) {
-                collection->AjouterTrajet(trajet);
+        if (dernierTrajet == nullptr || strcmp(dernierTrajet->GetVilleArrivee(), villeDepart) == 0) {
+            collection->AjouterTrajet(trajet);
 
-                if (collection->GetNbTrajets() >= 2) {
-                    char reponse;
+            if (collection->GetNbTrajets() >= 2) {
+                bool valid;
+                char reponse;
 
-                    do {
-                        cout << "Continuer la saisie de trajets ? (O/N) : ";
-                        cin >> reponse;
+                do {
+                    cout << "Continuer la saisie de trajets ? (O/N) : ";
+                    cin >> reponse;
+                    valid = verifSaisieAtomique(cin);
 
-                        if (reponse == 'N') {
-                            continueSaisie = false;
-                        } else if (reponse != 'O') {
-                            cout << "Saisie incorrect." << endl;
-                        }
-                    } while (reponse != 'N' && reponse != 'O');
+                    if (valid && reponse != 'O' && reponse != 'N') {
+                        valid = false;
+                        cout << ChatColor(ROUGE) << "ERREUR : La réponse saisie est incorrecte."
+                             << ChatColor(RESET) << endl;
+                    }
+                } while (!valid);
+
+                if (reponse == 'N') {
+                    continueSaisie = false;
                 }
-            } else {
-                erreur = true;
-                cout << "ERREUR : La ville de départ d'un trajet doit";
-                cout << " correspondre à la ville d'arrivé du trajet";
-                cout << " précédent dans un trajet composé." << endl;
             }
-        } else if (trajet == nullptr) {
-            erreur = true;
-            cout << "Échec de l'ajout du trajet dans le trajet composé." << endl;
+        } else {
+            cout << ChatColor(ROUGE) << "ERREUR : La ville de départ d'un trajet doit correspondre à la ville "
+                 << "d'arrivée du trajet précédent dans un trajet composé." << ChatColor(RESET) << endl;
+            cout << ChatColor(ROUGE) << "Le trajet n'est pas pris en compte. Veuillez en saisir un nouveau."
+                 << ChatColor(RESET) << endl;
         }
-    } while (continueSaisie && !erreur);
+    } while (continueSaisie);
 
-    if (!erreur) {
-        trajetCompose = new TrajetCompose(collection);
-    } else {
-        delete collection;
-    }
+    trajetCompose = new TrajetCompose(collection);
     return trajetCompose;
 } //----- Fin de saisirTrajetCompose
 
