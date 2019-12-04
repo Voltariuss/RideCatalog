@@ -14,6 +14,7 @@
 using namespace std;
 
 #include <iostream>
+#include <fstream>
 #include <climits>
 
 //------------------------------------------------------ Include personnel
@@ -436,13 +437,17 @@ static void afficherMenuExport(Catalogue &catalogue, Persistance &persistance) {
     if (nomFichier) {
         bool valid;
         int choix = afficherMenuExportType();
+        unsigned int size;
 
         switch (choix) {
             case 0: {
                 cout << ChatColor(VERT) << "Annulation de l'action d'export de trajet." << ChatColor(RESET) << endl;
+                return;
             }
             case 1: {
-                persistance.Export(*catalogue.GetTrajet(), *nomFichier);
+                Collection *collection = catalogue.GetTrajet();
+                size = collection->GetNbTrajets();
+                persistance.Export(*collection, *nomFichier);
                 break;
             }
             case 2: {
@@ -467,7 +472,9 @@ static void afficherMenuExport(Catalogue &catalogue, Persistance &persistance) {
                 } else {
                     typeTrajet = TypeTrajet::COMPOSE;
                 }
-                persistance.Export(*catalogue.GetTrajet()->Filtrage(typeTrajet), *nomFichier);
+                Collection *collection = catalogue.GetTrajet()->Filtrage(typeTrajet);
+                size = collection->GetNbTrajets();
+                persistance.Export(*collection, *nomFichier);
                 break;
             }
             case 3: {
@@ -518,24 +525,25 @@ static void afficherMenuExport(Catalogue &catalogue, Persistance &persistance) {
                         valid = verifSaisieString(cin);
                     } while (!valid);
                 }
-                persistance.Export(*catalogue.GetTrajet()->Filtrage(villeDepart.c_str(), villeArrivee.c_str()),
-                                                                   *nomFichier);
+                Collection *collection = catalogue.GetTrajet()->Filtrage(villeDepart.c_str(), villeArrivee.c_str());
+                size = collection->GetNbTrajets();
+                persistance.Export(*collection, *nomFichier);
                 break;
             }
             case 4: {
                 unsigned int n, m;
                 Collection *exportCollection = catalogue.GetTrajet();
-                unsigned int size = exportCollection->GetNbTrajets();
+                unsigned int nbTrajets = exportCollection->GetNbTrajets();
 
                 do {
                     cout << "Indice n (indice du premier trajet) : ";
                     cin >> n;
                     valid = verifSaisieAtomique(cin);
 
-                    if (valid && (n < 0 || n >= size)) {
+                    if (valid && (n < 0 || n >= nbTrajets)) {
                         valid = false;
                         cerr << ChatColor(ROUGE) << "ERREUR : L'index saisi ne correspond à aucun trajet "
-                             << "(index max : " << size - 1 << ")."
+                             << "(index max : " << nbTrajets - 1 << ")."
                              << ChatColor(RESET) << endl;
                     }
                 } while (!valid);
@@ -545,7 +553,7 @@ static void afficherMenuExport(Catalogue &catalogue, Persistance &persistance) {
                     cin >> m;
                     valid = verifSaisieAtomique(cin);
 
-                    if (valid && (m < 0 || m >= size || m < n)) {
+                    if (valid && (m < 0 || m >= nbTrajets || m < n)) {
                         valid = false;
 
                         if (m < n) {
@@ -553,15 +561,23 @@ static void afficherMenuExport(Catalogue &catalogue, Persistance &persistance) {
                                  << "inférieur à l'index n du premier trajet." << ChatColor(RESET) << endl;
                         } else {
                             cerr << ChatColor(ROUGE) << "ERREUR : L'index saisi ne correspond à aucun trajet "
-                                 << "(index max : " << size - 1 << ")."
+                                 << "(index max : " << nbTrajets - 1 << ")."
                                  << ChatColor(RESET) << endl;
                         }
                     }
                 } while (!valid);
 
-                persistance.Export(*exportCollection->Filtrage(n, m), *nomFichier);
+                Collection *collection = exportCollection->Filtrage(n, m);
+                size = collection->GetNbTrajets();
+                persistance.Export(*collection, *nomFichier);
                 break;
             }
+        }
+        if (size > 0) {
+            cout << ChatColor(VERT) << "Les trajets ont été exportés avec succès !"
+                 << ChatColor(RESET) << endl;
+        } else {
+            cout << ChatColor(ROUGE) << "Aucun trajet exporté dans le fichier ciblé." << ChatColor(RESET) << endl;
         }
     }
 } //----- fin de afficherMenuExport
