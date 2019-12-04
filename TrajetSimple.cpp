@@ -98,8 +98,8 @@ TrajetSimple::TrajetSimple(const TrajetSimple &trajetSimple) {
 #endif
     int tailleVD = strlen(trajetSimple.GetVilleDepart());
     int tailleVA = strlen(trajetSimple.GetVilleArrivee());
-    villeDepart = new char[tailleVD+1];
-    villeArrivee = new char[tailleVA+1];
+    villeDepart = new char[tailleVD + 1];
+    villeArrivee = new char[tailleVA + 1];
     const char *depart = trajetSimple.GetVilleDepart();
     strncpy(villeDepart, depart, tailleVD + 1);
     const char *arrivee = trajetSimple.GetVilleArrivee();

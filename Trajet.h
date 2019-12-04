@@ -16,8 +16,7 @@
 //      Permet la gestion des trajets de l'application.
 //------------------------------------------------------------------------
 
-class Trajet
-{
+class Trajet {
     //------------------------------------------------------------- PUBLIC
 public:
     //------------------------------------------------- Méthodes publiques
@@ -51,6 +50,7 @@ public:
 
     //---------------------------------------- Constructeurs - destructeur
     Trajet();
+
     virtual ~Trajet();
 
     //---------------------------------------------------------- PROTECTED
