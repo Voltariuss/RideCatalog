@@ -63,7 +63,7 @@ TrajetCompose *saisirTrajetCompose();
 
 static string *saisirNomFichier(Persistance &persistance, TypeAction typeAction);
 // Mode d'emploi :
-//      Demande à l'utilisateur la saisie d'un nom de fichier
+//      Demande à l'utilisateur la saisie d'un nom de fichier.
 
 static int afficherMenu();
 // Mode d'emploi :
@@ -74,17 +74,21 @@ static void afficherParcours(Catalogue &catalogue, char *villeDepart, char *vill
 // Mode d'emploi :
 //      Affiche la liste de parcours spécifiés en paramètre.
 
-static int afficherMenuExport();
+static void afficherMenuExport(Catalogue &catalogue, Persistance &persistance);
 // Mode d'emploi :
-//      Afficher le menu de sélection pour l'export
+//      Afficher le menu de sélection pour l'export.
 
-static void afficherMenuImport(Catalogue &c, Persistance &p);
+static int afficherMenuExportType();
 // Mode d'emploi :
-//      Affiche le menu de sélection pour l'import
+//      Afficher le menu de sélection du type d'exportation.
+
+static void afficherMenuImport(Catalogue &collection, Persistance &persistance);
+// Mode d'emploi :
+//      Affiche le menu de sélection pour l'import.
 
 static int afficherMenuImportType();
 // Mode d'emploi :
-//      Affiche le menu de sélection du type d'importation
+//      Affiche le menu de sélection du type d'importation.
 
 //-------------------------------------------------------------- Fonctions
 int main() {
@@ -96,12 +100,6 @@ int main() {
     char *villeArrivee;
     Collection *parcours;
     Persistance persistance;
-    string nomExport;
-    int choix;
-    int typeTrajet;
-    unsigned int n;
-    unsigned int m;
-    char answer;
 
     while (1) {
         int reponse = afficherMenu();
@@ -159,81 +157,7 @@ int main() {
                 break;
             }
             case 5: {
-                choix = afficherMenuExport();
-                cout << "Veuillez donner un nom au fichier d'export:" << endl;
-                cin >> nomExport;
-
-                switch (choix) {
-                    case 0:
-                        break;
-                    case 1:
-                        persistance.Export(*catalogue.GetTrajet(), nomExport);
-                        break;
-                    case 2:
-
-                        do {
-                            cout << "Veuillez sélectionner les trajets que vous souhaitez exporter:" << endl;
-                            cout << "\t1 - Les trajets simples" << endl;
-                            cout << "\t2 - Les trajets composés" << endl;
-                            cin >> typeTrajet;
-
-                            if (typeTrajet != 1 && typeTrajet != 2) {
-                                cout << "saisie incorrecte. Veuillez recommencer." << endl
-                                     << endl;
-                            }
-                        } while (typeTrajet != 1 && typeTrajet != 2);
-
-                        if (typeTrajet == 1) {
-                            persistance.Export(*catalogue.GetTrajet()->Filtrage(SIMPLE), nomExport);
-                        } else if (typeTrajet == 2) {
-                            persistance.Export(*catalogue.GetTrajet()->Filtrage(COMPOSE), nomExport);
-                        }
-                        break;
-
-                    case 3:
-                        villeDepart = new char[TAILLE_CHAINE];
-                        villeArrivee = new char[TAILLE_CHAINE];
-
-                        do {
-                            cout << "Souhaitez vous saisir une ville de départ? (O/N) : ";
-                            cin >> answer;
-
-                            if (answer == 'O') {
-                                cout << "Saisie de la ville de départ : ";
-                                cin >> villeDepart;
-                            } else if (answer != 'N') {
-                                cout << "Saisie incorrect." << endl;
-                            }
-                        } while (answer != 'N' && answer != 'O');
-
-                        do {
-                            cout << "Souhaitez vous saisir une ville d'arrivée'? (O/N) : ";
-                            cin >> answer;
-
-                            if (answer == 'O') {
-                                cout << "Saisie de la ville d'arrivée : ";
-                                cin >> villeArrivee;
-                            } else if (answer != 'N') {
-                                cout << "Saisie incorrect." << endl;
-                            }
-                        } while (answer != 'N' && answer != 'O');
-
-                        persistance.Export(*catalogue.GetTrajet()->Filtrage(villeDepart, villeArrivee), nomExport);
-                        delete[] villeDepart;
-                        delete[] villeArrivee;
-                        break;
-
-                    case 4:
-                        cout << "Veuillez entrer la valeure inférieure de l'intervalle [n,m] :" << endl;
-                        cin >> n;
-                        cout << "Veuillez entrer la valeure supérieure de l'intervalle [n,m] : " << endl;
-                        cin >> m;
-                        persistance.Export(*catalogue.GetTrajet()->Filtrage(n, m), nomExport);
-                        break;
-
-                    default:
-                        break;
-                }
+                afficherMenuExport(catalogue, persistance);
                 break;
             }
             case 6: {
@@ -505,34 +429,182 @@ static void afficherParcours(Catalogue &catalogue, char *villeDepart, char *vill
     }
 } //----- fin de afficherParcours
 
-static int afficherMenuExport() {
-    cout << "Quel type d'export voulez vous faire?" << endl;
-    cout << "\t1 - complet" << endl;
-    cout << "\t2 - selon le type des trajets" << endl;
-    cout << "\t3 - selon la ville de départ et/ou la ville d'arrivée" << endl;
-    cout << "\t4 - selon une sélection de trajet (de n à m)" << endl;
-    cout << "\t0 - Revenir au menu précédent" << endl;
+static void afficherMenuExport(Catalogue &catalogue, Persistance &persistance) {
+    string *nomFichier;
+    nomFichier = saisirNomFichier(persistance, EXPORT);
+
+    if (nomFichier) {
+        bool valid;
+        int choix = afficherMenuExportType();
+
+        switch (choix) {
+            case 0: {
+                cout << ChatColor(VERT) << "Annulation de l'action d'export de trajet." << ChatColor(RESET) << endl;
+            }
+            case 1: {
+                persistance.Export(*catalogue.GetTrajet(), *nomFichier);
+                break;
+            }
+            case 2: {
+                int reponseType;
+                TypeTrajet typeTrajet;
+
+                do {
+                    cout << "Sélectionnez le type de trajet à conserver (simple = 1, composé = 2) : ";
+                    cin >> reponseType;
+                    valid = verifSaisieAtomique(cin);
+
+                    if (valid && reponseType != 1 && reponseType != 2) {
+                        valid = false;
+                        cerr << ChatColor(ROUGE)
+                             << "ERREUR : Le numéro saisie est incorrect. Veuillez réessayer."
+                             << ChatColor(RESET) << endl;
+                    }
+                } while (!valid);
+
+                if (reponseType == 1) {
+                    typeTrajet = TypeTrajet::SIMPLE;
+                } else {
+                    typeTrajet = TypeTrajet::COMPOSE;
+                }
+                persistance.Export(*catalogue.GetTrajet()->Filtrage(typeTrajet), *nomFichier);
+                break;
+            }
+            case 3: {
+                char reponseVD;
+                string villeDepart;
+                string villeArrivee;
+
+                do {
+                    cout << "Souhaitez-vous saisir une ville de départ ? (O/N) : ";
+                    cin >> reponseVD;
+                    valid = verifSaisieAtomique(cin);
+
+                    if (valid && reponseVD != 'O' && reponseVD != 'N') {
+                        valid = false;
+                        cerr << ChatColor(ROUGE)
+                             << "ERREUR : La réponse saisie est incorrecte."
+                             << ChatColor(RESET) << endl;
+                    }
+                } while (!valid);
+
+                if (reponseVD == 'O') {
+                    do {
+                        cout << "Saisie de la ville de départ : ";
+                        getline(cin, villeDepart);
+                        valid = verifSaisieString(cin);
+                    } while (!valid);
+                }
+
+                char reponseVA;
+
+                do {
+                    cout << "Souhaitez-vous saisir une ville d'arrivée ? (O/N) : ";
+                    cin >> reponseVA;
+                    valid = verifSaisieAtomique(cin);
+
+                    if (valid && reponseVA != 'O' && reponseVA != 'N') {
+                        valid = false;
+                        cerr << ChatColor(ROUGE)
+                             << "ERREUR : La réponse saisie est incorrecte."
+                             << ChatColor(RESET) << endl;
+                    }
+                } while (!valid);
+
+                if (reponseVA == 'O') {
+                    do {
+                        cout << "Saisie de la ville d'arrivée : ";
+                        getline(cin, villeArrivee);
+                        valid = verifSaisieString(cin);
+                    } while (!valid);
+                }
+                persistance.Export(*catalogue.GetTrajet()->Filtrage(villeDepart.c_str(), villeArrivee.c_str()),
+                                                                   *nomFichier);
+                break;
+            }
+            case 4: {
+                unsigned int n, m;
+                Collection *exportCollection = catalogue.GetTrajet();
+                unsigned int size = exportCollection->GetNbTrajets();
+
+                do {
+                    cout << "Indice n (indice du premier trajet) : ";
+                    cin >> n;
+                    valid = verifSaisieAtomique(cin);
+
+                    if (valid && (n < 0 || n >= size)) {
+                        valid = false;
+                        cerr << ChatColor(ROUGE) << "ERREUR : L'index saisi ne correspond à aucun trajet "
+                             << "(index max : " << size - 1 << ")."
+                             << ChatColor(RESET) << endl;
+                    }
+                } while (!valid);
+
+                do {
+                    cout << "Indice m (indice du dernier trajet) : ";
+                    cin >> m;
+                    valid = verifSaisieAtomique(cin);
+
+                    if (valid && (m < 0 || m >= size || m < n)) {
+                        valid = false;
+
+                        if (m < n) {
+                            cerr << ChatColor(ROUGE) << "ERREUR : L'index m du dernier trajet ne peut pas être "
+                                 << "inférieur à l'index n du premier trajet." << ChatColor(RESET) << endl;
+                        } else {
+                            cerr << ChatColor(ROUGE) << "ERREUR : L'index saisi ne correspond à aucun trajet "
+                                 << "(index max : " << size - 1 << ")."
+                                 << ChatColor(RESET) << endl;
+                        }
+                    }
+                } while (!valid);
+
+                persistance.Export(*exportCollection->Filtrage(n, m), *nomFichier);
+                break;
+            }
+        }
+    }
+} //----- fin de afficherMenuExport
+
+static int afficherMenuExportType() {
+    bool valid;
     int reponse;
-    cin >> reponse;
+
+    do {
+        cout << "Choisissez un type d'exportation :" << endl;
+        cout << "\t1 - Tous les trajets du catalogue" << endl;
+        cout << "\t2 - Les trajets selon leurs type (Simple/Composé)" << endl;
+        cout << "\t3 - Les trajets selon une ville de départ et/ou une ville d'arrivée" << endl;
+        cout << "\t4 - Les trajets selon un intervalle" << endl;
+        cout << "\t0 - Annuler l'action" << endl;
+        cout << "Votre réponse : ";
+        cin >> reponse;
+        valid = verifSaisieAtomique(cin);
+
+        if (valid && (reponse < 0 || reponse > 4)) {
+            valid = false;
+            cerr << ChatColor(ROUGE) << "ERREUR : Le numéro saisi est incorrect." << ChatColor(RESET) << endl;
+        }
+    } while (!valid);
     return reponse;
-} //----- fin de afficherMenu
+} //----- fin de afficherMenuExportType
 
 static void afficherMenuImport(Catalogue &catalogue, Persistance &persistance) {
     string *nomFichier;
-    bool valid;
-
     nomFichier = saisirNomFichier(persistance, IMPORT);
 
     if (nomFichier && persistance.FileExist(*nomFichier)) {
+        bool valid;
         int reponse;
         Collection *collection = nullptr;
 
         reponse = afficherMenuImportType();
 
         switch (reponse) {
-            case 0:
+            case 0: {
                 cout << ChatColor(VERT) << "Annulation de l'action d'import de trajet." << ChatColor(RESET) << endl;
                 return;
+            }
             case 1: {
                 collection = persistance.Import(*nomFichier);
                 break;
@@ -670,10 +742,10 @@ static int afficherMenuImportType() {
 
     do {
         cout << "Choisissez un type d'importation :" << endl;
-        cout << "\t1 - Importer tous les trajets du fichier" << endl;
-        cout << "\t2 - Importer les trajets selon leurs type (Simple/Composé)" << endl;
-        cout << "\t3 - Importer les trajets selon la ville de départ et/ou la ville d'arrivée" << endl;
-        cout << "\t4 - Importer les trajets selon un intervalle" << endl;
+        cout << "\t1 - Tous les trajets du fichier" << endl;
+        cout << "\t2 - Les trajets selon leurs type (Simple/Composé)" << endl;
+        cout << "\t3 - Les trajets selon une ville de départ et/ou une ville d'arrivée" << endl;
+        cout << "\t4 - Les trajets selon un intervalle" << endl;
         cout << "\t0 - Annuler l'action" << endl;
         cout << "Votre réponse : ";
         cin >> reponse;
@@ -687,4 +759,4 @@ static int afficherMenuImportType() {
         }
     } while (!valid);
     return reponse;
-}
+} // fin de afficherMenuImportType
