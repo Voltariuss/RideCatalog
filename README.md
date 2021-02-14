@@ -1,4 +1,4 @@
-# INSA-CPP-Catalogue-de-trajets
+# RideCatalog
 Projet C++ ayant pour but d'appliquer les concepts de base de la programmation orientée objet du langage (classes, héritage, polymorphisme, ...). Ce projet amène également à la gestion de la mémoire de manière dynamique.
 
 Il s'agit d'une application de gestion d'un catalogue de trajets (qui peut avoir pour but une utilisation dans une agence de voyage par exemple). Un trajet peut soit être un trajet simple caractérisé par une ville de départ, une ville d'arrivée et un type de transport (Avion, Train, etc). Un trajet peut aussi être un trajet composé simplement caractérisé par une liste ordonnée de trajets simples et/ou composés tels que la ville d'arrivée d'un trajet est obligatoire la ville de départ du trajet suivant.
